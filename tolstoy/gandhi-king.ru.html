@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}</style>
+<title>Толстой, Ганди, Кинг</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  --paper:#ECEBE7; --sheet:#F8F7F4; --ink:#161616; --ink-2:#56544F; --rule:#C8C5BD;
+  --land:#DEDBD2; --river:#5F8BBA; --blue:#2D5F93;
+  --yellow:#FFD812; --on-yellow:#161616; --red:#D2381F; --on-red:#FFFFFF;
+  --shadow:rgba(22,22,22,.28);
+  --display:"Fira Sans Extra Condensed","Arial Narrow",Arial,sans-serif;
+  --serif:"PT Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#131312; --sheet:#1D1D1B; --ink:#EEECE6; --ink-2:#A8A59D; --rule:#3B3A36;
+    --land:#2A2A27; --river:#6E9CCB; --blue:#86B3E3;
+    --yellow:#FFD60A; --on-yellow:#161616; --red:#FF5E42; --on-red:#161616;
+    --shadow:rgba(0,0,0,.6); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131312; --sheet:#1D1D1B; --ink:#EEECE6; --ink-2:#A8A59D; --rule:#3B3A36;
+  --land:#2A2A27; --river:#6E9CCB; --blue:#86B3E3;
+  --yellow:#FFD60A; --on-yellow:#161616; --red:#FF5E42; --on-red:#161616;
+  --shadow:rgba(0,0,0,.6); color-scheme:dark;
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.62 var(--serif);padding-inline:clamp(16px,4vw,48px);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:1160px;margin-inline:auto}
+.progress{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:4px;z-index:50;background:var(--yellow);transform-origin:0 50%;display:none}
+@supports (animation-timeline:scroll()){.progress{display:block;animation:grow linear both;animation-timeline:scroll(root)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+.label,.kicker,.frame-bar{font-family:var(--mono);font-size:.74rem;line-height:1.3;letter-spacing:.08em;text-transform:uppercase}
+h1,h2,.num{font-family:var(--display);font-weight:800;line-height:.92;text-wrap:balance;margin:0}
+h1{font-size:clamp(3.4rem,10vw,7.6rem);font-weight:900;text-transform:uppercase;line-height:.86;max-width:12ch}
+h2{font-size:clamp(2.1rem,4.6vw,3.4rem)}
+p{margin:0 0 1em;max-width:62ch;hyphens:auto}
+a{color:inherit}
+mark{color:var(--on-yellow);background:linear-gradient(transparent 7%,var(--yellow) 7%,var(--yellow) 93%,transparent 93%) no-repeat 0 0/100% 100%;padding-inline:.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+.hero{padding-block:clamp(40px,7vw,88px) clamp(64px,9vw,112px)}
+.kicker{display:inline-block;margin-bottom:20px;padding:4px 8px;background:var(--ink);color:var(--paper)}
+.kicker a{text-underline-offset:3px}
+.cyr{font-style:italic;font-size:clamp(1.15rem,2.2vw,1.5rem);margin:.6em 0 1em;color:var(--ink-2);max-width:40ch}
+.dek{font-size:clamp(1.15rem,1.9vw,1.4rem);line-height:1.5;max-width:44ch;margin:0}
+.hero .frame{margin-top:clamp(40px,6vw,72px)}
+
+.scene{border-top:3px solid var(--ink);padding-block:0 clamp(72px,10vw,128px);scroll-margin-top:16px}
+.scene-head{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px 28px;margin-top:-3px}
+.stamp{flex:none;background:var(--yellow);color:var(--on-yellow);font-family:var(--display);font-weight:900;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1;padding:.14em .3em .08em;font-variant-numeric:tabular-nums}
+.scene-head h2{flex:1 1 16ch;padding-top:.32em}
+.scene-body{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4.5vw,64px);align-items:start;margin-top:clamp(24px,3.5vw,44px)}
+.scene.flip .scene-body{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.scene.flip .frame{order:-1}
+.scene.wide .scene-body{grid-template-columns:1fr}
+.scene.wide .copy{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.scene.wide .meanwhile{margin-top:0}
+@media (max-width:900px){
+  .scene-body,.scene.flip .scene-body,.scene.wide .copy{grid-template-columns:1fr}
+  .scene.flip .frame{order:0}
+}
+.meanwhile{margin-top:28px;padding:14px 16px 16px;background:var(--sheet);border:1.5px dashed var(--ink-2);font-size:.95rem;line-height:1.5;transform:rotate(-.5deg);max-width:62ch}
+.meanwhile .label{display:block;margin-bottom:6px;color:var(--red);font-weight:600}
+.meanwhile p{margin:0}
+
+.frame{margin:0;background:var(--sheet);border:1.5px solid var(--ink);border-radius:4px;box-shadow:0 24px 44px -32px var(--shadow);min-width:0}
+.frame-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 10px 9px 14px;border-bottom:1.5px solid var(--ink)}
+.frame-bar b{font-weight:600}
+.frame-body{padding:clamp(12px,2.4vw,24px)}
+.frame svg{display:block;width:100%;height:auto}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scroll-x>svg{min-width:var(--min,0px)}
+figcaption{padding:0 clamp(12px,2.4vw,24px) clamp(14px,2.4vw,22px);font-size:.92rem;line-height:1.5;color:var(--ink-2)}
+figcaption p{max-width:none;margin:0 0 .4em}
+.hint{display:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+@media (max-width:640px){.hint{display:block}}
+.replay{flex:none;font:500 .7rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:transparent;border:1.5px solid var(--ink);border-radius:999px;padding:6px 10px;cursor:pointer}
+.replay:hover{background:var(--yellow);color:var(--on-yellow);border-color:var(--on-yellow)}
+.replay:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.sw{display:inline-block;width:.8em;height:.8em;margin-right:.35em;vertical-align:-.06em;border-radius:2px}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:28px 0 0;padding-top:14px;border-top:1.5px solid var(--ink);max-width:62ch}
+.stats div{display:flex;flex-direction:column-reverse;gap:6px}
+.stats dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.stats dd{margin:0;font-size:clamp(2rem,4vw,2.8rem);font-variant-numeric:tabular-nums}
+
+/* svg vocabulary */
+svg text{font-family:var(--mono);font-size:13px;fill:var(--ink)}
+svg .t-serif{font-family:var(--serif)}
+svg .t-it{font-family:var(--serif);font-style:italic}
+svg .t-disp{font-family:var(--display);font-weight:900}
+svg .t-b{font-weight:600}
+svg .t-bb{font-weight:700}
+svg .t-mut{fill:var(--ink-2)}
+svg .t-on-y{fill:var(--on-yellow)}
+svg .t-on-r{fill:var(--on-red)}
+svg .t-paper{fill:var(--paper)}
+svg .t-red{fill:var(--red)}
+svg .t-10{font-size:10px} svg .t-11{font-size:11px} svg .t-12{font-size:12px} svg .t-13{font-size:13px} svg .t-14{font-size:14px} svg .t-15{font-size:15px}
+.f-ink{fill:var(--ink)} .f-mut{fill:var(--ink-2)} .f-rule{fill:var(--rule)} .f-sheet{fill:var(--sheet)} .f-paper{fill:var(--paper)} .f-land{fill:var(--land)} .f-y{fill:var(--yellow)} .f-r{fill:var(--red)} .f-none{fill:none}
+.s-ink{stroke:var(--ink)} .s-mut{stroke:var(--ink-2)} .s-r{stroke:var(--red)} .s-sheet{stroke:var(--sheet)}
+
+/* motion: every element rests in its final state; .play replays it from the start */
+.d{stroke-dasharray:1;stroke-dashoffset:0}
+.pop,.gy,.walker,.slab,.lift{transform-box:fill-box}
+.pop{transform-origin:50% 50%}
+.gy{transform-origin:50% 100%}
+@keyframes draw{from{stroke-dashoffset:1}}
+@keyframes pop{from{transform:scale(0)}}
+@keyframes fade{from{opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}}
+@keyframes growY{from{transform:scaleY(0)}}
+@keyframes swipe{from{background-size:0 100%}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes leave{from{transform:none}}
+@keyframes inkFill{from{fill:var(--ink)}}
+@keyframes hold{from,to{opacity:1}}
+@keyframes drop{from{transform:none}}
+@keyframes undim{from{opacity:1}}
+@keyframes liftUp{from{transform:none}}
+.play .d{animation:draw var(--dur,1.2s) var(--ease,cubic-bezier(.6,0,.3,1)) var(--del,0s) backwards}
+.play .pop{animation:pop .45s cubic-bezier(.3,1.5,.5,1) var(--del,0s) backwards}
+.play .fade{animation:fade .6s ease var(--del,0s) backwards}
+.play .fadeup{animation:fadeUp .6s ease var(--del,0s) backwards}
+.play .gy{animation:growY var(--dur,.5s) cubic-bezier(.3,1.3,.5,1) var(--del,0s) backwards}
+.play mark{animation:swipe .9s cubic-bezier(.6,0,.2,1) var(--del,.4s) backwards}
+
+.spin{transform-box:view-box;transform-origin:155px 160px}
+.play .spin{animation:spin 1.6s linear .6s 2 backwards}
+.walker{fill:var(--yellow);stroke:var(--ink);stroke-width:1.5px;transform:translateY(100px)}
+.play .walker{animation:leave .8s cubic-bezier(.5,0,.3,1) var(--del) backwards,inkFill .3s ease var(--del) backwards}
+.arms{opacity:0}
+.play .arms{animation:hold 1ms linear var(--del) backwards}
+.slab{transform-origin:50% 50%;transform:translateY(70px) rotate(-2.5deg)}
+.play .slab{animation:drop .55s cubic-bezier(.55,0,.9,.5) 3.4s backwards}
+.dim{opacity:.28}
+.play .gy.dim{animation:growY .5s cubic-bezier(.3,1.3,.5,1) var(--del) backwards,undim .6s ease 2.2s backwards}
+.lift{transform:translateY(-12px)}
+.play .lift{animation:liftUp .5s ease 2.2s backwards}
+
+/* cards, letters */
+.cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0 clamp(12px,2.4vw,24px) clamp(14px,2.4vw,22px)}
+.cards3 div{border:1.5px solid var(--ink);padding:12px 14px;background:var(--paper);font-size:.92rem;line-height:1.45}
+.cards3 b{display:block;font-family:var(--display);font-weight:800;font-size:1.3rem;text-transform:uppercase;line-height:1;margin-bottom:6px}
+.cards3 .me{background:var(--yellow);color:var(--on-yellow);border-color:var(--on-yellow)}
+.play .cards3 div{animation:fadeUp .5s ease var(--del) backwards}
+.cards-title{margin:0;padding:0 clamp(12px,2.4vw,24px) 10px;font:600 .72rem/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+@media (max-width:640px){.cards3{grid-template-columns:1fr}}
+.letters{list-style:none;margin:0;padding:4px clamp(12px,2.4vw,24px) clamp(14px,2.4vw,22px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px;font-size:.92rem;line-height:1.45}
+.letters li{display:grid;grid-template-columns:1.7rem minmax(0,1fr);gap:8px;align-items:start}
+.letters b{font-weight:700}
+.n{display:inline-flex;align-items:center;justify-content:center;width:1.45rem;height:1.45rem;border-radius:50%;font:600 .72rem/1 var(--mono);margin-top:.1em}
+.n.ng{background:var(--ink);color:var(--paper)}
+.n.nt{background:var(--red);color:var(--on-red)}
+.n.n0{background:var(--ink-2);color:var(--paper)}
+@media (max-width:760px){.letters{grid-template-columns:1fr}}
+
+.notes{border-top:3px solid var(--ink);padding-block:28px 72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 48px;font-size:.92rem;line-height:1.55;color:var(--ink-2)}
+.notes .label{grid-column:1/-1;color:var(--ink);font-weight:600;margin-bottom:6px}
+@media (max-width:760px){.notes{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .replay{display:none}
+}
+</style>
+
+<div class="progress" aria-hidden="true"></div>
+<main class="wrap" lang="ru">
+
+<!-- HERO -->
+<header class="hero" data-scene data-fx="ring">
+  <span class="kicker">Продолжение <a href="ten-frames.ru.html">«Толстого в десяти кадрах»</a> · 1838–1968</span>
+  <h1>Не противься злому</h1>
+  <p class="cyr">Как одна книга Толстого прошла через Ганди и дошла до Мартина Лютера Кинга</p>
+  <p class="dek">Толстой написал книгу, которую в России запретили. Молодой индийский юрист прочитал её в Южной Африке и через полвека повёл Индию к независимости. Американский пастор научился у Ганди и изменил Америку. <mark>А началась эта цепочка тоже в Америке.</mark></p>
+
+  <figure class="frame">
+    <div class="frame-bar"><span><b>Рис. 1</b> · Круг длиной в 117 лет</span><button class="replay" type="button">↻ Ещё раз</button></div>
+    <div class="frame-body scroll-x">
+      <svg id="ring" viewBox="0 0 900 460" style="--min:680px" role="img" aria-label="Круг из пяти шагов: 1838 США, Гаррисон и Балу; 1893 Россия, Толстой пишет книгу; 1894 Южная Африка, Ганди читает её; 1915 Индия, Ганди ведёт страну к независимости; 1955 США, Кинг и бойкот в Монтгомери; круг замыкается в Америке">
+        <text x="450" y="240" text-anchor="middle" class="t-disp fade" style="font-size:54px;--del:6.2s">117 ЛЕТ</text>
+        <text x="450" y="266" text-anchor="middle" class="t-it t-14 t-mut fade" style="--del:6.3s">от Гаррисона до Кинга</text>
+        <text x="244" y="290" text-anchor="end" class="t-it t-15 t-red fade" style="--del:6.3s">круг замкнулся</text>
+      </svg>
+    </div>
+    <figcaption><p>Схема, а не карта. Каждый узел: где и когда идея сделала следующий шаг.</p><span class="hint">Листайте вбок, чтобы увидеть всю схему →</span></figcaption>
+  </figure>
+</header>
+
+<!-- A · book -->
+<section class="scene" id="s-book" data-scene>
+  <div class="scene-head"><span class="stamp">1890–93</span><h2>Разорвать круг</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>Толстой писал «Царство Божие внутри вас» три года. Название взято из Евангелия от Луки: <mark>Царство Божие не придёт откуда-то, оно внутри вас.</mark> Перемена начинается с самого человека.</p>
+        <p>Главная мысль простая и неудобная. Слова Христа «не противься злому» надо понимать буквально: на зло нельзя отвечать насилием. Каждый ответный удар рождает новый, и так по кругу.</p>
+        <p>Толстой не звал терпеть зло молча. Он звал не участвовать в нём: не бить, не судить, не служить тому, кто бьёт.</p>
+        <dl class="stats">
+          <div><dt>Года работы</dt><dd class="num">3</dd></div>
+          <div><dt>Глав</dt><dd class="num">12</dd></div>
+          <div><dt>Откуда название</dt><dd class="num">Лк 17:21</dd></div>
+        </dl>
+      </div>
+      <aside class="meanwhile"><span class="label">Откуда идея</span><p>Из Америки. После книги «В чём моя вера» (1884) Толстому написали американцы. Он узнал о «Декларации» 1838 года борца с рабством Уильяма Ллойда Гаррисона и о книгах священника Адина Балу и подробно привёл их в первой главе.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Рис. 2</b> · Два ответа на зло</span><button class="replay" type="button">↻ Ещё раз</button></div>
+      <div class="frame-body scroll-x">
+        <svg id="cycle" viewBox="0 0 640 300" style="--min:520px" role="img" aria-label="Слева круг: зло, ответ силой, новое зло, и так по кругу. Справа путь Толстого: зло, не отвечать насилием и не участвовать в нём, злу не на что опереться, цепь обрывается">
+          <text x="0" y="18" class="t-b t-12">КАК ОБЫЧНО</text>
+          <text x="340" y="18" class="t-b t-12">КАК У ТОЛСТОГО</text>
+          <path d="M320 8V292" class="s-mut" stroke-width="1" stroke-dasharray="3 4"/>
+          <g id="cycle-arcs"></g>
+          <g class="spin"><circle cx="237.3" cy="112.5" r="6" class="f-r s-sheet" stroke-width="2"/></g>
+          <text x="155" y="156" text-anchor="middle" class="t-it t-14 t-mut">и так</text>
+          <text x="155" y="174" text-anchor="middle" class="t-it t-14 t-mut">по кругу</text>
+          <g class="pop" style="--del:.1s"><rect x="105" y="48" width="100" height="34" rx="17" class="f-r"/><text x="155" y="70" text-anchor="middle" class="t-serif t-15 t-on-r t-bb">зло</text></g>
+          <g class="pop" style="--del:.5s"><rect x="182" y="190.5" width="112" height="34" rx="17" class="f-paper s-ink" stroke-width="2"/><text x="238" y="212.5" text-anchor="middle" class="t-serif t-15">ответ силой</text></g>
+          <g class="pop" style="--del:.9s"><rect x="16" y="190.5" width="112" height="34" rx="17" class="f-paper s-ink" stroke-width="2"/><text x="72" y="212.5" text-anchor="middle" class="t-serif t-15">новое зло</text></g>
+
+          <g class="pop" style="--del:4s"><rect x="435" y="48" width="100" height="34" rx="17" class="f-r"/><text x="485" y="70" text-anchor="middle" class="t-serif t-15 t-on-r t-bb">зло</text></g>
+          <path d="M485 86V112" pathLength="1" class="d f-none s-ink" stroke-width="2.5" style="--del:4.3s;--dur:.35s"/>
+          <path d="M485 120l-6-9h12z" class="f-ink fade" style="--del:4.6s"/>
+          <g class="pop" style="--del:4.7s"><rect x="370" y="122" width="230" height="56" rx="6" class="f-y s-ink" stroke-width="2"/><text x="485" y="146" text-anchor="middle" class="t-serif t-15 t-on-y t-bb">не отвечать насилием</text><text x="485" y="166" text-anchor="middle" class="t-serif t-14 t-on-y">и не участвовать в нём</text></g>
+          <path d="M485 182V206" pathLength="1" class="d f-none s-ink" stroke-width="2.5" style="--del:5.1s;--dur:.35s"/>
+          <path d="M485 214l-6-9h12z" class="f-ink fade" style="--del:5.4s"/>
+          <g class="pop" style="--del:5.5s"><rect x="385" y="216" width="200" height="34" rx="17" class="f-none s-ink" stroke-width="2" stroke-dasharray="5 4"/><text x="485" y="238" text-anchor="middle" class="t-serif t-14">злу не на что опереться</text></g>
+          <text x="485" y="278" text-anchor="middle" class="t-it t-14 t-red fade" style="--del:5.9s">цепь обрывается</text>
+        </svg>
+      </div>
+      <figcaption><p>Непротивление у Толстого не значит «сдаться». Оно значит отказаться быть звеном в цепи насилия.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- B · state -->
+<section class="scene flip" id="s-state" data-scene>
+  <div class="scene-head"><span class="stamp">1893</span><h2>На чём держится власть</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>Государство, пишет Толстой, это организованное насилие. Налоги собирают под угрозой силы, суды и тюрьмы держатся на силе, армия и есть сила.</p>
+        <p>Хуже всего всеобщая воинская повинность. Она делает соучастником каждого: любой мужчина может получить приказ стрелять в своих. А церковь, считал он, переделала учение Христа, чтобы оно не мешало власти.</p>
+        <p>Революция не выход: она меняет одно насилие на другое. Выход в другом. <mark>Если люди перестанут участвовать, власти не на что будет опереться.</mark></p>
+      </div>
+      <aside class="meanwhile"><span class="label">Последняя глава</span><p>Осенью 1892 года Толстой видит на станции поезд с губернатором и солдатами. Они едут сечь крестьян за спор о земле. Он спрашивает: как хорошие, добрые люди соглашаются на такое? Этой сценой книга и заканчивается.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Рис. 3</b> · Власть держится на тех, кто её держит</span><button class="replay" type="button">↻ Ещё раз</button></div>
+      <div class="frame-body scroll-x">
+        <svg id="slab" viewBox="0 0 600 350" style="--min:480px" role="img" aria-label="Плиту с надписью государство держат на руках восемь человек. Они по одному уходят, и плита падает на землю">
+          <text x="300" y="30" text-anchor="middle" class="t-mut t-11">ДЕРЖИТСЯ НА ТЕХ, КТО ПЛАТИТ, СУДИТ И СЛУЖИТ</text>
+          <rect x="0" y="235" width="600" height="115" class="f-land"/>
+          <path d="M0 235H600" class="s-ink" stroke-width="2"/>
+          <rect x="110" y="90" width="380" height="70" class="f-none s-mut fade" stroke-width="1.5" stroke-dasharray="6 5" style="--del:3.9s"/>
+          <g id="walkers"></g>
+          <g class="slab">
+            <rect x="110" y="90" width="380" height="70" class="f-ink"/>
+            <text x="300" y="126" text-anchor="middle" class="t-disp t-paper" style="font-size:30px">ГОСУДАРСТВО</text>
+            <text x="300" y="148" text-anchor="middle" class="t-paper t-12">налоги · суды · тюрьмы · армия</text>
+            <path d="M338 90l-10 18 12 14-10 16 8 22" class="f-none fade" stroke-width="2.5" style="stroke:var(--paper);--del:3.95s"/>
+          </g>
+          <text x="590" y="340" text-anchor="end" class="t-it t-13 t-mut">так думал Толстой</text>
+        </svg>
+      </div>
+      <figcaption><p>Схема мысли Толстого, а не исторического события. Жёлтые фигурки: люди, которые отказались участвовать.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- C · Gandhi reads -->
+<section class="scene" id="s-gandhi" data-scene>
+  <div class="scene-head"><span class="stamp">1894</span><h2>Книга, рядом с которой всё поблёкло</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>В 1893 году 24-летний индийский юрист Мохандас Ганди приехал в Южную Африку вести дело одной индийской фирмы. Почти сразу его выкинули из вагона первого класса, потому что он не белый.</p>
+        <p>В Претории знакомые христиане пытались обратить его в свою веру и приносили ему книги. В 1894 году к нему попал английский перевод книги Толстого.</p>
+        <p>В автобиографии Ганди пишет, что книга его потрясла и оставила след на всю жизнь. <mark>Рядом с ней все книги, что давали друзья, поблёкли.</mark></p>
+      </div>
+      <aside class="meanwhile"><span class="label">В том же 1894 году</span><p>Ганди основывает Натальский индийский конгресс, первую политическую организацию индийцев в Южной Африке. До мирной борьбы остаётся 12 лет.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Рис. 4</b> · Полка Ганди, 1894</span><button class="replay" type="button">↻ Ещё раз</button></div>
+      <div class="frame-body scroll-x">
+        <svg id="shelf" viewBox="0 0 600 270" style="--min:460px" role="img" aria-label="Полка с серыми книгами от христианских друзей; они бледнеют, а жёлтая книга Толстого Царство Божие внутри вас остаётся яркой">
+          <text x="20" y="24" class="t-mut t-11">СЕРЫЕ: КНИГИ ОТ ХРИСТИАНСКИХ ДРУЗЕЙ</text>
+          <rect x="20" y="250" width="560" height="10" class="f-mut"/>
+          <g class="fade" style="--del:2.5s"><text x="325" y="46" class="t-b t-12">ТОЛСТОЙ, 1894</text><text x="325" y="64" class="t-serif t-13 t-mut">английский перевод</text></g>
+        </svg>
+      </div>
+      <p class="cards-title">Трое, кто повлиял на Ганди сильнее всех, по его словам</p>
+      <div class="cards3">
+        <div style="--del:2.6s"><b>Райчандбхаи</b>Поэт-джайн и ювелир из Бомбея. Повлиял живым примером.</div>
+        <div class="me" style="--del:2.8s"><b>Толстой</b>Книгой «Царство Божие внутри вас».</div>
+        <div style="--del:3s"><b>Рёскин</b>Книгой «Последнему, что и первому». В 1904 году Ганди прочитал её за ночь в поезде и решил жить по ней.</div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- D · letters -->
+<section class="scene wide" id="s-letters" data-scene>
+  <div class="scene-head"><span class="stamp">1908–10</span><h2>Семь писем за год</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>В декабре 1908 года Толстой ответил индийскому журналисту Таракнатху Дасу. Это «Письмо к индусу»: торговая компания покорила народ в 200 миллионов только потому, что люди сами ей служат. Перестаньте служить, и власть исчезнет, без оружия.</p>
+        <p>Копия письма дошла до Ганди в Лондоне. 1 октября 1909 года он написал Толстому. Так началась переписка, которая шла до последних недель жизни Толстого. Встретиться они так и не успели.</p>
+        <p>Самое длинное письмо Толстой отправил в сентябре 1910 года. Дело Ганди в Трансваале, пишет он, <mark>«самое центральное, самое важное изо всех дел, какие теперь делаются в мире».</mark></p>
+      </div>
+      <aside class="meanwhile"><span class="label">Ферма Толстого</span><p>Весной 1910 года друг Ганди, архитектор Герман Калленбах, отдаёт свою ферму под Йоханнесбургом. Там живут семьи тех, кто сидит в тюрьме за мирную борьбу: своим трудом, просто и без мяса. Ферму называют в честь Толстого.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Рис. 5</b> · Переписка, месяц за месяцем</span><button class="replay" type="button">↻ Ещё раз</button></div>
+      <div class="frame-body scroll-x">
+        <svg id="lanes" viewBox="0 0 1000 320" style="--min:760px" role="img" aria-label="Две дорожки времени, Толстой сверху и Ганди снизу, с декабря 1908 по декабрь 1910 года. Стрелки между ними: письмо к индусу и семь писем. Толстой умер 20 ноября 1910 года">
+          <text x="60" y="50" class="t-b t-13">ТОЛСТОЙ</text><text x="124" y="50" class="t-serif t-13 t-mut">· Ясная Поляна</text>
+          <text x="60" y="198" class="t-b t-13">ГАНДИ</text>
+          <path d="M60 90H946" class="s-ink" stroke-width="2"/>
+          <path d="M60 220H960" class="s-ink" stroke-width="2"/>
+          <path d="M844 90H889" class="s-ink" stroke-width="7"/>
+          <text x="866" y="74" text-anchor="middle" class="t-serif t-13 t-mut">Кочеты</text>
+          <rect x="941" y="85" width="10" height="10" class="f-ink"/>
+          <text x="960" y="56" text-anchor="end" class="t-11">УМЕР 20 НОЯ</text>
+          <path d="M165 220H277" class="s-mut" stroke-width="7"/>
+          <text x="62" y="240" class="t-serif t-13 t-mut">Трансвааль</text>
+          <text x="221" y="240" text-anchor="middle" class="t-serif t-13 t-mut">в тюрьме</text>
+          <text x="410" y="240" text-anchor="middle" class="t-serif t-13 t-mut">Лондон</text>
+          <text x="590" y="240" text-anchor="middle" class="t-serif t-13 t-mut">Йоханнесбург</text>
+          <rect x="488" y="214" width="12" height="12" class="f-y s-ink" stroke-width="1.5"/>
+          <text x="486" y="258" class="t-serif t-13">«Хинд сварадж», на корабле</text>
+          <rect x="729" y="214" width="12" height="12" class="f-y s-ink" stroke-width="1.5"/>
+          <text x="735" y="258" text-anchor="middle" class="t-serif t-13">Ферма Толстого</text>
+          <path d="M60 292H960" class="s-ink" stroke-width="1.5"/>
+          <g id="ticks"></g>
+          <g id="letters"></g>
+        </svg>
+      </div>
+      <ol class="letters">
+        <li><span class="n n0">0</span><span><b>Дек 1908 · Толстой → Таракнатху Дасу.</b> «Письмо к индусу». Позже копия доходит до Ганди в Лондоне.</span></li>
+        <li><span class="n ng">1</span><span><b>1 окт 1909 · Ганди → Толстому, из Лондона.</b> Рассказывает о мирной борьбе индийцев в Трансваале и просит разрешения перевести «Письмо к индусу». Осторожно спорит с одной фразой: Толстой отмахнулся от веры в перерождение, а для миллионов индийцев она дорога.</span></li>
+        <li><span class="n nt">2</span><span><b>Окт 1909 · Толстой → Ганди.</b> Разрешает перевод. «Да поможет Бог нашим дорогим братьям и сотрудникам в Трансваале».</span></li>
+        <li><span class="n ng">3</span><span><b>10 ноя 1909 · Ганди → Толстому.</b> Посылает первую книгу о себе: биографию, которую написал священник Джозеф Док.</span></li>
+        <li><span class="n ng">4</span><span><b>4 апр 1910 · Ганди → Толстому, из Йоханнесбурга.</b> Посылает свою книгу «Хинд сварадж» и называет себя его скромным последователем.</span></li>
+        <li><span class="n nt">5</span><span><b>Май 1910 · Толстой → Ганди.</b> Прочитал книгу с большим интересом: мирное сопротивление важно не только для Индии, но и для всего человечества.</span></li>
+        <li><span class="n ng">6</span><span><b>15 авг 1910 · Ганди → Толстому.</b> Рассказывает о «Ферме Толстого». Калленбах пишет о ней отдельное письмо.</span></li>
+        <li><span class="n nt">7</span><span><b>Сен 1910 · Толстой → Ганди, из Кочетов.</b> Самое длинное письмо, о законе любви, за два месяца до смерти. Ганди печатает его в своей газете.</span></li>
+      </ol>
+      <figcaption><p><span class="sw" style="background:var(--ink)"></span>Ганди → Толстому. <span class="sw" style="background:var(--red)"></span>Толстой → Ганди. Наклон стрелки: примерно столько письмо было в пути.</p><span class="hint">Листайте вбок, чтобы увидеть всю схему →</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- E · King -->
+<section class="scene wide" id="s-king" data-scene data-fx="boycott">
+  <div class="scene-head"><span class="stamp">1955–56</span><h2>381 день пешком</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>Мартин Лютер Кинг родился в 1929 году. В 1950-м, студентом семинарии, он слушает лекцию Мордекая Джонсона, ректора Говардского университета, который только что вернулся из Индии. После лекции Кинг покупает книги о Ганди.</p>
+        <p>1 декабря 1955 года в Монтгомери, штат Алабама, Роза Паркс отказывается уступить место в автобусе белому пассажиру. Её арестовывают. Через четыре дня чёрные жители города перестают ездить на автобусах. Бойкот возглавляет 26-летний пастор Кинг.</p>
+        <p>Люди ходят пешком и возят друг друга 381 день. Когда дом Кинга взрывают, <mark>он выходит к толпе и просит не мстить.</mark> В ноябре 1956 года Верховный суд США запрещает сегрегацию (раздельные места для белых и чёрных) в автобусах.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Кто учил методу</span><p>Приёмам Ганди участников учили пацифисты Байярд Растин и Гленн Смайли. Растин до этого ездил в Индию и учился у последователей Ганди.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Рис. 6</b> · Бойкот автобусов в Монтгомери, день за днём</span><button class="replay" type="button">↻ Ещё раз</button></div>
+      <div class="frame-body scroll-x">
+        <svg id="cal" viewBox="0 0 1000 290" style="--min:760px" role="img" aria-label="Календарь бойкота с 5 декабря 1955 по 20 декабря 1956 года, 381 день. Отмечены: взрыв у дома Кинга 30 января, 89 обвиняемых 21 февраля, решение суда 5 июня, Верховный суд 13 ноября, конец бойкота 20 декабря">
+          <text x="40" y="30" class="t-b t-12">1955</text><text x="91" y="30" class="t-b t-12">1956</text>
+          <text x="990" y="30" text-anchor="end" class="t-disp" style="font-size:28px" id="day-n">ДЕНЬ 381</text>
+          <text x="0" y="71" class="t-11 t-mut">пн</text><text x="0" y="105" class="t-11 t-mut">ср</text><text x="0" y="139" class="t-11 t-mut">пт</text>
+        </svg>
+      </div>
+      <figcaption><p>Одна клетка — один день. <span class="sw" style="background:var(--red)"></span>Удары по бойкоту. <span class="sw" style="background:var(--yellow);outline:1px solid var(--ink)"></span>Победы в суде и конец бойкота.</p><span class="hint">Листайте вбок, чтобы увидеть всю схему →</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- F · Nobel -->
+<section class="scene flip" id="s-nobel" data-scene>
+  <div class="scene-head"><span class="stamp">1959–68</span><h2>Дух и метод</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>Кинг сформулировал это так: <mark>Христос дал дух, а Ганди дал метод.</mark> В 1959 году он поехал в Индию и сказал, что в другие страны едет туристом, а в Индию паломником.</p>
+        <p>Дальше были Бирмингем, марш на Вашингтон и речь «У меня есть мечта» в 1963 году. В 1964-м Кинг получил Нобелевскую премию мира. Ни Толстой, ни Ганди её так и не получили.</p>
+        <p>Ганди убили в 1948 году, Кинга в 1968-м. Круг, который американцы Гаррисон и Балу начали в 1838 году, замкнулся в Америке.</p>
+      </div>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Рис. 7</b> · Нобелевская премия мира</span><button class="replay" type="button">↻ Ещё раз</button></div>
+      <div class="frame-body scroll-x">
+        <svg viewBox="0 0 640 260" style="--min:480px" role="img" aria-label="Три медали: Толстой номинирован, не получил; Ганди пять номинаций, не получил; Кинг получил в 1964 году, в 35 лет">
+          <path d="M172 100H252M382 100H462" pathLength="1" class="d f-none s-mut" stroke-width="1.5" style="--del:.6s;--dur:.5s"/>
+          <path d="M262 100l-10-6v12zM472 100l-10-6v12z" class="f-mut fade" style="--del:1.1s"/>
+          <g class="pop" style="--del:.2s"><circle cx="110" cy="100" r="54" class="f-none s-mut" stroke-width="2.5" stroke-dasharray="7 6"/><text x="110" y="105" text-anchor="middle" class="t-mut t-12 t-b">НЕ ПОЛУЧИЛ</text></g>
+          <g class="pop" style="--del:.8s"><circle cx="320" cy="100" r="54" class="f-none s-mut" stroke-width="2.5" stroke-dasharray="7 6"/><text x="320" y="105" text-anchor="middle" class="t-mut t-12 t-b">НЕ ПОЛУЧИЛ</text></g>
+          <g class="pop" style="--del:1.4s"><circle cx="530" cy="100" r="54" class="f-y s-ink" stroke-width="2.5"/><text x="530" y="112" text-anchor="middle" class="t-disp t-on-y" style="font-size:34px">1964</text></g>
+          <g text-anchor="middle">
+            <text x="110" y="192" class="t-disp" style="font-size:28px">ТОЛСТОЙ</text>
+            <text x="320" y="192" class="t-disp" style="font-size:28px">ГАНДИ</text>
+            <text x="530" y="192" class="t-disp" style="font-size:28px">КИНГ</text>
+            <text x="110" y="216" class="t-serif t-14">номинирован, не получил</text>
+            <text x="320" y="216" class="t-serif t-14">5 номинаций, не получил</text>
+            <text x="530" y="216" class="t-serif t-14">получил в 35 лет</text>
+            <text x="110" y="238" class="t-serif t-14 t-mut">умер в 1910</text>
+            <text x="320" y="238" class="t-serif t-14 t-mut">убит в 1948</text>
+            <text x="530" y="238" class="t-serif t-14 t-mut">убит в 1968</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><p>Кинг в 1964 году был самым молодым лауреатом премии мира за всю её историю на тот момент.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<footer class="notes">
+  <p class="label">О датах и источниках</p>
+  <p>Даты даны по новому стилю, потому что события идут в разных странах. Письма Толстого указаны с точностью до месяца: он датировал их по старому стилю, на 13 дней раньше.</p>
+  <p>Слова Ганди о книге взяты из его автобиографии «Моя жизнь, или История моих экспериментов с истиной». Схема на рис. 3 иллюстрирует мысль Толстого, а не событие. Наклон стрелок на рис. 5 приблизителен.</p>
+</footer>
+</main>
+
+<script>
+(() => {
+  const d = document;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (tag, attrs, parent, text) => {
+    const e = d.createElementNS(NS, tag);
+    for (const k in attrs || {}) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+  const f1 = n => n.toFixed(1);
+  const rad = a => a * Math.PI / 180;
+  // clockwise arc with an arrowhead that appears when the line arrives
+  const arc = (parent, cx, cy, r, a0, a1, cls, sw, del, dur, headCls) => {
+    const P = a => [cx + r * Math.cos(rad(a)), cy + r * Math.sin(rad(a))];
+    const [x0, y0] = P(a0), [x1, y1] = P(a1);
+    mk('path', { d: `M${f1(x0)} ${f1(y0)}A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${f1(x1)} ${f1(y1)}`, pathLength: 1, class: 'd f-none ' + cls, 'stroke-width': sw, style: `--del:${del.toFixed(2)}s;--dur:${dur.toFixed(2)}s;--ease:linear` }, parent);
+    const tx = -Math.sin(rad(a1)), ty = Math.cos(rad(a1)), px = -ty * 5, py = tx * 5, bx = x1 - tx * 8, by = y1 - ty * 8;
+    mk('path', { d: `M${f1(x1 + tx * 3)} ${f1(y1 + ty * 3)}L${f1(bx + px)} ${f1(by + py)}L${f1(bx - px)} ${f1(by - py)}Z`, class: headCls + ' fade', style: `--del:${(del + dur).toFixed(2)}s` }, parent);
+  };
+
+  /* Рис. 1 · круг */
+  const RC = [450, 230], RR = 170;
+  const ringPt = a => [RC[0] + RR * Math.cos(rad(a)), RC[1] + RR * Math.sin(rad(a))];
+  const T = a => .4 + (a - 200) / 350 * 6; // when the dot passes angle a (200…550)
+  const ring = d.getElementById('ring');
+  if (ring) {
+    const nodes = [
+      [200, '1838', 'США', ['Гаррисон и Балу', 'проповедуют непротивление'], 'end', 250, 150],
+      [290, '1893', 'РОССИЯ', ['Толстой пишет', '«Царство Божие внутри вас»'], 'start', 548, 52],
+      [350, '1894', 'ЮЖНАЯ АФРИКА', ['Ганди читает книгу', 'и начинает борьбу'], 'start', 656, 186],
+      [410, '1915', 'ИНДИЯ', ['Ганди ведёт страну', 'к независимости 1947 года'], 'start', 596, 372],
+      [490, '1955', 'США', ['Кинг и бойкот', 'в Монтгомери'], 'end', 304, 372]
+    ];
+    const gA = mk('g', {}, ring);
+    nodes.forEach((n, i) => {
+      const a0 = n[0] + 10, a1 = (i < 4 ? nodes[i + 1][0] : 560) - 10, last = i === 4;
+      arc(gA, RC[0], RC[1], RR, a0, a1, last ? 's-r' : 's-ink', last ? 3 : 2.5, T(a0), (a1 - a0) / 350 * 6, last ? 'f-r' : 'f-ink');
+    });
+    nodes.forEach(([a, yr, country, lines, anchor, lx, ly], i) => {
+      const [x, y] = ringPt(a), del = i ? T(a) : .2;
+      const g = mk('g', { class: 'pop', style: `--del:${del.toFixed(2)}s` }, ring);
+      mk('circle', { cx: f1(x), cy: f1(y), r: 26, class: 'f-y s-ink', 'stroke-width': 2.5 }, g);
+      mk('text', { x: f1(x), y: f1(y + 4.5), 'text-anchor': 'middle', class: 't-on-y t-b' }, g, yr);
+      const tg = mk('g', { class: 'fade', style: `--del:${del.toFixed(2)}s` }, ring);
+      mk('text', { x: lx, y: ly, 'text-anchor': anchor, class: 't-b t-12' }, tg, country);
+      lines.forEach((s, j) => mk('text', { x: lx, y: ly + 18 + j * 18, 'text-anchor': anchor, class: 't-serif t-14' }, tg, s));
+    });
+    const [ex, ey] = ringPt(550);
+    mk('circle', { id: 'ring-dot', cx: f1(ex), cy: f1(ey), r: 7, class: 'f-r s-sheet', 'stroke-width': 2 }, ring);
+  }
+
+  /* Рис. 2 · круг насилия */
+  const ca = d.getElementById('cycle-arcs');
+  if (ca) [[308, 368, .2], [412, 488, .6], [532, 592, 1]].forEach(([a0, a1, del]) => arc(ca, 155, 160, 95, a0, a1, 's-ink', 2.5, del, .4, 'f-ink'));
+
+  /* Рис. 3 · люди под плитой */
+  const wk = d.getElementById('walkers');
+  if (wk) [3, 5, 1, 6, 0, 7, 2, 4].forEach((o, i) => {
+    const g = mk('g', { transform: `translate(${145 + i * 44} 200)` }, wk);
+    const w = mk('g', { class: 'walker', style: `--del:${(1 + o * .22).toFixed(2)}s` }, g);
+    mk('path', { d: 'M-8-15L-13-38M8-15L13-38', class: 'arms f-none s-ink', 'stroke-width': 3, 'stroke-linecap': 'round' }, w);
+    mk('path', { d: 'M-10 0C-10-14-6-18 0-18S10-14 10 0Z' }, w);
+    mk('circle', { cy: -27, r: 7 }, w);
+  });
+
+  /* Рис. 4 · полка */
+  const sh = d.getElementById('shelf');
+  if (sh) {
+    const books = [[26,150],[34,178],[22,128],[30,164],[38,186],[24,140],[30,172],[48,208,1],[32,164],[24,136],[36,170],[28,150],[30,160],[22,132],[34,168]];
+    const fills = ['f-land', 'f-rule', 'f-mut'];
+    let x = 40;
+    books.forEach(([w, h, tolstoy], i) => {
+      const y = 250 - h, del = `--del:${(i * .07).toFixed(2)}s`;
+      if (tolstoy) {
+        const b = mk('g', { class: 'gy', style: del }, mk('g', { class: 'lift' }, sh));
+        mk('rect', { x, y, width: w, height: h, class: 'f-y s-ink', 'stroke-width': 2 }, b);
+        const cx = x + w / 2, cy = y + h / 2;
+        mk('text', { x: cx, y: cy, transform: `rotate(-90 ${cx} ${cy})`, 'text-anchor': 'middle', class: 't-on-y t-b t-12' }, b, 'ЦАРСТВО БОЖИЕ ВНУТРИ ВАС');
+        mk('text', { x: cx + 14, y: cy, transform: `rotate(-90 ${cx + 14} ${cy})`, 'text-anchor': 'middle', class: 't-on-y t-10' }, b, 'Л. ТОЛСТОЙ');
+      } else {
+        const b = mk('g', { class: 'gy dim', style: del }, sh);
+        mk('rect', { x, y, width: w, height: h, class: fills[i % 3] + ' s-ink', 'stroke-width': 1.5 }, b);
+        mk('path', { d: `M${x + 4} ${y + 14}H${x + w - 4}M${x + 4} ${y + h - 14}H${x + w - 4}`, class: 's-sheet', 'stroke-width': 2 }, b);
+      }
+      x += w + 3;
+    });
+  }
+
+  /* Рис. 5 · письма */
+  const lt = d.getElementById('letters'), tk = d.getElementById('ticks');
+  if (lt) {
+    const X = m => 60 + m * 37.5, TL = 90, GL = 220; // m = months since 1 Dec 1908
+    let tp = '';
+    for (let m = 0; m <= 24; m++) tp += `M${X(m)} 292v${m % 3 ? 4 : 8}`;
+    mk('path', { d: tp, class: 's-ink', 'stroke-width': 1.5 }, tk);
+    ['дек 1908','мар','июн','сен','дек 1909','мар','июн','сен','дек 1910'].forEach((s, i) => mk('text', { x: X(i * 3), y: 314, 'text-anchor': 'middle', class: 't-11' }, tk, s));
+    const L = [[0,.45,TL,8.5,GL,'n0'],[1,10,GL,10.5,TL,'ng'],[2,10.63,TL,11.1,GL,'nt'],[3,11.3,GL,11.8,TL,'ng'],[4,16.1,GL,16.7,TL,'ng'],[5,17.25,TL,18.3,GL,'nt'],[6,20.5,GL,21.1,TL,'ng'],[7,21.6,TL,22.4,GL,'nt']];
+    const at = { 0: .3, 2: .35, 3: .65 };
+    L.forEach(([n, m0, y0, m1, y1, kind], i) => {
+      const x0 = X(m0), x1 = X(m1), l = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / l, uy = (y1 - y0) / l;
+      const sx = x0 + ux * 6, sy = y0 + uy * 6, ex = x1 - ux * 9, ey = y1 - uy * 9, del = .3 + i * .55;
+      const col = kind === 'nt' ? 'r' : kind === 'ng' ? 'ink' : 'mut';
+      mk('path', { d: `M${f1(sx)} ${f1(sy)}L${f1(ex)} ${f1(ey)}`, pathLength: 1, class: `d f-none s-${col}`, 'stroke-width': n ? 2.5 : 1.5, style: `--del:${del}s;--dur:.45s` }, lt);
+      const bx = x1 - ux * 12, by = y1 - uy * 12, px = -uy * 5, py = ux * 5;
+      mk('path', { d: `M${f1(x1 - ux * 2)} ${f1(y1 - uy * 2)}L${f1(bx + px)} ${f1(by + py)}L${f1(bx - px)} ${f1(by - py)}Z`, class: `f-${col} fade`, style: `--del:${(del + .4).toFixed(2)}s` }, lt);
+      const t = at[n] ?? .5, cx = sx + (ex - sx) * t, cy = sy + (ey - sy) * t;
+      const g = mk('g', { class: 'pop', style: `--del:${(del + .2).toFixed(2)}s` }, lt);
+      mk('circle', { cx: f1(cx), cy: f1(cy), r: 11, class: `f-${col}` }, g);
+      mk('text', { x: f1(cx), y: f1(cy + 4.5), 'text-anchor': 'middle', class: (kind === 'nt' ? 't-on-r' : 't-paper') + ' t-b t-12' }, g, String(n));
+    });
+  }
+
+  /* Рис. 6 · календарь бойкота */
+  const cal = d.getElementById('cal');
+  if (cal) {
+    const start = Date.UTC(1955, 11, 5), DAY = 864e5, M = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+    const ev = { 56: 'f-r', 78: 'f-r', 183: 'f-y', 344: 'f-y', 381: 'f-y' };
+    const g = mk('g', {}, cal);
+    for (let i = 0; i <= 381; i++) {
+      const dt = new Date(start + i * DAY), x = 40 + Math.floor(i / 7) * 17, y = 60 + (i % 7) * 17;
+      mk('rect', { x, y, width: 14, height: 14, rx: 2, class: 'pop ' + (ev[i] ? ev[i] + ' s-ink' : 'f-mut'), 'stroke-width': ev[i] ? 1.5 : 0, style: `--del:${i * 6}ms` }, g);
+      if (i === 0 || dt.getUTCDate() === 1) mk('text', { x, y: 50, class: 't-11 t-mut' }, cal, M[dt.getUTCMonth()]);
+    }
+    [[0,'5 ДЕК 1955','бойкот начат',1,'start'],[56,'30 ЯНВ','взрыв у дома Кинга',2,'start'],[78,'21 ФЕВ','89 обвиняемых',1,'start'],
+     [183,'5 ИЮН','суд: сегрегация незаконна',2,'start'],[344,'13 НОЯ','Верховный суд согласен',1,'end'],[381,'20 ДЕК','бойкот окончен',2,'end']]
+      .forEach(([i, date, sub, row, anchor], k) => {
+        const cx = 40 + Math.floor(i / 7) * 17 + 7, top = row === 1 ? 198 : 242, lx = anchor === 'start' ? cx - 7 : cx + 7;
+        const e = mk('g', { class: 'fade', style: `--del:${(i * .006 + .1).toFixed(2)}s` }, cal);
+        mk('path', { d: `M${cx} 182V${top}`, class: 's-mut', 'stroke-width': 1 }, e);
+        mk('text', { x: lx, y: top + 14, 'text-anchor': anchor, class: 't-b t-12' }, e, date);
+        mk('text', { x: lx, y: top + 31, 'text-anchor': anchor, class: 't-serif t-13' }, e, sub);
+      });
+  }
+
+  /* воспроизведение: рисует CSS, JS только двигает бегунки и счётчики */
+  const tween = (s, run, ms, fn, delay = 0) => new Promise(res => setTimeout(() => {
+    const t0 = performance.now();
+    const step = now => {
+      if (s._run !== run) return res(false);
+      const t = Math.min(1, (now - t0) / ms);
+      fn(t);
+      t < 1 ? requestAnimationFrame(step) : res(true);
+    };
+    requestAnimationFrame(step);
+  }, delay));
+  const fx = {
+    ring(s, run) {
+      const dot = s.querySelector('#ring-dot');
+      tween(s, run, 6000, t => { const [x, y] = ringPt(200 + 350 * t); dot.setAttribute('cx', f1(x)); dot.setAttribute('cy', f1(y)); }, 400);
+    },
+    boycott(s, run) {
+      const n = s.querySelector('#day-n');
+      tween(s, run, 381 * 6, t => { n.textContent = `ДЕНЬ ${Math.max(1, Math.round(381 * t))}`; });
+    }
+  };
+  const play = s => {
+    s._run = (s._run || 0) + 1;
+    s.classList.remove('play');
+    void s.offsetWidth;
+    s.classList.add('play');
+    if (!reduce && fx[s.dataset.fx]) fx[s.dataset.fx](s, s._run);
+  };
+  d.addEventListener('click', e => { const b = e.target.closest('.replay'); if (b) play(b.closest('[data-scene]')); });
+  if (reduce || !('IntersectionObserver' in window)) return;
+  const seen = new WeakSet();
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    io.unobserve(e.target);
+    const s = e.target.closest('[data-scene]');
+    if (!seen.has(s)) { seen.add(s); play(s); }
+  }), { threshold: .3 });
+  d.querySelectorAll('[data-scene] .frame').forEach(f => io.observe(f));
+})();
+</script>

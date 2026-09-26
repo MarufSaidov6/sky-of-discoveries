@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}</style>
+<title>Небо открытий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* one deliberate night look: the page is a sky */
+:root{
+  --bg:#0B0D14; --panel:rgba(15,18,26,.84); --line:rgba(255,255,255,.14);
+  --text:#EDEBE5; --mut:#8E96A8; --yellow:#FFD812; --red:#FF5E42; --hint:#9AA3B5; --note:#BFD4FF;
+  --display:"Fira Sans Extra Condensed","Arial Narrow",Arial,sans-serif;
+  --serif:"PT Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 var(--serif);overflow:hidden;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0}
+#stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+#stage canvas:active{cursor:grabbing}
+
+#labels{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.lbl{position:absolute;left:0;top:0;pointer-events:auto;background:none;border:0;margin:0;padding:3px 6px;color:var(--text);font:400 14px/1.15 var(--serif);white-space:nowrap;cursor:pointer;text-align:left;text-shadow:0 1px 8px #000,0 0 3px #000;transition:opacity .3s,filter .25s,color .2s}
+.ck{display:inline-block;width:14px;height:14px;margin-right:6px;border-radius:50%;background:var(--yellow);color:#161616;font:700 9px/14px var(--mono);font-style:normal;text-align:center;vertical-align:1px;text-shadow:none}
+.ck.q{background:none;border:1px dashed var(--hint);color:var(--hint);line-height:12px;width:12px;height:12px}
+.lbl.k-root{font:900 28px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;color:#FFF1B0}
+.lbl.k-root .ck{display:none}
+.lbl.k-page{font:800 21px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.lbl.k-note{font:700 18px/1 var(--display);text-transform:uppercase;color:var(--note)}
+.lbl.k-note .ck{background:var(--note)}
+.lbl small{display:block;margin:4px 0 0 20px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;color:var(--mut)}
+.bud{display:inline-block;margin-left:8px;padding:3px 6px;border:1px dashed var(--hint);border-radius:999px;font:600 10px/1 var(--mono);font-style:normal;color:var(--hint);vertical-align:2px;text-shadow:none}
+.bud[hidden]{display:none}
+.lbl.hint{color:var(--hint);font-style:italic;filter:blur(1.8px)}
+.lbl.hint.hov,.lbl.hint.sel,.lbl.hint:hover,.lbl.hint:focus-visible{filter:none;color:var(--text)}
+.lbl.sel{color:var(--yellow)}
+.lbl.k-root.sel{color:#FFF1B0}
+.lbl.hov{text-decoration:underline;text-underline-offset:4px}
+.lbl.off{opacity:0!important;pointer-events:none}
+.lbl:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+
+.top{position:fixed;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 16px) 20px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px 16px;flex-wrap:wrap;pointer-events:none}
+.top>*{pointer-events:auto}
+h1{margin:0;font:900 clamp(30px,4vw,46px)/.9 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:8px;max-width:60vw;font:500 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.crumbs button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--mut);background:none;border:0;padding:2px 0;cursor:pointer}
+.crumbs button:hover,.crumbs button:focus-visible{color:var(--yellow)}
+.crumbs .here{color:var(--text)}
+.crumbs i{font-style:normal;opacity:.5}
+.right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.counts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.count{padding:6px 10px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px);font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.count b{font:900 20px/1 var(--display);color:var(--yellow);margin-right:6px;vertical-align:-2px;font-variant-numeric:tabular-nums}
+.count.h b{color:var(--hint)}
+.ctrls{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.variants{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--panel);backdrop-filter:blur(8px);align-self:flex-start}
+.variants button{font:600 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);background:none;border:0;border-radius:999px;padding:9px 14px;cursor:pointer}
+.variants button:hover{color:var(--text)}
+.variants button[aria-checked="true"]{background:var(--yellow);color:#161616}
+.variants button:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+@media (max-width:720px){.variants{order:3;width:100%;justify-content:space-between}.variants button{padding:8px 10px}}
+.btn{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 12px;cursor:pointer;backdrop-filter:blur(8px);text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.btn[aria-pressed="true"],.btn[aria-expanded="true"]{border-color:var(--yellow)}
+.btn.primary{background:var(--yellow);color:#161616;border-color:var(--yellow);padding:10px 14px}
+.btn.primary:hover{background:#FFFFFF;color:#161616}
+.btn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+
+#card{position:fixed;left:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(360px,calc(100% - 40px));max-height:min(54vh,540px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px 18px;backdrop-filter:blur(12px)}
+.chip{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px 4px;border:1px solid var(--line);color:var(--text)}
+.chip.hint{border-style:dashed;border-color:var(--hint);color:var(--hint)}
+.chip.page,.chip.root{background:var(--yellow);border-color:var(--yellow);color:#161616}
+.chip.note{border-color:var(--note);color:var(--note)}
+#card h2{margin:10px 0 4px;font:800 32px/.95 var(--display);text-wrap:balance}
+.yr{font:500 11px/1.3 var(--mono);color:var(--mut);letter-spacing:.06em}
+.d{margin:10px 0 0;font-size:15px;line-height:1.5}
+.small{margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--mut)}
+.actions{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:14px}
+.actions:empty{display:none}
+pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--text);background:rgba(255,255,255,.04);border:1px dashed var(--hint);padding:10px;user-select:all;width:100%;box-sizing:border-box}
+.toast{color:var(--yellow);font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+
+#drawer{position:fixed;right:20px;top:calc(env(safe-area-inset-top,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(320px,calc(100% - 40px));overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px 16px;backdrop-filter:blur(12px)}
+#drawer h2{margin:0 0 10px;font:800 22px/1 var(--display);text-transform:uppercase}
+#drawer ul{list-style:none;margin:0;padding:0 0 0 16px}
+#list>ul{padding-left:0}
+#drawer li button{font:inherit;color:var(--text);background:none;border:0;padding:4px 0;cursor:pointer;text-align:left;font-size:14px;line-height:1.3}
+#drawer li button:hover,#drawer li button:focus-visible{color:var(--yellow)}
+#drawer li button.hint{color:var(--hint);font-style:italic}
+#drawer .btn{margin-top:12px}
+
+#tip{position:fixed;right:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);margin:0;max-width:300px;text-align:right;font:500 11px/1.6 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--mut);transition:opacity .8s;pointer-events:none}
+#tip.gone{opacity:0}
+@media (max-width:720px){
+  .top{padding-inline:12px}
+  .crumbs{max-width:100%}
+  .right{align-items:flex-start}
+  #card{left:12px;right:12px;width:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);max-height:40vh}
+  #tip{display:none}
+  #drawer{left:12px;right:12px;width:auto;top:calc(env(safe-area-inset-top,0px) + 170px)}
+  .lbl{font-size:12px}.lbl.k-page{font-size:17px}.lbl.k-root{font-size:22px}.lbl.k-note{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.lbl,#tip{transition:none}}
+</style>
+
+<div id="stage" aria-hidden="true"></div>
+<div id="labels"></div>
+<header class="top">
+  <div>
+    <h1>Небо открытий</h1>
+    <nav class="crumbs" id="crumbs" aria-label="Где вы сейчас"></nav>
+  </div>
+  <div class="variants" role="radiogroup" aria-label="Образ Толстого в центре">
+    <button type="button" role="radio" data-variant="stars" aria-checked="true">Созвездие</button>
+    <button type="button" role="radio" data-variant="medal" aria-checked="false">Медальон</button>
+    <button type="button" role="radio" data-variant="lines" aria-checked="false">Линии</button>
+  </div>
+  <div class="right">
+    <div class="counts">
+      <span class="count"><b id="c-done">0</b>изучено</span>
+      <span class="count h"><b id="c-found">0</b>намёков найдено</span>
+    </div>
+    <div class="ctrls">
+      <button class="btn" type="button" id="b-home">Обзор</button>
+      <button class="btn" type="button" id="b-back">Назад</button>
+      <button class="btn" type="button" id="b-spin" aria-pressed="true">Вращение</button>
+      <button class="btn" type="button" id="b-style" aria-pressed="false">Вид: значки</button>
+      <button class="btn" type="button" id="b-list" aria-expanded="false" aria-controls="drawer">Список</button>
+    </div>
+  </div>
+</header>
+<aside id="card" aria-live="polite"></aside>
+<aside id="drawer" hidden aria-label="Все звёзды списком">
+  <h2>Все звёзды</h2>
+  <div id="list"></div>
+  <button class="btn" type="button" id="b-reveal">Раскрыть все намёки</button>
+</aside>
+<p id="tip">Тяните, чтобы вращать<br>Колесо или два пальца: приблизить<br>Нажмите на звезду, чтобы влететь</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const RU1 = 'tolstoy/ten-frames.ru.html';
+  const RU2 = 'tolstoy/gandhi-king.ru.html';
+  // k: root | page | note | frame | hint;  s: done | hint;  a: anchor inside its presentation
+  const DATA = [
+    { id:'root', t:'Лев Толстой', k:'root', s:'done', y:'1828–1910', d:'Лев Николаевич Толстой в центре неба. Вокруг него две презентации и одна заметка из нашего чата.' },
+    { id:'p1', p:'root', t:'Толстой в десяти кадрах', k:'page', s:'done', y:'1828–1910', url:RU1, d:'Первая презентация: жизнь Толстого и Россия его времени в 12 схемах.' },
+    { id:'p2', p:'root', t:'Толстой, Ганди, Кинг', k:'page', s:'done', y:'1838–1968', url:RU2, d:'Вторая презентация: как «Царство Божие внутри вас» прошло через Ганди и дошло до Кинга.' },
+    { id:'n1', p:'root', t:'Почему молчит школа', k:'note', s:'done', y:'наш чат', d:'Почему в русской школе не говорят о связи Толстого и Ганди. Ленин, толстовцы и неудобная для СССР идея.' },
+
+    { id:'f1828', p:'p1', t:'Люди как собственность', k:'frame', s:'done', y:'1828', a:'s1828', d:'Крепостные: больше трети жителей европейской России принадлежали помещикам.' },
+    { id:'f1847', p:'p1', t:'Проигранный дом', k:'frame', s:'done', y:'1847–1854', a:'s1847', d:'Казань, дневник на 63 года и дом, проданный за карточные долги.' },
+    { id:'f1851', p:'p1', t:'Солдат и Севастополь', k:'frame', s:'done', y:'1851–1857', a:'s1851', d:'Кавказ, 349 дней осады Севастополя и гильотина в Париже.' },
+    { id:'f1861', p:'p1', t:'Воля в кредит', k:'frame', s:'done', y:'1861', a:'s1861', d:'Отмена крепостного права и выкуп земли на 49 лет.' },
+    { id:'f1862', p:'p1', t:'Софья', k:'frame', s:'done', y:'1862', a:'s1862', d:'Свадьба в 34 и 18 лет, 13 детей и черновики, переписанные по ночам.' },
+    { id:'f1863', p:'p1', t:'«Война и мир» и Минар', k:'frame', s:'done', y:'1863–1869', a:'s1863', d:'Роман о 1812 годе и схема похода Наполеона, нарисованная в том же 1869 году.' },
+    { id:'f1873', p:'p1', t:'«Анна Каренина» и поезд', k:'frame', s:'done', y:'1873–1877', a:'s1873', d:'«Все счастливые семьи похожи друг на друга» и железная дорога от первой линии до Астапова.' },
+    { id:'f1879', p:'p1', t:'Всё есть, а жить незачем', k:'frame', s:'done', y:'1879–1882', a:'s1879', d:'Кризис в пятьдесят лет и «Исповедь».' },
+    { id:'f1882', p:'p1', t:'Граф в крестьянских сапогах', k:'frame', s:'done', y:'1882–1908', a:'s1882', d:'Отказ от мяса, прав и церкви. «Два царя у нас: Николай Второй и Лев Толстой».' },
+    { id:'f1910', p:'p1', t:'Последние десять дней', k:'frame', s:'done', y:'1910', a:'s1910', d:'Уход из дома, путь через Оптину пустынь и смерть на станции Астапово.' },
+    { id:'fend', p:'p1', t:'Могила без имени', k:'frame', s:'done', y:'1910', a:'s-end', d:'Ни креста, ни камня: там, где, по легенде, зарыта зелёная палочка.' },
+
+    { id:'g1', p:'p2', t:'Разорвать круг', k:'frame', s:'done', y:'1890–1893', a:'s-book', d:'«Не противься злому»: как выйти из круга насилия.' },
+    { id:'g2', p:'p2', t:'На чём держится власть', k:'frame', s:'done', y:'1893', a:'s-state', d:'Власть держится на тех, кто ей служит. Схема с падающей плитой.' },
+    { id:'g3', p:'p2', t:'Полка Ганди', k:'frame', s:'done', y:'1894', a:'s-gandhi', d:'Книга Толстого и трое, кто повлиял на Ганди сильнее всех.' },
+    { id:'g4', p:'p2', t:'Семь писем', k:'frame', s:'done', y:'1908–1910', a:'s-letters', d:'«Письмо к индусу» и переписка Ганди с Толстым в его последний год.' },
+    { id:'g5', p:'p2', t:'381 день пешком', k:'frame', s:'done', y:'1955–1956', a:'s-king', d:'Бойкот автобусов в Монтгомери, день за днём.' },
+    { id:'g6', p:'p2', t:'Дух и метод', k:'frame', s:'done', y:'1959–1968', a:'s-nobel', d:'Нобелевская премия мира: у Толстого и Ганди её нет, у Кинга есть.' },
+
+    { id:'h-diary', p:'f1847', t:'Дневники Толстого', k:'hint', s:'hint', y:'1847–1910', d:'Он вёл дневник с 18 лет до последней недели жизни. Что он туда записывал и зачем дал прочитать невесте?' },
+    { id:'h-sofia', p:'f1862', t:'Дневники Софьи', k:'hint', s:'hint', y:'1862 и дальше', d:'Софья тоже вела дневник почти всю жизнь. Та же семья глазами другого человека.' },
+    { id:'h-minard', p:'f1863', t:'Шарль Минар', k:'hint', s:'hint', y:'1869', d:'Отставной инженер нарисовал поход Наполеона одной картинкой. Почему её называют лучшей схемой в истории?' },
+    { id:'h-dost', p:'f1873', t:'Толстой и Достоевский', k:'hint', s:'hint', y:'1878', d:'Два главных писателя России так ни разу и не встретились. Хотя однажды сидели на одной лекции.' },
+    { id:'h-douk', p:'f1882', t:'Духоборы в Канаде', k:'hint', s:'hint', y:'1899', d:'7500 крестьян-пацифистов уплыли в Канаду на гонорар за «Воскресение». Что с ними стало потом?' },
+    { id:'h-prok', p:'f1882', t:'Прокудин-Горский', k:'hint', s:'hint', y:'1908', d:'Фотограф, который снимал Российскую империю в цвете перед революцией. В 1908 году он приехал к Толстому.' },
+    { id:'h-chert', p:'f1910', t:'Чертков и завещание', k:'hint', s:'hint', y:'1910', d:'Ученик, издатель и главный соперник Софьи. Тайное завещание, подписанное в лесу.' },
+    { id:'h-garr', p:'g1', t:'Гаррисон и Балу', k:'hint', s:'hint', y:'1838', d:'Американцы, которые за полвека до Толстого сказали: не противься злу силой.' },
+    { id:'h-thoreau', p:'g2', t:'Торо и неповиновение', k:'hint', s:'hint', y:'1849', d:'Американец, который отказался платить налог и провёл ночь в тюрьме. Его эссе читали Толстой, Ганди и Кинг.' },
+    { id:'h-raich', p:'g3', t:'Райчандбхаи', k:'hint', s:'hint', y:'1867–1901', d:'Поэт-джайн и ювелир из Бомбея, почти ровесник Ганди. Ганди писал ему из Африки письма с вопросами о вере.' },
+    { id:'h-ruskin', p:'g3', t:'Джон Рёскин', k:'hint', s:'hint', y:'1860', d:'Английский критик искусства. Его книга «Последнему, что и первому» за одну ночь в поезде изменила жизнь Ганди.' },
+    { id:'h-das', p:'g4', t:'Таракнатх Дас', k:'hint', s:'hint', y:'1908', d:'Индийский революционер в Америке. Ему Толстой ответил «Письмом к индусу».' },
+    { id:'h-kall', p:'g4', t:'Калленбах', k:'hint', s:'hint', y:'1910', d:'Архитектор из Йоханнесбурга родом из Германии. Отдал землю под «Ферму Толстого» и остался другом Ганди на всю жизнь.' },
+    { id:'h-rustin', p:'g5', t:'Байярд Растин', k:'hint', s:'hint', y:'1956–1963', d:'Учил Кинга методам Ганди и стал главным организатором марша на Вашингтон.' },
+    { id:'h-lenin', p:'n1', t:'Ленин о Толстом', k:'hint', s:'hint', y:'1908', d:'Статья «Лев Толстой как зеркало русской революции». По ней Толстого проходили в советской школе.' },
+    { id:'h-tolst', p:'n1', t:'Толстовцы в СССР', k:'hint', s:'hint', y:'1920–1930-е', d:'Коммуны последователей Толстого: как они жили при Советах и что с ними стало в 1930-е.' }
+  ];
+  const byId = {};
+  DATA.forEach(n => { n.kids = []; byId[n.id] = n; });
+  DATA.forEach(n => { if (n.p) byId[n.p].kids.push(n); });
+  const HINTS = DATA.filter(n => n.s === 'hint');
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+  const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c; };
+  const trail = n => { const t = []; for (let p = n.p && byId[n.p]; p; p = p.p && byId[p.p]) t.unshift(p); return t; };
+  const pageOf = n => { let p = n; while (p && p.k !== 'page') p = p.p && byId[p.p]; return p; };
+  const groupOf = n => { let p = n; while (p && p.k !== 'page' && p.k !== 'note') p = p.p && byId[p.p]; return p ? p.id : null; };
+  const hintKids = n => n.kids.filter(k => k.s === 'hint');
+
+  let sel = 'root', hover = null, spinOn = !reduce, focusFn = () => {};
+
+  /* labels: one button per star, placed over the canvas every frame */
+  DATA.forEach(n => {
+    const b = document.createElement('button');
+    const hk = hintKids(n).length;
+    b.type = 'button'; b.tabIndex = -1; b.dataset.id = n.id;
+    b.className = `lbl k-${n.k} ${n.s} off`;
+    b.innerHTML = `<span class="ck${n.s === 'hint' ? ' q' : ''}">${n.s === 'hint' ? '?' : '✓'}</span>${esc(n.t)}`
+      + (hk ? `<span class="bud">+${hk} ?</span>` : '')
+      + (n.k === 'page' ? `<small>${n.kids.length} ${plural(n.kids.length, 'кадр', 'кадра', 'кадров')}</small>` : '');
+    $('labels').appendChild(b);
+    n.el = b;
+  });
+
+  /* card, breadcrumbs, counters, list */
+  function renderCard() {
+    const n = byId[sel], page = pageOf(n), hk = hintKids(n);
+    const url = n.url || (n.a && page ? `${page.url}#${n.a}` : '');
+    const kind = n.s === 'hint' ? 'Намёк' : { root: 'Центр неба', page: 'Презентация', frame: 'Кадр', note: 'Заметка из чата' }[n.k];
+    const prompt = n.s === 'hint' ? `Сделай новую страницу в таких же схемах про «${n.t}». ${n.d} Добавь её на небо открытий рядом с «${byId[n.p].t}».` : '';
+    $('card').innerHTML = `
+      <span class="chip ${n.s === 'hint' ? 'hint' : n.k}">${kind}</span>
+      <h2>${esc(n.t)}</h2>
+      <div class="yr">${esc(n.y || '')}</div>
+      <p class="d">${esc(n.d)}</p>
+      ${n.k === 'root' ? '<p class="small">Большие значки — презентации, голубой — заметка из чата, малые вокруг них — кадры. Серые «?» — намёки: влетите в кадр, и они раскроются. Сверху можно сменить образ Толстого в центре.</p>' : ''}
+      ${n.k === 'page' ? '<p class="small">Нажмите на любую звезду вокруг, чтобы влететь в кадр.</p>' : ''}
+      ${hk.length ? `<p class="small">${hk.every(h => h.revT0) ? 'Отсюда раскрылись намёки' : 'Здесь прячутся намёки'}: ${hk.map(h => esc(h.t)).join(', ')}.</p>` : ''}
+      <div class="actions">${url ? `<a class="btn primary" href="${url}" target="_blank" rel="noopener">Открыть ${n.k === 'page' ? 'презентацию' : 'кадр'} ↗</a>` : ''}${n.k === 'note' ? '<p class="small">Эта заметка пока живёт только в нашем чате.</p>' : ''}${prompt ? `<button class="btn primary" type="button" id="copy">Скопировать запрос</button><pre id="prompt">${esc(prompt)}</pre><p class="small">Вставьте запрос в чат, и эта звезда станет новой страницей. <span class="toast" id="toast" hidden>Скопировано</span></p>` : ''}</div>`;
+    const path = trail(n).concat(n);
+    $('crumbs').innerHTML = path.map((p, i) => i === path.length - 1 ? `<span class="here">${esc(p.t)}</span>` : `<button type="button" data-go="${p.id}">${esc(p.t)}</button><i>›</i>`).join('');
+    $('b-back').disabled = !n.p;
+    DATA.forEach(x => {
+      x.el.classList.toggle('sel', x.id === sel);
+      const bud = x.el.querySelector('.bud');
+      if (bud) bud.hidden = hintKids(x).every(h => h.revT0);
+    });
+    $('c-found').textContent = `${HINTS.filter(h => h.revT0).length}/${HINTS.length}`;
+    [...$('list').querySelectorAll('[data-go]')].forEach(b => b.setAttribute('aria-current', String(b.dataset.go === sel)));
+  }
+  const item = n => `<li><button type="button" data-go="${n.id}" class="${n.s}"><span class="ck${n.s === 'hint' ? ' q' : ''}">${n.s === 'hint' ? '?' : '✓'}</span>${esc(n.t)}</button>${n.kids.length ? `<ul>${n.kids.map(item).join('')}</ul>` : ''}</li>`;
+  $('list').innerHTML = `<ul>${item(byId.root)}</ul>`;
+  $('c-done').textContent = DATA.filter(n => n.s === 'done').length;
+
+  const go = id => focusFn(id);
+  document.addEventListener('click', e => {
+    const g = e.target.closest('[data-go]');
+    if (g) { go(g.dataset.go); if (innerWidth < 720) toggleList(false); return; }
+    const l = e.target.closest('.lbl');
+    if (l) return go(l.dataset.id);
+    if (e.target.id === 'copy') {
+      const pre = $('prompt'), toast = $('toast');
+      const ok = () => { toast.hidden = false; setTimeout(() => toast.hidden = true, 1600); };
+      const fallback = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast.textContent = 'Выделено, нажмите ⌘C'; ok(); };
+      try { navigator.clipboard.writeText(pre.textContent).then(ok, fallback); } catch (_) { fallback(); }
+    }
+  });
+  const toggleList = force => {
+    const open = force ?? $('drawer').hidden;
+    $('drawer').hidden = !open;
+    $('b-list').setAttribute('aria-expanded', String(open));
+    $('tip').classList.add('gone');
+  };
+  $('b-list').addEventListener('click', () => toggleList());
+  $('b-home').addEventListener('click', () => go('root'));
+  $('b-back').addEventListener('click', () => { const n = byId[sel]; if (n.p) go(n.p); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { const n = byId[sel]; if (n.p) go(n.p); } });
+
+  /* 3D */
+  let renderer = null;
+  try { if (window.THREE && THREE.OrbitControls) renderer = new THREE.WebGLRenderer({ antialias: true }); } catch (_) { renderer = null; }
+  if (!renderer) {
+    focusFn = id => { sel = id; renderCard(); };
+    $('labels').hidden = true; $('tip').hidden = true; $('b-spin').hidden = true; $('b-style').hidden = true; document.querySelector('.variants').hidden = true;
+    toggleList(true);
+    renderCard();
+    $('card').insertAdjacentHTML('afterbegin', '<p class="small">Этот браузер не показывает 3D. Все звёзды доступны списком справа.</p>');
+    return;
+  }
+
+  // canvas text needs the web fonts, so build the 3D scene once they are ready
+  const init3D = () => {
+
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  const stage = $('stage');
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0B0D14);
+  scene.fog = new THREE.FogExp2(0x0B0D14, .004);
+  const camera = new THREE.PerspectiveCamera(50, 1, .1, 4000);
+  camera.position.set(0, 150, 380);
+  const PR = Math.min(devicePixelRatio, 2);
+  renderer.setPixelRatio(PR);
+  stage.appendChild(renderer.domElement);
+  const ANISO = renderer.capabilities.getMaxAnisotropy();
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  Object.assign(controls, { enableDamping: true, dampingFactor: .08, rotateSpeed: .55, zoomSpeed: .8, minDistance: 9, maxDistance: 300, autoRotate: spinOn, autoRotateSpeed: .35 });
+  const resize = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+  new ResizeObserver(resize).observe(stage);
+  resize();
+
+  /* shaders: computed per pixel, so bodies stay sharp at any zoom */
+  const TIME = { value: 0 };
+  const NOISE = `
+    vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+    vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+    vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+    vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+    float snoise(vec3 v){
+      const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+      vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+      vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+      vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+      i=mod289(i);
+      vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+      float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;
+      vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
+      vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
+      vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+      vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+      vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+      vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+      p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
+      vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
+      return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+    }
+    float fbm(vec3 p){float f=0.0,a=0.5;for(int i=0;i<4;i++){f+=a*snoise(p);p*=2.07;a*=0.5;}return f;}`;
+  const VS_SURF = `varying vec3 vP; varying vec3 vWN; varying vec3 vW; varying vec3 vV;
+    void main(){ vP=position; vWN=normalize(mat3(modelMatrix)*normal); vec4 wp=modelMatrix*vec4(position,1.0); vW=wp.xyz; vV=normalize(cameraPosition-wp.xyz); gl_Position=projectionMatrix*viewMatrix*wp; }`;
+  const VS_UV = `varying vec2 vUv; void main(){ vUv=uv*2.0-1.0; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`;
+  const col3 = h => new THREE.Color(h);
+  const starMat = (deep, mid, hot, scale) => new THREE.ShaderMaterial({
+    uniforms: { uTime: TIME, uDeep: { value: col3(deep) }, uMid: { value: col3(mid) }, uHot: { value: col3(hot) }, uScale: { value: scale } },
+    vertexShader: VS_SURF,
+    fragmentShader: NOISE + `uniform float uTime; uniform vec3 uDeep; uniform vec3 uMid; uniform vec3 uHot; uniform float uScale;
+      varying vec3 vP; varying vec3 vWN; varying vec3 vV;
+      void main(){
+        vec3 p=normalize(vP);
+        float n=fbm(p*uScale+vec3(0.0,uTime*0.04,uTime*0.03));
+        float c=snoise(p*uScale*4.0-vec3(uTime*0.12));
+        float t=0.5+0.45*n+0.18*c;
+        vec3 col=mix(uDeep,uMid,smoothstep(0.15,0.55,t));
+        col=mix(col,uHot,smoothstep(0.55,0.95,t));
+        float mu=clamp(dot(normalize(vWN),normalize(vV)),0.0,1.0);
+        col*=0.45+0.55*pow(mu,0.5);
+        col+=uHot*pow(1.0-mu,4.0)*0.35;
+        gl_FragColor=vec4(col,1.0);
+      }` });
+  const planetMat = (a, b, c, atm) => new THREE.ShaderMaterial({
+    uniforms: { uTime: TIME, uA: { value: col3(a) }, uB: { value: col3(b) }, uC: { value: col3(c) }, uAtm: { value: col3(atm) } },
+    vertexShader: VS_SURF,
+    fragmentShader: NOISE + `uniform float uTime; uniform vec3 uA; uniform vec3 uB; uniform vec3 uC; uniform vec3 uAtm;
+      varying vec3 vP; varying vec3 vWN; varying vec3 vW; varying vec3 vV;
+      void main(){
+        vec3 p=normalize(vP);
+        float w=fbm(p*2.2+vec3(uTime*0.015,0.0,0.0));
+        vec3 col=mix(uA,uB,0.5+0.5*sin(p.y*16.0+w*3.0));
+        col=mix(col,uC,smoothstep(0.35,0.75,fbm(p*5.0+vec3(0.0,uTime*0.02,0.0)))*0.55);
+        vec3 N=normalize(vWN); float diff=clamp(dot(N,normalize(-vW)),0.0,1.0);
+        col*=0.3+0.85*diff;
+        float rim=pow(1.0-clamp(dot(N,normalize(vV)),0.0,1.0),3.0);
+        col+=uAtm*rim*(0.35+0.8*diff);
+        gl_FragColor=vec4(col,1.0);
+      }` });
+  const glowMat = (color, spikes, strength) => new THREE.ShaderMaterial({
+    uniforms: { uColor: { value: col3(color) }, uSpikes: { value: spikes }, uStrength: { value: strength }, uOpacity: { value: 1 } },
+    vertexShader: VS_UV,
+    fragmentShader: `uniform vec3 uColor; uniform float uSpikes; uniform float uStrength; uniform float uOpacity; varying vec2 vUv;
+      void main(){
+        float r=length(vUv); vec2 a=abs(vUv);
+        float i=exp(-r*r*20.0)*1.1+exp(-r*4.5)*0.5;
+        i+=(exp(-a.y*70.0)*exp(-a.x*3.2)+exp(-a.x*70.0)*exp(-a.y*3.2))*uSpikes;
+        i*=uStrength*smoothstep(1.0,0.7,r);
+        gl_FragColor=vec4(uColor,i*uOpacity);
+      }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  const ringMat = (color, inR, outR) => new THREE.ShaderMaterial({
+    uniforms: { uColor: { value: col3(color) }, uIn: { value: inR }, uOut: { value: outR } },
+    vertexShader: `varying float vR; void main(){ vR=length(position.xy); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+    fragmentShader: `uniform vec3 uColor; uniform float uIn; uniform float uOut; varying float vR;
+      void main(){
+        float t=(vR-uIn)/(uOut-uIn);
+        float b=0.5+0.5*sin(t*48.0)*sin(t*17.0+1.3);
+        float gap=smoothstep(0.42,0.45,t)*smoothstep(0.52,0.49,t);
+        float a=smoothstep(0.0,0.06,t)*smoothstep(1.0,0.88,t)*(0.25+0.45*b)*(1.0-0.85*gap);
+        gl_FragColor=vec4(uColor,a*0.85);
+      }`,
+    transparent: true, depthWrite: false, side: THREE.DoubleSide });
+  // soft round points; optional fly-in from aFrom for the portrait of stars
+  const pointsMat = (attenuate, assemble) => new THREE.ShaderMaterial({
+    uniforms: { uTime: TIME, uPR: { value: PR }, uK: { value: 1 } },
+    vertexShader: `attribute float aSize; attribute vec3 aColor; attribute float aPh; attribute vec3 aFrom; uniform float uTime; uniform float uPR; uniform float uK;
+      varying vec3 vC; varying float vA;
+      void main(){ vC=aColor; vA=0.65+0.35*sin(uTime*1.3+aPh);
+        vec3 p=position;
+        ${assemble ? 'float k=clamp(uK*1.6-aPh/6.28*0.6,0.0,1.0); k=k*k*(3.0-2.0*k); p=mix(aFrom,position,k);' : ''}
+        vec4 mv=modelViewMatrix*vec4(p,1.0);
+        gl_PointSize=${attenuate ? `clamp(aSize*uPR*(${assemble ? '120.0' : '60.0'}/-mv.z),1.0,7.0*uPR)` : 'aSize*uPR'}; gl_Position=projectionMatrix*mv; }`,
+    fragmentShader: `varying vec3 vC; varying float vA; void main(){ vec2 c=gl_PointCoord*2.0-1.0; float d=dot(c,c); if(d>1.0) discard; gl_FragColor=vec4(vC,exp(-d*3.0)*vA); }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  const cloudGeo = (list, from) => {
+    const n = list.length, pos = new Float32Array(n * 3), sz = new Float32Array(n), cl = new Float32Array(n * 3), ph = new Float32Array(n), fr = new Float32Array(n * 3);
+    list.forEach((q, i) => {
+      pos.set(q.p, i * 3); sz[i] = q.s; cl.set([q.c.r, q.c.g, q.c.b], i * 3); ph[i] = Math.random() * 6.28;
+      fr.set(from ? from(i) : q.p, i * 3);
+    });
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('aSize', new THREE.BufferAttribute(sz, 1));
+    g.setAttribute('aColor', new THREE.BufferAttribute(cl, 3));
+    g.setAttribute('aPh', new THREE.BufferAttribute(ph, 1));
+    g.setAttribute('aFrom', new THREE.BufferAttribute(fr, 3));
+    return g;
+  };
+  const cloud = (n, place, size, tint, attenuate) => {
+    const c = new THREE.Color(), list = [];
+    for (let i = 0; i < n; i++) list.push({ p: place(i), s: size[0] + Math.random() * (size[1] - size[0]), c: c.set(tint(i)).clone() });
+    return new THREE.Points(cloudGeo(list), pointsMat(attenuate, false));
+  };
+  const billboards = [];
+  const board = (mat, size) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat); m.scale.setScalar(size); billboards.push(m); return m; };
+  const canvas = (w, h = w) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; };
+  const texOf = c => { const t = new THREE.CanvasTexture(c); t.anisotropy = ANISO; return t; };
+
+  // far stars, nebulae and a thin dust belt; decoration only
+  const TINTS = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFE9B8', '#C9D8FF', '#FFD0C2'];
+  scene.add(cloud(3200, () => { const u = Math.random() * 2 - 1, th = Math.random() * 6.283, r = 420 + Math.random() * 600, s = Math.sqrt(1 - u * u); return [r * s * Math.cos(th), r * u, r * s * Math.sin(th)]; }, [1, 3.2], () => TINTS[Math.floor(Math.random() * TINTS.length)], false));
+  const belt = cloud(1600, () => { const th = Math.random() * 6.283, r = 58 + Math.random() * 14; return [r * Math.cos(th), (Math.random() - .5) * 2.5, r * Math.sin(th)]; }, [1.2, 3], () => Math.random() < .7 ? '#8E7A55' : '#C9B27A', true);
+  belt.rotation.x = .18;
+  scene.add(belt);
+  {
+    const [c, g] = canvas(256), r = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.35, 'rgba(255,255,255,.35)'); r.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = r; g.fillRect(0, 0, 256, 256);
+    const NEB = texOf(c);
+    [[0xFF5E42, V(-520, 140, -620), 760, .10], [0x3A5BD9, V(620, -160, -420), 860, .12], [0xFFD812, V(120, 320, 720), 620, .06], [0x6B3FA0, V(-320, -260, 520), 740, .09]].forEach(([cc, p, s, o]) => {
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: NEB, color: cc, transparent: true, opacity: o, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }));
+      sp.position.copy(p); sp.scale.setScalar(s); scene.add(sp);
+    });
+  }
+
+  /* ---------- Tolstoy in the centre: the same drawing as in the first presentation, three ways ---------- */
+  const E = (cx, cy, rx, ry) => `M${cx - rx} ${cy}a${rx} ${ry} 0 1 0 ${2 * rx} 0a${rx} ${ry} 0 1 0 ${-2 * rx} 0Z`;
+  // [path, fill (null = line only), depth in the relief, line colour for the line version]
+  const FACE = [
+    ['M34 340C40 280 92 250 150 248C208 250 260 280 266 340Z', '#6E7F96', -1.4, '#8FA3C4'],
+    ['M112 262C118 290 120 316 118 340M188 262C182 290 180 316 182 340', null, -1.2, '#8FA3C4'],
+    [E(92, 160, 11, 19), '#E8C09C', .2, '#FFD2A0'], [E(208, 160, 11, 19), '#E8C09C', .2, '#FFD2A0'],
+    [E(150, 142, 60, 74), '#E8C09C', .9, '#FFD2A0'],
+    ['M92 146C88 100 114 70 150 68C186 70 212 100 208 146C204 118 190 100 170 96C160 102 140 102 130 96C110 100 96 118 92 146Z', '#D2CEC6', 1.3, '#FFFFFF'],
+    ['M126 110Q150 102 174 110M132 120Q150 114 168 120', null, 1.5, '#E8D9BE'],
+    ['M96 150C88 192 80 242 94 282C104 306 128 318 150 322C172 318 196 306 206 282C220 242 212 192 204 150C198 176 184 186 168 188C160 180 140 180 132 188C116 186 102 176 96 150Z', '#F3F1EC', 2.3, '#FFFFFF'],
+    ['M122 214C116 246 122 278 134 300M150 206V312M178 214C184 246 178 278 166 300M106 196C100 228 104 258 114 280M194 196C200 228 196 258 186 280', null, 2.5, '#DCD6CC'],
+    ['M124 190C134 178 146 178 150 184C154 178 166 178 176 190C168 202 158 200 150 194C142 200 132 202 124 190Z', '#E4E0D8', 2.9, '#FFFFFF'],
+    ['M146 130C144 150 136 162 138 172C144 179 156 179 162 172C164 162 156 150 154 130', '#DDAE88', 2.7, '#FFD2A0'],
+    ['M108 132C116 116 138 114 148 125C140 127 126 129 112 140Z', '#ECE9E3', 2.1, '#FFFFFF'],
+    ['M192 132C184 116 162 114 152 125C160 127 174 129 188 140Z', '#ECE9E3', 2.1, '#FFFFFF'],
+    [E(130, 141, 5.5, 3), '#161616', 1.9, '#FFD812'], [E(170, 141, 5.5, 3), '#161616', 1.9, '#FFD812']
+  ];
+  const PX = 18 / 340;
+  const toW = (x, y, z) => [(x - 150) * PX, -(y - 180) * PX, z];
+  const relief = (x, y) => 3.2 * Math.sqrt(Math.max(0, 1 - ((x - 150) / 125) ** 2 - ((y - 190) / 170) ** 2));
+  const rootGroup = new THREE.Group();
+  scene.add(rootGroup);
+  const facing = [];
+
+  // 1 · Созвездие: the drawing sampled into a few thousand stars that fly together
+  const VAR = {};
+  {
+    const g0 = new THREE.Group(), [c, g] = canvas(300, 340);
+    g.lineCap = g.lineJoin = 'round';
+    FACE.forEach(([d, fill]) => { const p = new Path2D(d); if (fill === '#161616') { g.fillStyle = '#fff'; g.fill(p); } else { g.strokeStyle = '#fff'; g.lineWidth = fill ? 2.2 : 1.3; g.stroke(p); } });
+    const outline = g.getImageData(0, 0, 300, 340).data;
+    g.clearRect(0, 0, 300, 340);
+    FACE.forEach(([d, fill]) => { if (fill && fill !== '#161616') { g.fillStyle = fill; g.fill(new Path2D(d)); } });
+    const fills = g.getImageData(0, 0, 300, 340).data;
+    const list = [], warm = [col3(0xFFF4D6), col3(0xFFE08A), col3(0xFFFFFF)];
+    for (let y = 0; y < 340; y++) for (let x = 0; x < 300; x++) {
+      const i = (y * 300 + x) * 4;
+      if (outline[i + 3] > 120 && Math.random() < .42) list.push({ p: toW(x + Math.random() - .5, y + Math.random() - .5, relief(x, y) + .35), s: 1.6 + Math.random() * 1.8, c: warm[Math.floor(Math.random() * 3)] });
+      else if (fills[i + 3] > 120 && x % 3 === 0 && y % 3 === 0 && Math.random() < .55) list.push({ p: toW(x + (Math.random() - .5) * 3, y + (Math.random() - .5) * 3, relief(x, y) + (Math.random() - .5) * .7), s: 1 + Math.random() * 1.5, c: new THREE.Color(`rgb(${fills[i]},${fills[i + 1]},${fills[i + 2]})`).multiplyScalar(.5) });
+    }
+    const from = () => { const u = Math.random() * 2 - 1, th = Math.random() * 6.283, r = 30 + Math.random() * 50, s = Math.sqrt(1 - u * u); return [r * s * Math.cos(th), r * u, r * s * Math.sin(th)]; };
+    const pts = new THREE.Points(cloudGeo(list, from), pointsMat(true, true));
+    g0.add(pts, board(glowMat(0xFFC85A, 0, .28), 46));
+    g0.scale.setScalar(1.5);
+    rootGroup.add(g0); facing.push(g0);
+    VAR.stars = { group: g0, start() { pts.material.uniforms.uK.value = 0; this.t0 = performance.now(); }, step(now) { pts.material.uniforms.uK.value = reduce ? 1 : Math.min(1, (now - this.t0) / 2400); } };
+  }
+
+  // 2 · Медальон: the illustrated portrait on a yellow disc, with a turning inscription
+  {
+    const g0 = new THREE.Group();
+    const [c, g] = canvas(1024);
+    g.beginPath(); g.arc(512, 512, 470, 0, Math.PI * 2); g.fillStyle = '#FFD812'; g.fill();
+    g.save(); g.beginPath(); g.arc(512, 512, 470, 0, Math.PI * 2); g.clip();
+    g.translate(512 - 150 * 2.6, 512 - 175 * 2.6 + 70); g.scale(2.6, 2.6);
+    g.lineJoin = g.lineCap = 'round';
+    FACE.forEach(([d, fill]) => {
+      const p = new Path2D(d);
+      if (fill) { g.fillStyle = fill; g.fill(p); g.strokeStyle = '#161616'; g.lineWidth = fill === '#161616' ? 0 : 3; if (g.lineWidth) g.stroke(p); }
+      else { g.strokeStyle = 'rgba(22,22,22,.3)'; g.lineWidth = 2; g.stroke(p); }
+    });
+    g.restore();
+    g.beginPath(); g.arc(512, 512, 470, 0, Math.PI * 2); g.lineWidth = 16; g.strokeStyle = '#161616'; g.stroke();
+    const disc = new THREE.Sprite(new THREE.SpriteMaterial({ map: texOf(c), transparent: true, alphaTest: .05 }));
+    disc.scale.setScalar(18);
+    const [c2, g2] = canvas(1024), text = 'ЛЕВ НИКОЛАЕВИЧ ТОЛСТОЙ · 1828–1910 · ЯСНАЯ ПОЛЯНА · АСТАПОВО · ';
+    g2.fillStyle = '#FFD812'; g2.font = '600 34px "IBM Plex Mono", Menlo, monospace'; g2.textAlign = 'center'; g2.textBaseline = 'middle';
+    [...text].forEach((ch, i, all) => { const a = i / all.length * Math.PI * 2; g2.save(); g2.translate(512 + Math.sin(a) * 478, 512 - Math.cos(a) * 478); g2.rotate(a); g2.fillText(ch, 0, 0); g2.restore(); });
+    const inscription = new THREE.Sprite(new THREE.SpriteMaterial({ map: texOf(c2), transparent: true, depthWrite: false }));
+    inscription.scale.setScalar(21.5);
+    g0.add(board(glowMat(0xFFD812, 0, .45), 40), disc, inscription);
+    g0.scale.setScalar(1.5);
+    rootGroup.add(g0);
+    VAR.medal = { group: g0, start() { this.t0 = performance.now(); }, step(now, t) {
+      const k = reduce ? 1 : Math.min(1, (now - this.t0) / 900), e = k === 1 ? 1 : 1 + 2.4 * Math.pow(k - 1, 3) + 1.4 * Math.pow(k - 1, 2);
+      disc.scale.setScalar(18 * (.6 + .4 * e)); inscription.scale.setScalar(21.5 * (.6 + .4 * e));
+      inscription.material.rotation = -t * .12;
+    } };
+  }
+
+  // 3 · Линии: the drawing as glowing tubes that draw themselves, with a ring of his 82 years
+  {
+    const g0 = new THREE.Group(), face = new THREE.Group(), tubes = [];
+    const NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'), path = document.createElementNS(NS, 'path');
+    svg.setAttribute('style', 'position:absolute;width:0;height:0;visibility:hidden');
+    svg.appendChild(path); document.body.appendChild(svg);
+    FACE.forEach(([d, fill, z, line]) => d.split(/(?=M)/).forEach(sub => {
+      path.setAttribute('d', sub);
+      const L = path.getTotalLength(), n = Math.max(8, Math.ceil(L / 3)), pts = [];
+      for (let i = 0; i <= n; i++) { const q = path.getPointAtLength(L * i / n); pts.push(V(...toW(q.x, q.y, z * 1.1))); }
+      const geo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), n, fill ? .075 : .045, 6, false);
+      const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: line, transparent: true, opacity: fill ? 1 : .55 }));
+      face.add(m); tubes.push(m);
+    }));
+    svg.remove();
+    face.add(board(glowMat(0xFFD2A0, 0, .22), 40));
+    const ring = new THREE.Group();
+    ring.add(new THREE.Mesh(new THREE.TorusGeometry(13, .05, 8, 240), new THREE.MeshBasicMaterial({ color: 0xFFD812, transparent: true, opacity: .55 })));
+    const tick = new THREE.MeshBasicMaterial({ color: 0xFFD812 });
+    for (let y = 1828; y <= 1910; y++) {
+      const a = (y - 1828) / 83 * Math.PI * 2, big = y % 10 === 0 || y === 1828 || y === 1910;
+      const m = new THREE.Mesh(new THREE.BoxGeometry(.07, big ? 1.1 : .45, .07), tick);
+      m.position.set(Math.cos(a) * 13, Math.sin(a) * 13, 0); m.rotation.z = a - Math.PI / 2;
+      ring.add(m);
+      if (y % 20 === 10 || y === 1828 || y === 1910) {
+        const [c, g] = canvas(256, 96);
+        g.fillStyle = '#FFD812'; g.font = '800 64px "Fira Sans Extra Condensed", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(y), 128, 50);
+        const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: texOf(c), transparent: true, depthWrite: false }));
+        s.scale.set(2.4, .9, 1); s.position.set(Math.cos(a) * 14.9, Math.sin(a) * 14.9, 0);
+        ring.add(s);
+      }
+    }
+    const runner = new THREE.Group();
+    runner.add(new THREE.Mesh(new THREE.SphereGeometry(.28, 16, 12), new THREE.MeshBasicMaterial({ color: 0xFF5E42 })), board(glowMat(0xFF5E42, .4, .9), 3));
+    ring.add(runner);
+    ring.rotation.set(.35, 0, 0);
+    ring.position.z = -1.2;
+    face.add(ring);
+    g0.add(face);
+    g0.scale.setScalar(1.5);
+    rootGroup.add(g0); facing.push(face);
+    VAR.lines = { group: g0, start() { this.t0 = performance.now(); }, step(now, t) {
+      const k = reduce ? 1 : Math.min(1, (now - this.t0) / 2600);
+      tubes.forEach((m, i) => { const s = Math.min(1, Math.max(0, k * 1.8 - i / tubes.length * .8)); m.geometry.setDrawRange(0, Math.floor(m.geometry.index.count * s / 3) * 3); });
+      const a = (t * .12) % (Math.PI * 2);
+      runner.position.set(Math.cos(a) * 13, Math.sin(a) * 13, 0);
+      ring.rotation.z = t * .02;
+    } };
+  }
+  let variant = 'stars';
+  const setVariant = v => {
+    variant = v;
+    Object.entries(VAR).forEach(([k, x]) => x.group.visible = k === v);
+    VAR[v].start();
+    document.querySelectorAll('[data-variant]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.variant === v)));
+  };
+  document.querySelectorAll('[data-variant]').forEach(b => b.addEventListener('click', () => setVariant(b.dataset.variant)));
+
+  /* ---------- badges: a pictogram for every node, drawn as vector paths on a canvas ---------- */
+  const ICON = {
+    p1: { d: 'M18 24H82V76H18ZM18 34H82M18 66H82', text: '10', ty: 51 },
+    p2: { d: E(28, 50, 13, 13) + E(50, 50, 13, 13) + E(72, 50, 13, 13) },
+    n1: { d: 'M18 22H82V64H48L32 80V64H18Z', text: '?', ty: 44 },
+    f1828: { d: 'M20 50a12 12 0 0 1 12-12h18a12 12 0 0 1 0 24h-6M80 50a12 12 0 0 1-12 12H50a12 12 0 0 1 0-24h6' },
+    f1847: { d: 'M16 52L50 22L84 52M27 44V80H73V44M43 80V62H57V80' },
+    f1851: { d: 'M34 80V18M34 20H68L59 31L68 42H34M14 80H86M18 80V70H28V80M72 80V70H82V80' },
+    f1861: { d: E(50, 50, 32, 32), text: '49', ty: 52 },
+    f1862: { d: E(40, 55, 18, 18) + E(60, 45, 18, 18) },
+    f1863: { fill: 'M12 30L88 44V52L12 70Z', d: 'M88 60C62 66 40 70 12 78' },
+    f1873: { d: 'M16 66H84M22 66V44H46V32H58V44H72L80 56V66M60 32V22' + E(32, 74, 6, 6) + E(70, 74, 6, 6) },
+    f1879: { text: '?', size: 70, ty: 54 },
+    f1882: { d: 'M34 16H58V54L78 60Q88 63 88 73V82H28V58Z' },
+    f1910: { d: 'M50 88C44 80 24 60 24 42a26 26 0 0 1 52 0C76 60 56 80 50 88Z' + E(50, 42, 9, 9) },
+    fend: { d: 'M12 80Q50 54 88 80ZM50 62V24M50 38L37 27M50 32L63 21' },
+    g1: { d: 'M76 36A30 30 0 1 0 80 58M68 20L78 36L60 40' },
+    g2: { d: 'M14 36L50 16L86 36ZM23 42V74M41 42V74M59 42V74M77 42V74M12 80H88' },
+    g3: { d: 'M18 78V30H30V78M34 78V20H46V78M50 78V32H62V78M66 76L75 28L87 31L78 78M12 80H90' },
+    g4: { d: 'M14 26H86V74H14ZM14 26L50 54L86 26' },
+    g5: { d: 'M20 20H80V70H20ZM20 50H80M28 27H72V43H28M28 78V70M72 78V70' + E(31, 60, 3, 3) + E(69, 60, 3, 3) },
+    g6: { d: 'M36 12L46 42M64 12L54 42' + E(50, 62, 20, 20) }
+  };
+  const BR = { page: 2.6, note: 2.2, frame: 1.15, hint: .85 };
+  const SIZE = { root: 13, page: 1.7, note: 1.3, frame: .75, hint: .5 };
+  const badgeFor = n => {
+    const hint = n.s === 'hint', S = hint ? 256 : 512, [c, g] = canvas(S), k = S / 256;
+    g.scale(k, k);
+    g.beginPath(); g.arc(128, 128, 112, 0, Math.PI * 2);
+    g.fillStyle = hint ? 'rgba(18,22,32,.9)' : n.k === 'note' ? '#BFD4FF' : '#FFD812'; g.fill();
+    g.lineWidth = n.k === 'page' ? 10 : 7; g.strokeStyle = hint ? '#9AA3B5' : '#161616';
+    if (hint) g.setLineDash([16, 11]);
+    g.stroke(); g.setLineDash([]);
+    if (n.k === 'page') { g.beginPath(); g.arc(128, 128, 123, 0, Math.PI * 2); g.lineWidth = 5; g.strokeStyle = '#FFD812'; g.stroke(); }
+    const ic = hint ? { text: '?', size: 76, ty: 54 } : ICON[n.id];
+    const ink = hint ? '#9AA3B5' : '#161616';
+    g.save(); g.translate(48, 48); g.scale(1.6, 1.6);
+    g.lineWidth = 7; g.lineCap = g.lineJoin = 'round'; g.strokeStyle = ink; g.fillStyle = ink;
+    if (ic.fill) g.fill(new Path2D(ic.fill));
+    if (ic.d) g.stroke(new Path2D(ic.d));
+    if (ic.text) { g.font = `900 ${ic.size || 34}px "Fira Sans Extra Condensed", "Arial Narrow", sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(ic.text, 50, ic.ty || 50); }
+    g.restore();
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: texOf(c), transparent: true, alphaTest: .05 }));
+    s.scale.setScalar(BR[n.k] * 2);
+    return s;
+  };
+
+  // positions: Tolstoy in the middle, presentations around him, frames as a flattened cluster around them
+  byId.root.pos = V(0, 0, 0);
+  Object.entries({ p1: V(-44, 8, -4), p2: V(38, -6, 20), n1: V(2, 30, -42) }).forEach(([id, p]) => byId[id].pos = p);
+  const fib = (k, n) => { const y = 1 - (k + .5) / n * 2, r = Math.sqrt(1 - y * y), ph = k * 2.39996; return V(Math.cos(ph) * r, y * .55, Math.sin(ph) * r); };
+  [['p1', 13], ['p2', 10]].forEach(([id, R]) => byId[id].kids.forEach((f, i, all) => f.pos = fib(i, all.length).multiplyScalar(R).add(byId[id].pos)));
+  HINTS.forEach(h => {
+    const par = byId[h.p], gp = byId[par.p], dir = par.pos.clone().sub(gp.pos).normalize();
+    const u = new THREE.Vector3().crossVectors(dir, V(0, 1, 0));
+    if (u.lengthSq() < .01) u.set(1, 0, 0);
+    u.normalize();
+    const sib = hintKids(par), j = sib.indexOf(h);
+    h.pos = par.pos.clone().addScaledVector(dir, 6.5).addScaledVector(u, (j - (sib.length - 1) / 2) * 3.8);
+    h.bud = par.pos.clone().addScaledVector(dir, 1.3);
+    h.rev = -1;
+  });
+  DATA.forEach(n => { n.cur = (n.bud || n.pos).clone(); n.phase = Math.random() * 6.28; });
+
+  const MAT = {
+    frame: starMat(0xFF9A1F, 0xFFD65A, 0xFFFBEA, 2.2),
+    page: planetMat(0xF4B82E, 0xC6731E, 0xFFEE9E, 0xFFD86A),
+    note: planetMat(0x9DBCF2, 0x5A75C6, 0xEAF2FF, 0x9CCBFF)
+  };
+  const pickables = [];
+  DATA.forEach(n => {
+    const g = new THREE.Group(), star = new THREE.Group();
+    if (n.k !== 'root') {
+      const R = SIZE[n.k];
+      if (n.s === 'hint') {
+        n.core = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(R, 1)), new THREE.LineBasicMaterial({ color: 0x9AA3B5, transparent: true, opacity: .3 }));
+        n.glow = board(glowMat(0x9AA3B5, .25, .9), R * 7);
+      } else if (n.k === 'frame') {
+        n.core = new THREE.Mesh(new THREE.SphereGeometry(R, 48, 32), MAT.frame);
+        n.glow = board(glowMat(0xFFD27A, .7, 1), R * 11);
+      } else {
+        n.core = new THREE.Mesh(new THREE.SphereGeometry(R, 96, 64), n.k === 'note' ? MAT.note : MAT.page);
+        n.glow = board(glowMat(n.k === 'note' ? 0x9CCBFF : 0xFFD86A, 0, .7), R * 7);
+        const tilt = new THREE.Group();
+        tilt.rotation.set(Math.PI / 2.4, 0, .25);
+        tilt.add(new THREE.Mesh(new THREE.RingGeometry(R * 1.55, R * 2.6, 160, 1), ringMat(n.k === 'note' ? 0xCFE0FF : 0xFFE39A, R * 1.55, R * 2.6)));
+        tilt.add(cloud(420, () => { const th = Math.random() * 6.283, r = R * (2.8 + Math.random() * 2.2); return [r * Math.cos(th), r * Math.sin(th), (Math.random() - .5) * .5]; }, [1, 2.4], () => n.k === 'note' ? '#BFD4FF' : '#FFD86A', true));
+        star.add(tilt);
+        n.spin = tilt;
+      }
+      star.add(n.core, n.glow);
+      n.base = n.glow.material.uniforms.uStrength.value;
+      n.badge = badgeFor(n);
+      g.add(n.badge, star);
+    }
+    n.star = star;
+    const hit = new THREE.Mesh(new THREE.SphereGeometry(n.k === 'root' ? 13 : Math.max(BR[n.k] * 1.25, 1.6), 10, 8), new THREE.MeshBasicMaterial({ visible: false }));
+    hit.userData.id = n.id;
+    g.add(hit); pickables.push(hit);
+    g.position.copy(n.cur);
+    (n.k === 'root' ? rootGroup : scene).add(g);
+    n.obj = g;
+  });
+
+  /* light flows: curved ribbons with pulses running outward from Tolstoy, continuous across junctions */
+  const FLOW = { spacing: '20.0', speed: '4.2' };
+  const flowGeo = (() => {
+    const N = 64, t = new Float32Array((N + 1) * 2), side = new Float32Array((N + 1) * 2), idx = [];
+    for (let i = 0; i <= N; i++) {
+      t[i * 2] = t[i * 2 + 1] = i / N; side[i * 2] = -1; side[i * 2 + 1] = 1;
+      if (i < N) idx.push(i * 2, i * 2 + 1, i * 2 + 2, i * 2 + 1, i * 2 + 3, i * 2 + 2);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array((N + 1) * 6), 3));
+    g.setAttribute('aT', new THREE.BufferAttribute(t, 1));
+    g.setAttribute('aSide', new THREE.BufferAttribute(side, 1));
+    g.setIndex(idx);
+    return g;
+  })();
+  const flowMat = (color, width, hint) => new THREE.ShaderMaterial({
+    uniforms: { uTime: TIME, uA: { value: V(0, 0, 0) }, uB: { value: V(0, 0, 0) }, uC: { value: V(0, 0, 0) }, uWidth: { value: width }, uColor: { value: col3(color) }, uOffset: { value: 0 }, uLen: { value: 1 }, uOpacity: { value: 1 }, uBoost: { value: 1 }, uHint: { value: hint ? 1 : 0 } },
+    vertexShader: `attribute float aT; attribute float aSide; uniform vec3 uA; uniform vec3 uB; uniform vec3 uC; uniform float uWidth; varying float vT; varying float vS;
+      void main(){
+        float t=aT; vec3 p=mix(mix(uA,uC,t),mix(uC,uB,t),t);
+        vec3 d=normalize(2.0*(1.0-t)*(uC-uA)+2.0*t*(uB-uC));
+        vec3 s=normalize(cross(d,normalize(cameraPosition-p)));
+        p+=s*aSide*uWidth; vT=t; vS=aSide;
+        gl_Position=projectionMatrix*viewMatrix*vec4(p,1.0);
+      }`,
+    fragmentShader: `uniform float uTime; uniform vec3 uColor; uniform float uOffset; uniform float uLen; uniform float uOpacity; uniform float uBoost; uniform float uHint; varying float vT; varying float vS;
+      void main(){
+        float across=exp(-vS*vS*5.0), core=exp(-vS*vS*60.0);
+        float s=fract((uTime*${FLOW.speed}-(uOffset+vT*uLen))/${FLOW.spacing});
+        float pulse=exp(-s*4.5)*smoothstep(0.0,0.02,s);
+        float ends=smoothstep(0.0,0.14,vT)*smoothstep(1.0,0.86,vT);
+        float dots=uHint>0.5?step(0.6,fract(vT*uLen*1.6)):1.0;
+        float i=(0.07*across+0.22*core+pulse*(0.28*across+0.55*core))*uBoost*ends*dots;
+        gl_FragColor=vec4(mix(uColor,vec3(1.0,0.97,0.9),pulse*core*0.5),i*uOpacity);
+      }`,
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+  const UP = V(0, 1, 0);
+  const bend = (a, b, i) => {
+    const ab = b.clone().sub(a), len = ab.length(), side = new THREE.Vector3().crossVectors(ab, UP);
+    if (side.lengthSq() < 1e-4) side.set(1, 0, 0);
+    side.normalize();
+    return a.clone().add(b).multiplyScalar(.5).addScaledVector(side, len * .11 * (i % 2 ? 1 : -1)).addScaledVector(UP, len * .04);
+  };
+  const arcLen = (a, c, b) => {
+    let L = 0; const prev = a.clone(), q = V(0, 0, 0);
+    for (let k = 1; k <= 20; k++) { const t = k / 20; q.copy(a).multiplyScalar((1 - t) * (1 - t)).addScaledVector(c, 2 * (1 - t) * t).addScaledVector(b, t * t); L += q.distanceTo(prev); prev.copy(q); }
+    return L;
+  };
+  let flowI = 0;
+  (function grow(par, off) {
+    par.kids.forEach(n => {
+      const hint = n.s === 'hint';
+      const a = par.k === 'root' ? n.pos.clone().normalize().multiplyScalar(12) : par.pos.clone(); // leave the portrait from its edge
+      const c = bend(a, n.pos, flowI), len = arcLen(a, c, n.pos);
+      const color = hint ? 0x9AA3B5 : n.k === 'note' ? 0xA9C8F0 : n.k === 'page' ? 0xF2C46B : 0xEBD3A0;
+      const m = new THREE.Mesh(flowGeo, flowMat(color, par.k === 'root' ? .24 : hint ? .08 : .12, hint));
+      const u = m.material.uniforms;
+      u.uA.value.copy(a); u.uB.value.copy(n.cur); u.uC.value.copy(hint ? bend(a, n.cur, flowI) : c);
+      u.uOffset.value = off; u.uLen.value = len; u.uOpacity.value = hint ? 0 : 1;
+      m.frustumCulled = false;
+      scene.add(m);
+      Object.assign(n, { flow: m, flowA: a, flowI: flowI++ });
+      grow(n, off + len);
+    });
+  })(byId.root, 0);
+  // the way from Tolstoy to the chosen node shines brighter
+  const setPath = () => {
+    const on = new Set(trail(byId[sel]).map(p => p.id).concat(sel));
+    DATA.forEach(n => { if (n.flow) n.flow.material.uniforms.uBoost.value = on.has(n.id) ? 1.6 : 1; });
+  };
+
+  // Вид: значки (clear pictograms) or звёзды (the first sky)
+  let style = 'badges';
+  const radius = n => n.k === 'root' ? 13 : style === 'badges' ? BR[n.k] : SIZE[n.k];
+  const applyStyle = () => {
+    DATA.forEach(n => { if (n.badge) { n.badge.visible = style === 'badges'; n.star.visible = style === 'stars'; } n.R = radius(n); });
+    $('b-style').textContent = style === 'badges' ? 'Вид: значки' : 'Вид: звёзды';
+    $('b-style').setAttribute('aria-pressed', String(style === 'stars'));
+    controls.minDistance = sel === 'root' ? 30 : byId[sel].R * (style === 'badges' ? 3.4 : 2.8);
+  };
+  $('b-style').addEventListener('click', () => { style = style === 'badges' ? 'stars' : 'badges'; applyStyle(); });
+
+  // selection: a dashed ring built from real geometry, so it stays crisp up close
+  const selRing = new THREE.Group();
+  {
+    const m = new THREE.MeshBasicMaterial({ color: 0xFF7A5C, transparent: true, opacity: .7, side: THREE.DoubleSide, depthWrite: false });
+    for (let i = 0; i < 36; i++) selRing.add(new THREE.Mesh(new THREE.RingGeometry(1, 1.022, 8, 1, i / 36 * Math.PI * 2, Math.PI * 2 / 36 * .5), m));
+    scene.add(selRing);
+  }
+
+  // hints fly out of their frame the first time you enter it
+  const reveal = par => {
+    let i = 0; const now = performance.now();
+    hintKids(par).forEach(h => { if (!h.revT0) h.revT0 = now + (reduce ? 0 : 350 + (i++) * 170); });
+  };
+  $('b-reveal').addEventListener('click', () => { DATA.forEach(n => hintKids(n).length && reveal(n)); renderCard(); });
+
+  // Prezi-like flight: arc outward on the way, then settle close to the target
+  const DIST = { root: 125, page: 30, note: 26, frame: 12, hint: 8 };
+  let fly = null;
+  const flyTo = (target, dist) => {
+    const fromP = camera.position.clone(), fromT = controls.target.clone();
+    const dir = fromP.clone().sub(fromT);
+    if (dir.lengthSq() < 1e-4) dir.set(0, .35, 1);
+    dir.normalize(); dir.y = Math.max(dir.y, .18); dir.normalize();
+    fly = { fromP, fromT, toT: target.clone(), toP: target.clone().addScaledVector(dir, dist), hop: Math.min(fromT.distanceTo(target) * .45, 60), t0: performance.now(), dur: reduce ? 1 : 1300 };
+    controls.enabled = false;
+  };
+  const tmpP = V(0, 0, 0), tmpT = V(0, 0, 0), out = V(0, 0, 0);
+  const stepFly = now => {
+    if (!fly) return;
+    const k = Math.min(1, (now - fly.t0) / fly.dur), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    tmpT.lerpVectors(fly.fromT, fly.toT, e);
+    tmpP.lerpVectors(fly.fromP, fly.toP, e);
+    out.copy(tmpP).sub(tmpT).normalize().multiplyScalar(fly.hop * Math.sin(Math.PI * e));
+    camera.position.copy(tmpP).add(out);
+    controls.target.copy(tmpT);
+    if (k === 1) { fly = null; controls.enabled = true; }
+  };
+
+  focusFn = id => {
+    const n = byId[id];
+    sel = id;
+    setPath();
+    if (hintKids(n).length) reveal(n);
+    if (n.s === 'hint') reveal(byId[n.p]);
+    controls.minDistance = id === 'root' ? 30 : n.R * (style === 'badges' ? 3.4 : 2.8);
+    flyTo(n.pos, DIST[n.k]);
+    renderCard();
+  };
+
+  const easeOutBack = k => 1 + 2.4 * Math.pow(k - 1, 3) + 1.4 * Math.pow(k - 1, 2);
+  const stepReveal = (now, t) => HINTS.forEach(h => {
+    const k = h.revT0 ? Math.min(1, Math.max(0, (now - h.revT0) / 900)) : 0;
+    if (k !== h.rev) {
+      h.rev = k;
+      h.cur.lerpVectors(h.bud, h.pos, k ? easeOutBack(k) : 0);
+      h.obj.position.copy(h.cur);
+      h.core.scale.setScalar(.4 + .6 * k);
+      h.core.material.opacity = .3 + .6 * k;
+      h.badge.material.opacity = .35 + .65 * k;
+      const u = h.flow.material.uniforms;
+      u.uB.value.copy(h.cur); u.uC.value.copy(bend(h.flowA, h.cur, h.flowI)); u.uOpacity.value = .8 * k;
+    }
+    h.core.rotation.x = t * .3 + h.phase; h.core.rotation.y = t * .45;
+    h.glow.material.uniforms.uOpacity.value = (.25 + .6 * h.rev) * (reduce ? 1 : .7 + .3 * Math.sin(t * 2.3 + h.phase));
+  });
+
+  // labels sit just outside the body's edge on screen, and hide when the body fills the view
+  const proj = V(0, 0, 0);
+  const stepLabels = () => {
+    const w = stage.clientWidth, h = stage.clientHeight, grp = groupOf(byId[sel]);
+    const k = (h / 2) / Math.tan(camera.fov * Math.PI / 360);
+    for (const n of DATA) {
+      const el = n.el;
+      proj.copy(n.cur).project(camera);
+      const d = camera.position.distanceTo(n.cur), rpx = n.R / d * k;
+      let show = proj.z < 1 && proj.z > -1 && rpx < h * .3;
+      if (show && n.k === 'frame') show = grp === n.p || d < 42 || sel === n.id;
+      if (show && n.s === 'hint') show = n.rev > .55;
+      if (!show) { el.classList.add('off'); continue; }
+      el.classList.remove('off');
+      const x = (proj.x + 1) / 2 * w, y = (1 - proj.y) / 2 * h;
+      const far = n.k === 'frame' || n.s === 'hint' ? d / 85 : d / 300;
+      el.style.opacity = Math.max(.35, Math.min(1, 1.35 - far)).toFixed(2);
+      el.style.transform = n.k === 'root'
+        ? `translate(${x.toFixed(1)}px,${(y + rpx * 1.25 + 14).toFixed(1)}px) translateX(-50%)`
+        : `translate(${(x + rpx * 1.1 + 8).toFixed(1)}px,${y.toFixed(1)}px) translateY(-50%)`;
+    }
+  };
+
+  // click vs drag, hover
+  const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+  const pick = e => {
+    const r = renderer.domElement.getBoundingClientRect();
+    ptr.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ptr, camera);
+    const hit = ray.intersectObjects(pickables, false).find(x => { const n = byId[x.object.userData.id]; return n.s !== 'hint' || n.rev > .5; });
+    return hit ? hit.object.userData.id : null;
+  };
+  let down = null;
+  const acted = () => { $('tip').classList.add('gone'); };
+  renderer.domElement.addEventListener('pointerdown', e => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; acted(); });
+  renderer.domElement.addEventListener('pointerup', e => {
+    if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 6 && performance.now() - down.t < 600) { const id = pick(e); if (id) focusFn(id); }
+    down = null;
+  });
+  renderer.domElement.addEventListener('pointermove', e => {
+    if (e.buttons) return;
+    const id = pick(e);
+    if (id === hover) return;
+    if (hover) byId[hover].el.classList.remove('hov');
+    hover = id;
+    if (id) byId[id].el.classList.add('hov');
+    renderer.domElement.style.cursor = id ? 'pointer' : 'grab';
+  });
+  renderer.domElement.addEventListener('wheel', acted, { passive: true });
+
+  $('b-spin').setAttribute('aria-pressed', String(spinOn));
+  $('b-spin').addEventListener('click', () => { spinOn = !spinOn; $('b-spin').setAttribute('aria-pressed', String(spinOn)); });
+
+  const t0 = performance.now();
+  const tick = now => {
+    requestAnimationFrame(tick);
+    const t = (now - t0) / 1000;
+    TIME.value = reduce ? 0 : t;
+    stepFly(now);
+    stepReveal(now, t);
+    VAR[variant].step(now, t);
+    controls.autoRotate = spinOn && !fly;
+    controls.update();
+    billboards.forEach(b => b.quaternion.copy(camera.quaternion));
+    facing.forEach(f => f.quaternion.slerp(camera.quaternion, .04));
+    DATA.forEach(n => {
+      if (n.k === 'root') return;
+      if (n.spin) n.spin.rotation.z = t * .08;
+      if (n.core.isMesh && n.k !== 'frame') n.core.rotation.y = t * .05;
+      if (n.s !== 'hint') n.glow.material.uniforms.uStrength.value = n.base * (hover === n.id ? 1.6 : 1);
+      const grow = hover === n.id ? 1.15 : 1, reveal = n.s === 'hint' ? .35 + .65 * Math.max(0, n.rev) : 1;
+      n.badge.scale.setScalar(BR[n.k] * 2 * grow * reveal);
+      n.badge.position.y = reduce ? 0 : Math.sin(t * 1.1 + n.phase) * .12;
+    });
+    belt.rotation.y = t * .01;
+    const s = byId[sel];
+    selRing.visible = sel !== 'root';
+    selRing.position.copy(s.cur);
+    selRing.quaternion.copy(camera.quaternion);
+    selRing.rotateZ(t * .4);
+    selRing.scale.setScalar(s.R * (style === 'badges' ? 1.35 : 2.4) * (1 + (reduce ? 0 : .04 * Math.sin(t * 3))));
+    stepLabels();
+    renderer.render(scene, camera);
+  };
+  applyStyle();
+  setVariant('stars');
+  focusFn('root');
+  requestAnimationFrame(tick);
+  setTimeout(acted, 12000);
+  };
+  renderCard();
+  Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 1500))]).then(init3D);
+})();
+</script>

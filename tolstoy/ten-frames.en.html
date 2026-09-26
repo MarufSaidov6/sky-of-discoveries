@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}</style>
+<title>Tolstoy in Ten Frames</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@400;500;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  --paper:#ECEBE7; --sheet:#F8F7F4; --ink:#161616; --ink-2:#56544F; --rule:#C8C5BD;
+  --land:#DEDBD2; --water:#AFC6DD; --river:#5F8BBA; --blue:#2D5F93;
+  --yellow:#FFD812; --on-yellow:#161616; --red:#D2381F; --on-red:#FFFFFF;
+  --leaf:#93A67F; --green:#3F7F35; --shadow:rgba(22,22,22,.28);
+  --display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --serif:"PT Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#131312; --sheet:#1D1D1B; --ink:#EEECE6; --ink-2:#A8A59D; --rule:#3B3A36;
+    --land:#2A2A27; --water:#22384F; --river:#6E9CCB; --blue:#86B3E3;
+    --yellow:#FFD60A; --on-yellow:#161616; --red:#FF5E42; --on-red:#161616;
+    --leaf:#5C7250; --green:#8BC96F; --shadow:rgba(0,0,0,.6); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131312; --sheet:#1D1D1B; --ink:#EEECE6; --ink-2:#A8A59D; --rule:#3B3A36;
+  --land:#2A2A27; --water:#22384F; --river:#6E9CCB; --blue:#86B3E3;
+  --yellow:#FFD60A; --on-yellow:#161616; --red:#FF5E42; --on-red:#161616;
+  --leaf:#5C7250; --green:#8BC96F; --shadow:rgba(0,0,0,.6); color-scheme:dark;
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.62 var(--serif);padding-inline:clamp(16px,4vw,48px);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:1160px;margin-inline:auto}
+.progress{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:4px;z-index:50;background:var(--yellow);transform-origin:0 50%;display:none}
+@supports (animation-timeline:scroll()){.progress{display:block;animation:grow linear both;animation-timeline:scroll(root)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* type */
+.label,.kicker,.frame-bar{font-family:var(--mono);font-size:.74rem;line-height:1.3;letter-spacing:.08em;text-transform:uppercase}
+h1,h2,.num{font-family:var(--display);font-weight:850;font-stretch:70%;line-height:.9;text-wrap:balance;margin:0}
+h1{font-size:clamp(5rem,17vw,12rem);font-weight:900;font-stretch:66%;text-transform:uppercase;letter-spacing:-.012em;line-height:.8}
+h2{font-size:clamp(2.1rem,4.6vw,3.4rem)}
+p{margin:0 0 1em;max-width:62ch}
+a{color:inherit}
+mark{color:var(--on-yellow);background:linear-gradient(transparent 7%,var(--yellow) 7%,var(--yellow) 93%,transparent 93%) no-repeat 0 0/100% 100%;padding-inline:.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,88px) clamp(64px,9vw,112px)}
+.hero-top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:end}
+.kicker{display:inline-block;margin-bottom:20px;padding:4px 8px;background:var(--ink);color:var(--paper)}
+.cyr{font-style:italic;font-size:clamp(1.15rem,2.2vw,1.5rem);margin:.5em 0 1.1em;color:var(--ink-2)}
+.dek{font-size:clamp(1.15rem,1.9vw,1.4rem);line-height:1.5;max-width:36ch;margin:0}
+.portrait{margin:0;justify-self:center;width:min(100%,350px)}
+.portrait svg{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 22px var(--shadow))}
+.hero .frame{margin-top:clamp(40px,6vw,72px)}
+@media (max-width:760px){.hero-top{grid-template-columns:1fr}.portrait{width:min(78%,300px);justify-self:start}}
+
+/* scenes */
+.scene{border-top:3px solid var(--ink);padding-block:0 clamp(72px,10vw,128px);scroll-margin-top:16px}
+.scene-head{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px 28px;margin-top:-3px}
+.stamp{flex:none;background:var(--yellow);color:var(--on-yellow);font-family:var(--display);font-weight:900;font-stretch:66%;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1;padding:.14em .3em .08em;font-variant-numeric:tabular-nums}
+.scene-head h2{flex:1 1 16ch;padding-top:.32em}
+.scene-body{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4.5vw,64px);align-items:start;margin-top:clamp(24px,3.5vw,44px)}
+.scene.flip .scene-body{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.scene.flip .frame{order:-1}
+.scene.wide .scene-body{grid-template-columns:1fr}
+.scene.wide .copy{display:grid;grid-template-columns:minmax(0,62ch) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.scene.wide .meanwhile{margin-top:0}
+@media (max-width:900px){
+  .scene-body,.scene.flip .scene-body,.scene.wide .copy{grid-template-columns:1fr}
+  .scene.flip .frame{order:0}
+}
+.meanwhile{margin-top:28px;padding:14px 16px 16px;background:var(--sheet);border:1.5px dashed var(--ink-2);font-size:.95rem;line-height:1.5;transform:rotate(-.5deg);max-width:62ch}
+.meanwhile .label{display:block;margin-bottom:6px;color:var(--red);font-weight:600}
+.meanwhile p{margin:0}
+
+/* frames */
+.frame{margin:0;background:var(--sheet);border:1.5px solid var(--ink);border-radius:4px;box-shadow:0 24px 44px -32px var(--shadow);min-width:0}
+.frame-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 10px 9px 14px;border-bottom:1.5px solid var(--ink)}
+.frame-bar b{font-weight:600}
+.frame-body{padding:clamp(12px,2.4vw,24px)}
+.frame svg{display:block;width:100%;height:auto}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scroll-x>svg{min-width:var(--min,0px)}
+figcaption{padding:0 clamp(12px,2.4vw,24px) clamp(14px,2.4vw,22px);font-size:.92rem;line-height:1.5;color:var(--ink-2)}
+figcaption p{max-width:none;margin:0 0 .4em}
+.hint{display:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+@media (max-width:640px){.hint{display:block}}
+.replay{flex:none;font:500 .7rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:transparent;border:1.5px solid var(--ink);border-radius:999px;padding:6px 10px;cursor:pointer}
+.replay:hover{background:var(--yellow);color:var(--on-yellow);border-color:var(--on-yellow)}
+.replay:focus-visible,svg a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.sw{display:inline-block;width:.8em;height:.8em;margin-right:.35em;vertical-align:-.06em;border-radius:2px}
+.sw.ring{border:2px solid var(--ink);border-radius:50%}
+.sw.dot{border-radius:50%}
+.chip,.yr{display:inline-block;font:600 .72rem/1 var(--mono);letter-spacing:.04em;background:var(--yellow);color:var(--on-yellow);padding:4px 6px 3px;margin-right:6px;vertical-align:.08em}
+
+/* svg vocabulary */
+svg text{font-family:var(--mono);font-size:13px;fill:var(--ink)}
+svg .t-serif{font-family:var(--serif)}
+svg .t-it{font-family:var(--serif);font-style:italic}
+svg .t-b{font-weight:600}
+svg .t-bb{font-weight:700}
+svg .t-mut{fill:var(--ink-2)}
+svg .t-on-y{fill:var(--on-yellow)}
+svg .t-on-r{fill:var(--on-red)}
+svg .t-paper{fill:var(--paper)}
+svg .t-red{fill:var(--red)}
+svg .t-11{font-size:11px} svg .t-12{font-size:12px} svg .t-14{font-size:14px} svg .t-15{font-size:15px} svg .t-16{font-size:16px} svg .t-22{font-size:22px}
+svg .t-sea{font-family:var(--serif);font-style:italic;font-size:15px;fill:var(--blue);letter-spacing:.04em}
+svg .t-wm{font-family:var(--display);font-weight:800;font-stretch:80%;font-size:20px;letter-spacing:.35em;fill:var(--ink-2);opacity:.5}
+svg .halo{paint-order:stroke;stroke:var(--land);stroke-width:4px;stroke-linejoin:round}
+svg a text{text-decoration-thickness:1px}
+svg a:hover text.t-it{text-decoration:underline}
+.f-ink{fill:var(--ink)} .f-mut{fill:var(--ink-2)} .f-sheet{fill:var(--sheet)} .f-paper{fill:var(--paper)} .f-land{fill:var(--land)} .f-water{fill:var(--water)} .f-y{fill:var(--yellow)} .f-r{fill:var(--red)} .f-leaf{fill:var(--leaf)} .f-none{fill:none}
+.s-ink{stroke:var(--ink)} .s-mut{stroke:var(--ink-2)} .s-r{stroke:var(--red)} .s-river{stroke:var(--river)} .s-sheet{stroke:var(--sheet)} .s-land{stroke:var(--land)} .s-green{stroke:var(--green)}
+
+/* motion: every element rests in its final state; .play replays it from the start */
+.d{stroke-dasharray:1;stroke-dashoffset:0}
+.pop,.gx,.gy,.house,.puff,.ring{transform-box:fill-box}
+.pop{transform-origin:50% 50%}
+.gx{transform-origin:0 50%}
+.gy{transform-origin:50% 100%}
+@keyframes draw{from{stroke-dashoffset:1}}
+@keyframes pop{from{transform:scale(0)}}
+@keyframes fade{from{opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}}
+@keyframes growX{from{transform:scaleX(0)}}
+@keyframes growY{from{transform:scaleY(0)}}
+@keyframes swipe{from{background-size:0 100%}}
+@keyframes toRed{from{fill:var(--ink)}}
+@keyframes revL{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes revR{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+@keyframes fly{0%,35%{opacity:1;transform:none}45%{opacity:1;transform:translateY(-10px)}88%{opacity:1}100%{opacity:0;transform:translate(250px,-96px) scale(.3)}}
+@keyframes ride{from{transform:translateX(-10px)}}
+@keyframes puff{from{opacity:.9;transform:translate(0,0) scale(.3)}to{opacity:0;transform:translate(-30px,-24px) scale(1.5)}}
+@keyframes ring{from{opacity:1;transform:scale(.4)}to{opacity:0;transform:scale(2.2)}}
+@keyframes stamp{from{opacity:0;transform:scale(2.6) rotate(-14deg)}}
+@keyframes strike{from{transform:rotate(-4deg) scaleX(0)}}
+.play .d{animation:draw var(--dur,1.2s) var(--ease,cubic-bezier(.6,0,.3,1)) var(--del,0s) backwards}
+.play .pop{animation:pop .45s cubic-bezier(.3,1.5,.5,1) var(--del,0s) backwards}
+.play .fade{animation:fade .6s ease var(--del,0s) backwards}
+.play .fadeup{animation:fadeUp .6s ease var(--del,0s) backwards}
+.play .gx{animation:growX var(--dur,.9s) var(--ease,cubic-bezier(.6,0,.2,1)) var(--del,0s) backwards}
+.play .gy{animation:growY var(--dur,.9s) var(--ease,cubic-bezier(.6,0,.2,1)) var(--del,0s) backwards}
+.play .rev-l{animation:revL var(--dur,2s) cubic-bezier(.45,0,.3,1) var(--del,0s) backwards}
+.play .rev-r{animation:revR var(--dur,2s) cubic-bezier(.45,0,.3,1) var(--del,0s) backwards}
+.play mark{animation:swipe .9s cubic-bezier(.6,0,.2,1) var(--del,.4s) backwards}
+.play .portrait{animation:fadeUp .9s ease .1s backwards}
+
+/* units */
+.person{fill:var(--ink)}
+.person.serf{fill:var(--red)}
+.play .person.serf{animation:pop .45s cubic-bezier(.3,1.5,.5,1) var(--del) backwards,toRed .5s ease var(--del2) backwards}
+
+/* estate */
+.house{opacity:0;transform:translate(250px,-96px) scale(.3);transform-origin:50% 50%}
+.play .house{animation:fly 3s cubic-bezier(.5,0,.3,1) .2s backwards}
+
+/* railway */
+.train{transform:translateX(606px)}
+.play .train{animation:ride 5.2s cubic-bezier(.45,0,.2,1) .3s backwards}
+.puff{opacity:0;transform-origin:50% 50%}
+.play .puff{animation:puff 1.1s ease-out var(--del,0s) 4 backwards}
+.ring{opacity:0;transform-origin:50% 50%}
+.play .ring{animation:ring 1.4s ease-out var(--del,0s) 3 backwards}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:28px 0 0;padding-top:14px;border-top:1.5px solid var(--ink);max-width:62ch}
+.stats div{display:flex;flex-direction:column-reverse;gap:6px}
+.stats dt{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.stats dd{margin:0;font-size:clamp(2rem,4vw,2.8rem);font-variant-numeric:tabular-nums}
+
+/* quote */
+.opening{margin:0 0 1.2em;max-width:30ch}
+.opening p{font-size:clamp(1.45rem,2.7vw,2.05rem);line-height:1.3;font-style:italic;margin:0 0 .5em}
+.opening cite{font:500 .72rem/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:var(--ink-2)}
+
+/* ledger */
+.ledger{list-style:none;margin:0;padding:0}
+.ledger li{display:grid;grid-template-columns:6.5rem minmax(0,1fr) 2.4rem;align-items:baseline;gap:12px;padding:13px 0;border-bottom:1.5px dotted var(--rule)}
+.ledger .k{font-family:var(--display);font-weight:850;font-stretch:72%;font-size:1.45rem;text-transform:uppercase;line-height:1}
+.ledger .v{font-size:1rem;line-height:1.4}
+.ledger b{justify-self:end;font-family:var(--display);font-weight:900;font-size:1.7rem;line-height:1}
+.ledger .cross{color:var(--red);font-size:2.1rem}
+.ledger li.no .k,.ledger li.no .v{color:var(--red)}
+.play .ledger li{animation:fadeUp .5s ease var(--del) backwards}
+.play .ledger .tick{animation:pop .4s cubic-bezier(.3,1.6,.5,1) calc(var(--del) + .25s) backwards}
+.play .ledger .cross{animation:stamp .45s cubic-bezier(.2,1.4,.4,1) calc(var(--del) + .5s) backwards}
+.ledger-q{margin:22px 0 0;font-size:clamp(1.3rem,2.4vw,1.7rem);font-style:italic;line-height:1.3}
+
+/* gave up + chain */
+.sub{margin:0 0 12px;font:600 .74rem/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.sub+*{margin-top:0}
+.sub.next{margin-top:30px}
+.gaveup{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.gaveup li{display:inline-flex;align-items:baseline;gap:8px;padding:7px 12px 6px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper)}
+.gaveup s{position:relative;text-decoration:none;font-family:var(--display);font-weight:850;font-stretch:72%;font-size:1.2rem;text-transform:uppercase;line-height:1}
+.gaveup s::after{content:"";position:absolute;left:-5%;right:-5%;top:48%;height:3px;background:var(--red);transform:rotate(-4deg);transform-origin:0 50%}
+.gaveup small{font:500 .68rem/1.2 var(--mono);color:var(--ink-2);letter-spacing:.03em}
+.play .gaveup s::after{animation:strike .45s ease var(--del) backwards}
+.chain{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px}
+.chain li{position:relative;font-size:.98rem;line-height:1.45}
+.chain li b{font-family:var(--display);font-weight:850;font-stretch:72%;font-size:1.35rem;text-transform:uppercase;display:block;line-height:1.05;margin:8px 0 6px}
+.chain li+li::before{content:"→";position:absolute;left:-34px;top:22px;font:700 1.5rem/1 var(--mono);color:var(--red)}
+.play .chain li{animation:fadeUp .6s ease var(--del) backwards}
+.branch{margin:26px 0 0;padding-top:16px;border-top:1.5px dashed var(--rule);max-width:none;font-size:.98rem}
+@media (max-width:760px){
+  .chain{grid-template-columns:1fr;gap:40px}
+  .chain li+li::before{content:"↓";left:0;top:-32px}
+}
+
+/* journey */
+.journey{list-style:none;margin:0;padding:4px clamp(12px,2.4vw,24px) clamp(14px,2.4vw,22px);display:grid;gap:10px}
+.journey li{display:grid;grid-template-columns:9.5rem minmax(0,1fr);gap:12px;font-size:.95rem;line-height:1.45}
+.journey time{font:600 .72rem/1.6 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2)}
+.journey li:last-child time,.journey li:last-child span{color:var(--red)}
+@media (max-width:520px){.journey li{grid-template-columns:1fr;gap:0}}
+
+/* map legend */
+.legend{list-style:none;margin:0;padding:4px clamp(12px,2.4vw,24px) clamp(14px,2.4vw,22px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px;font-size:.92rem;line-height:1.45}
+@media (max-width:640px){.legend{grid-template-columns:1fr}}
+
+/* notes */
+.notes{border-top:3px solid var(--ink);padding-block:28px 72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 48px;font-size:.92rem;line-height:1.55;color:var(--ink-2)}
+.notes .label{grid-column:1/-1;color:var(--ink);font-weight:600;margin-bottom:6px}
+@media (max-width:760px){.notes{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .replay{display:none}
+}
+</style>
+
+<div class="progress" aria-hidden="true"></div>
+<main class="wrap">
+
+<!-- HERO -->
+<header class="hero" data-scene data-fx="lifeline">
+  <div class="hero-top">
+    <div>
+      <span class="kicker">A life in ten frames · 1828–1910</span>
+      <h1>Tolstoy</h1>
+      <p class="cyr">Count Lev Nikolayevich Tolstoy · Лев Николаевич Толстой</p>
+      <p class="dek">He was born owning people. He lost his birthplace at cards, survived a siege, and wrote two of the biggest novels ever made. Then he decided novels were not the point, and <mark>spent thirty years trying to give everything away.</mark></p>
+    </div>
+    <figure class="portrait">
+      <svg viewBox="0 0 300 340" role="img" aria-label="Illustration of Tolstoy in old age: a white beard, bushy eyebrows and a grey peasant shirt">
+        <circle cx="150" cy="160" r="140" style="fill:var(--yellow)"/>
+        <g stroke="#161616" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M34 340C40 280 92 250 150 248C208 250 260 280 266 340Z" fill="#6E7F96"/>
+          <path d="M112 262C118 290 120 316 118 340M188 262C182 290 180 316 182 340" fill="none" stroke-opacity=".35" stroke-width="2"/>
+          <ellipse cx="92" cy="160" rx="11" ry="19" fill="#E8C09C"/>
+          <ellipse cx="208" cy="160" rx="11" ry="19" fill="#E8C09C"/>
+          <ellipse cx="150" cy="142" rx="60" ry="74" fill="#E8C09C"/>
+          <path d="M92 146C88 100 114 70 150 68C186 70 212 100 208 146C204 118 190 100 170 96C160 102 140 102 130 96C110 100 96 118 92 146Z" fill="#D2CEC6"/>
+          <path d="M126 110Q150 102 174 110M132 120Q150 114 168 120" fill="none" stroke-opacity=".3" stroke-width="2"/>
+          <path d="M96 150C88 192 80 242 94 282C104 306 128 318 150 322C172 318 196 306 206 282C220 242 212 192 204 150C198 176 184 186 168 188C160 180 140 180 132 188C116 186 102 176 96 150Z" fill="#F3F1EC"/>
+          <path d="M122 214C116 246 122 278 134 300M150 206V312M178 214C184 246 178 278 166 300M106 196C100 228 104 258 114 280M194 196C200 228 196 258 186 280" fill="none" stroke-opacity=".22" stroke-width="2"/>
+          <path d="M124 190C134 178 146 178 150 184C154 178 166 178 176 190C168 202 158 200 150 194C142 200 132 202 124 190Z" fill="#E4E0D8" stroke-width="2.5"/>
+          <path d="M146 130C144 150 136 162 138 172C144 179 156 179 162 172C164 162 156 150 154 130" fill="#DDAE88" stroke-width="2.5"/>
+          <path d="M108 132C116 116 138 114 148 125C140 127 126 129 112 140Z" fill="#ECE9E3" stroke-width="2.5"/>
+          <path d="M192 132C184 116 162 114 152 125C160 127 174 129 188 140Z" fill="#ECE9E3" stroke-width="2.5"/>
+        </g>
+        <ellipse cx="130" cy="141" rx="5.5" ry="3" fill="#161616"/>
+        <ellipse cx="170" cy="141" rx="5.5" ry="3" fill="#161616"/>
+      </svg>
+    </figure>
+  </div>
+
+  <figure class="frame">
+    <div class="frame-bar"><span><b>Fig 1</b> · Eighty-two years at a glance</span><button class="replay" type="button">↻ Replay</button></div>
+    <div class="frame-body scroll-x">
+      <svg viewBox="0 0 1000 320" style="--min:760px" role="img" aria-label="Timeline 1828 to 1910. Life phases: young aristocrat to 1851, soldier 1851 to 1856, novelist to 1878, moral prophet to 1910. Tsars: Nicholas I, Alexander II, Alexander III, Nicholas II. Books: Childhood 1852, War and Peace 1869, Anna Karenina 1878, A Confession 1882, Resurrection 1899.">
+        <g class="t-mut">
+          <text x="0" y="60" class="t-mut t-11">BOOKS</text>
+          <text x="0" y="135" class="t-mut t-11">LIFE</text>
+          <text x="0" y="211" class="t-mut t-11">TSAR</text>
+          <text x="0" y="254" class="t-mut t-11">RUSSIA</text>
+        </g>
+        <text x="60" y="102" class="t-mut t-11">BORN 9 SEP 1828 · YASNAYA POLYANA</text>
+
+        <!-- books -->
+        <a href="#s1851" class="fadeup" style="--del:2.54s"><line x1="317.6" x2="317.6" y1="36" y2="112" class="s-ink" stroke-width="1.5"/><circle cx="317.6" cy="36" r="4.5" class="f-ink"/><text x="325" y="40" class="t-it t-16">Childhood</text><text x="325" y="55" class="t-mut t-11">1852</text></a>
+        <a href="#s1863" class="fadeup" style="--del:3.2s"><line x1="500" x2="500" y1="76" y2="112" class="s-ink" stroke-width="1.5"/><circle cx="500" cy="76" r="4.5" class="f-ink"/><text x="492" y="80" text-anchor="end" class="t-it t-16">War and Peace</text><text x="492" y="95" text-anchor="end" class="t-mut t-11">1869</text></a>
+        <a href="#s1873" class="fadeup" style="--del:3.53s"><line x1="596.6" x2="596.6" y1="36" y2="112" class="s-ink" stroke-width="1.5"/><circle cx="596.6" cy="36" r="4.5" class="f-ink"/><text x="604" y="40" class="t-it t-16">Anna Karenina</text><text x="604" y="55" class="t-mut t-11">1878</text></a>
+        <a href="#s1879" class="fadeup" style="--del:3.69s"><line x1="639.5" x2="639.5" y1="76" y2="112" class="s-ink" stroke-width="1.5"/><circle cx="639.5" cy="76" r="4.5" class="f-ink"/><text x="647" y="80" class="t-it t-16">A Confession</text><text x="647" y="95" class="t-mut t-11">1882</text></a>
+        <a href="#s1882" class="fadeup" style="--del:4.55s"><line x1="822" x2="822" y1="36" y2="112" class="s-ink" stroke-width="1.5"/><circle cx="822" cy="36" r="4.5" class="f-ink"/><text x="829" y="40" class="t-it t-16">Resurrection</text><text x="829" y="55" class="t-mut t-11">1899</text></a>
+
+        <!-- life phases -->
+        <rect class="f-land gx" x="60" y="112" width="246.8" height="38" style="--del:.4s;--dur:2.1s;--ease:linear"/>
+        <rect class="f-r gx" x="306.8" y="112" width="53.7" height="38" style="--del:2.5s;--dur:.22s;--ease:linear"/>
+        <rect class="f-y gx" x="360.5" y="112" width="236.1" height="38" style="--del:2.71s;--dur:.82s;--ease:linear"/>
+        <rect class="f-ink gx" x="596.6" y="112" width="343.4" height="38" style="--del:3.53s;--dur:2.47s;--ease:linear"/>
+        <text x="72" y="136" class="t-b fade" style="--del:.6s">YOUNG ARISTOCRAT</text>
+        <text x="333.6" y="135.5" text-anchor="middle" class="t-on-r t-b t-11 fade" style="--del:2.6s">SOLDIER</text>
+        <text x="372" y="136" class="t-on-y t-b fade" style="--del:2.9s">NOVELIST</text>
+        <text x="608" y="136" class="t-paper t-b fade" style="--del:3.7s">MORAL PROPHET</text>
+
+        <!-- axis -->
+        <path d="M60 150H940M81.5 150v8M188.8 150v8M296.1 150v8M403.4 150v8M510.7 150v8M618 150v8M725.4 150v8M832.7 150v8M940 150v8" class="s-ink f-none" stroke-width="1.5"/>
+        <g class="t-12" text-anchor="middle">
+          <text x="81.5" y="174" class="t-12">1830</text><text x="188.8" y="174" class="t-12">1840</text><text x="296.1" y="174" class="t-12">1850</text><text x="403.4" y="174" class="t-12">1860</text><text x="510.7" y="174" class="t-12">1870</text><text x="618" y="174" class="t-12">1880</text><text x="725.4" y="174" class="t-12">1890</text><text x="832.7" y="174" class="t-12">1900</text><text x="940" y="174" class="t-12">1910</text>
+        </g>
+
+        <!-- tsars -->
+        <g class="fade" style="--del:.4s"><rect x="60" y="192" width="289.8" height="30" class="f-none s-ink" stroke-width="1.5"/><text x="204.9" y="211.5" text-anchor="middle" class="t-12">NICHOLAS I</text></g>
+        <g class="fade" style="--del:2.67s"><rect x="349.8" y="192" width="279" height="30" class="f-none s-ink" stroke-width="1.5"/><text x="489.3" y="211.5" text-anchor="middle" class="t-12">ALEXANDER II</text></g>
+        <g class="fade" style="--del:3.65s"><rect x="628.8" y="192" width="139.5" height="30" class="f-none s-ink" stroke-width="1.5"/><text x="698.5" y="211.5" text-anchor="middle" class="t-12">ALEXANDER III</text></g>
+        <g class="fade" style="--del:4.25s"><rect x="768.3" y="192" width="171.7" height="30" class="f-none s-ink" stroke-width="1.5"/><text x="854.1" y="211.5" text-anchor="middle" class="t-12">NICHOLAS II</text><text x="947" y="211.5" class="t-mut t-11">→1917</text></g>
+
+        <!-- russia -->
+        <line x1="60" x2="940" y1="250" y2="250" class="s-mut" stroke-width="1" stroke-dasharray="2 4"/>
+        <g class="fade" style="--del:2.59s"><rect x="328.3" y="245" width="32.2" height="10" class="f-r"/><text x="360.5" y="274" text-anchor="end" class="t-serif t-14">Crimean War</text></g>
+        <g class="fade" style="--del:2.91s"><path d="M414.1 243l7 7-7 7-7-7z" class="f-ink"/><text x="414.1" y="274" text-anchor="middle" class="t-serif t-14">Serfs freed</text></g>
+        <g class="fade" style="--del:3.65s"><path d="M628.8 243l7 7-7 7-7-7z" class="f-ink"/><text x="628.8" y="274" text-anchor="middle" class="t-serif t-14">Tsar killed</text></g>
+        <g class="fade" style="--del:4.09s"><path d="M736.1 243l7 7-7 7-7-7z" class="f-ink"/><text x="736.1" y="274" text-anchor="middle" class="t-serif t-14">Famine</text></g>
+        <g class="fade" style="--del:5.02s"><path d="M886.3 243l7 7-7 7-7-7z" class="f-ink"/><text x="886.3" y="274" text-anchor="middle" class="t-serif t-14">Revolution</text></g>
+
+        <!-- playhead -->
+        <g id="playhead" transform="translate(940 0)">
+          <line x1="0" x2="0" y1="104" y2="284" class="s-r" stroke-width="2"/>
+          <circle cx="0" cy="131" r="6" class="f-r s-sheet" stroke-width="2"/>
+          <rect x="-60" y="288" width="120" height="24" rx="2" class="f-y"/>
+          <text id="ph-txt" x="0" y="304.5" text-anchor="middle" class="t-on-y t-b t-12">1910 · AGE 82</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>
+      <p>Books on top, the man in the middle, the tsars and the country below. Click a book to jump to its frame.</p>
+      <span class="hint">Swipe sideways to see the whole chart →</span>
+    </figcaption>
+  </figure>
+</header>
+
+<!-- 1 · 1828 -->
+<section class="scene" id="s1828" data-scene>
+  <div class="scene-head"><span class="stamp">1828</span><h2>Born into a country where people were property</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>Lev Nikolayevich Tolstoy was born on 9 September 1828 at Yasnaya Polyana, “Bright Glade,” his family’s estate about 200 km south of Moscow. He was a count. The land came with the people who worked it.</p>
+        <p>These were serfs. They could not leave, could be sold, and could be flogged. By the last count before they were freed, <mark>more than one Russian in three</mark> belonged to a landowner.</p>
+        <p>His mother died before he turned two. His father died when he was eight. Aunts raised him, in a house run by serfs.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>Pushkin is 29 and the most famous poet in Russia. There is not one railway in the country. Tsar Nicholas I is three years into a reign that began by crushing the Decembrist revolt.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 2</b> · Who owned whom</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body"><svg id="units" viewBox="0 0 600 330" role="img" aria-label="60 figures, 22 of them red: about 22 million of 60 million people in European Russia were privately owned serfs"></svg></div>
+      <figcaption><p><span class="sw" style="background:var(--red)"></span>Privately owned serfs, about 22 million. <span class="sw" style="background:var(--ink)"></span>Everyone else, about 38 million.</p><p>Each figure is one million people. European Russia, tax census of 1857–58.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 2 · 1847 -->
+<section class="scene flip" id="s1847" data-scene>
+  <div class="scene-head"><span class="stamp">1847–54</span><h2>The heir who gambled away the house he was born in</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>At 16 he went to Kazan University. He failed exams, switched from Oriental languages to law, and quit in 1847 without a degree. That spring, at 18, he started a diary. He kept it for 63 years.</p>
+        <p>The same year he inherited Yasnaya Polyana and its serfs. He tried to improve their lives. They did not trust him, and he gave up. So he went to Moscow and Petersburg to drink, chase women and play cards.</p>
+        <p>In 1854 the card debts came due. <mark>He sold the main house, the one he was born in.</mark> The buyer took it apart and rebuilt it on his own estate. Tolstoy lived the rest of his life in one of the two small wings that were left.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>1848: revolutions sweep Europe, and Nicholas I tightens censorship at home. 1849: a young writer named Dostoevsky is sentenced to death, then reprieved on the scaffold at the last moment.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 3</b> · Yasnaya Polyana, before and after 1854</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body scroll-x">
+        <svg viewBox="0 0 600 340" style="--min:480px" role="img" aria-label="Plan of the estate: the main house between two wings is lifted away, leaving the two wings and a marker where it stood">
+          <rect width="600" height="340" class="f-land"/>
+          <g class="f-leaf">
+            <circle cx="36" cy="44" r="22"/><circle cx="84" cy="30" r="17"/><circle cx="128" cy="48" r="19"/><circle cx="174" cy="28" r="15"/><circle cx="218" cy="44" r="18"/>
+            <circle cx="50" cy="300" r="20"/><circle cx="110" cy="284" r="15"/><circle cx="160" cy="312" r="18"/>
+            <circle cx="440" cy="292" r="18"/><circle cx="500" cy="308" r="22"/><circle cx="556" cy="284" r="17"/>
+          </g>
+          <path d="M300 340V212" class="s-sheet" stroke-width="22"/>
+          <g class="f-leaf"><circle cx="276" cy="250" r="8"/><circle cx="324" cy="250" r="8"/><circle cx="276" cy="272" r="8"/><circle cx="324" cy="272" r="8"/><circle cx="276" cy="294" r="8"/><circle cx="324" cy="294" r="8"/><circle cx="276" cy="316" r="8"/><circle cx="324" cy="316" r="8"/></g>
+          <text x="340" y="330" class="t-mut t-11">BIRCH AVENUE</text>
+
+          <!-- the wings that stayed -->
+          <g stroke-width="2" stroke-linejoin="round">
+            <rect x="80" y="152" width="96" height="54" class="f-y s-ink"/>
+            <path d="M72 152L128 124L184 152Z" class="f-ink s-ink"/>
+            <rect x="92" y="166" width="16" height="16" class="f-sheet s-ink" stroke-width="1.5"/><rect x="120" y="166" width="16" height="16" class="f-sheet s-ink" stroke-width="1.5"/><rect x="148" y="166" width="16" height="16" class="f-sheet s-ink" stroke-width="1.5"/>
+            <rect x="424" y="152" width="96" height="54" class="f-sheet s-ink"/>
+            <path d="M416 152L472 124L528 152Z" class="f-ink s-ink"/>
+            <rect x="436" y="166" width="16" height="16" class="f-land s-ink" stroke-width="1.5"/><rect x="464" y="166" width="16" height="16" class="f-land s-ink" stroke-width="1.5"/><rect x="492" y="166" width="16" height="16" class="f-land s-ink" stroke-width="1.5"/>
+          </g>
+          <text x="128" y="228" text-anchor="middle" class="t-b t-12">TOLSTOY’S HOME</text>
+          <text x="128" y="245" text-anchor="middle" class="t-serif t-14 t-mut">for the rest of his life</text>
+          <text x="472" y="228" text-anchor="middle" class="t-b t-12">THE OTHER WING</text>
+          <text x="472" y="245" text-anchor="middle" class="t-serif t-14 t-mut">his peasant school, 1859</text>
+
+          <!-- where the house was -->
+          <g class="fade" style="--del:2.7s">
+            <path d="M218 118H382V206H218ZM206 118L300 80L394 118" class="f-none s-mut" stroke-width="2" stroke-dasharray="6 5"/>
+            <text x="300" y="150" text-anchor="middle" class="t-it t-14">the house he was</text>
+            <text x="300" y="168" text-anchor="middle" class="t-it t-14">born in stood here</text>
+            <path d="M292 206V193Q300 185 308 193V206Z" class="f-mut s-ink" stroke-width="1.5"/>
+          </g>
+
+          <!-- flight path -->
+          <path d="M300 102C360 40 470 40 548 52" pathLength="1" class="d f-none s-ink" stroke-width="2" stroke-linecap="round" style="--del:1.25s;--dur:1.7s"/>
+          <path d="M557 53.5L545 57.5L547 46.5Z" class="f-ink fade" style="--del:2.8s"/>
+          <text x="590" y="84" text-anchor="end" class="t-b t-12 fade" style="--del:2.8s">SOLD, 1854</text>
+          <text x="590" y="101" text-anchor="end" class="t-serif t-14 t-mut fade" style="--del:2.9s">to pay card debts</text>
+
+          <!-- the main house, flown away at rest -->
+          <g class="house" stroke-linejoin="round">
+            <rect x="218" y="118" width="164" height="88" class="f-sheet s-ink" stroke-width="2"/>
+            <path d="M206 118L300 80L394 118Z" class="f-r s-ink" stroke-width="2"/>
+            <g class="f-land s-ink" stroke-width="1.5">
+              <rect x="230" y="132" width="16" height="18"/><rect x="258" y="132" width="16" height="18"/><rect x="286" y="132" width="16" height="18"/><rect x="314" y="132" width="16" height="18"/><rect x="342" y="132" width="16" height="18"/>
+              <rect x="230" y="168" width="16" height="18"/><rect x="258" y="168" width="16" height="18"/><rect x="314" y="168" width="16" height="18"/><rect x="342" y="168" width="16" height="18"/>
+            </g>
+            <rect x="291" y="174" width="18" height="32" class="f-ink"/>
+          </g>
+        </svg>
+      </div>
+      <figcaption><p>Schematic plan. A stone now marks where the house stood. The wing he kept was rebuilt and extended as his family grew.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 3 · 1851 -->
+<section class="scene" id="s1851" data-scene>
+  <div class="scene-head"><span class="stamp">1851–57</span><h2>Soldier, war reporter, celebrity</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>In 1851, bored and in debt, he followed his brother Nikolai to the Caucasus, where Russia was fighting a long war against the mountain peoples. Between raids he wrote a story called <i>Childhood</i>. A Petersburg magazine printed it in 1852, signed only “L. N.” Readers wanted to know who L. N. was.</p>
+        <p>Then came the Crimean War. Britain, France and the Ottoman Empire laid siege to the naval base at Sevastopol for <mark>349 days</mark>. Tolstoy served in a battery on the Fourth Bastion, the most dangerous spot in the city, and wrote sketches from inside the siege: no glory, just fear, mud and bodies.</p>
+        <p>Back in Petersburg he was a star, and quarreled with nearly everyone. In 1857 he went west. In Paris he watched a man guillotined, and wrote that he would never serve any government again.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>Russia loses the war in 1856. Its serf army, carrying muskets against rifles, is outclassed. The new tsar, Alexander II, concludes that the old order has to change.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 4</b> · The road to Sevastopol, and away</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body scroll-x"><svg id="map1" viewBox="0 0 593 629" style="--min:480px" role="img" aria-label="Map of western Russia with Tolstoy's routes: to Kazan 1844, the Caucasus 1851, the Danube 1854, Sevastopol 1854, St Petersburg 1855, and west to Paris 1857"></svg></div>
+      <ol class="legend">
+        <li><span class="chip">1844</span><b>Kazan.</b> University. Fails, switches to law, quits.</li>
+        <li><span class="chip">1851</span><b>Caucasus.</b> Joins his brother’s unit. Writes <i>Childhood</i>.</li>
+        <li><span class="chip">1854</span><b>Danube.</b> Artillery officer against the Turks.</li>
+        <li><span class="chip">Nov 1854</span><b>Sevastopol.</b> The siege. The Fourth Bastion.</li>
+        <li><span class="chip">1855</span><b>St Petersburg.</b> Literary celebrity.</li>
+        <li><span class="chip">1857</span><b>Paris.</b> Sees a guillotine. Turns against the state.</li>
+      </ol>
+    </figure>
+  </div>
+</section>
+
+<!-- 4 · 1861 -->
+<section class="scene flip" id="s1861" data-scene>
+  <div class="scene-head"><span class="stamp">1861</span><h2>Freedom, with a bill attached</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>On 3 March 1861, Alexander II freed the serfs: about 23 million people, more than five times the number enslaved in the United States at the time.</p>
+        <p>But freedom came with a bill. Peasants got less land than they had farmed, and <mark>had to pay for it over 49 years.</mark> The payments were cancelled only in 1907, after a revolution forced the tsar’s hand.</p>
+        <p>Tolstoy, home for good, served as a local “peace arbitrator” in land disputes. He sided with peasants so often that landowners petitioned to remove him. He also ran a free school for peasant children, with no grades and no punishments.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>1861 is also the year the American Civil War begins. In July 1862 the tsar’s police search Tolstoy’s school for a secret printing press. They find none.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 5</b> · The redemption debt</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body scroll-x">
+        <svg viewBox="0 0 600 190" style="--min:480px" role="img" aria-label="Bar from 1861: redemption payments planned for 49 years, cancelled in 1907">
+          <text x="78" y="58" class="t-b t-12">3 MAR 1861 · FREED</text>
+          <text x="78" y="76" class="t-serif t-14 t-mut">and billed for their land over 49 years</text>
+          <text x="548" y="58" text-anchor="end" class="t-b t-12 fade" style="--del:2.9s">1907 · CANCELLED</text>
+          <text x="548" y="76" text-anchor="end" class="t-serif t-14 t-mut fade" style="--del:3s">after the 1905 revolution</text>
+          <rect x="78" y="90" width="470.4" height="38" class="f-none s-ink" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <rect x="78" y="90" width="441.6" height="38" class="f-r gx" style="--del:.3s;--dur:2.6s"/>
+          <text x="298.8" y="114" text-anchor="middle" class="t-on-r t-b fade" style="--del:2.2s">REDEMPTION PAYMENTS</text>
+          <path d="M519.6 80l-6 8 12 8-12 8 12 8-12 8 12 8-6 4" class="f-none s-ink pop" stroke-width="3" stroke-linejoin="round" style="--del:2.9s"/>
+          <path d="M30 150H587M68.4 150v6M164.4 150v6M260.4 150v6M356.4 150v6M452.4 150v6M548.4 150v6" class="f-none s-ink" stroke-width="1.5"/>
+          <g text-anchor="middle"><text x="68.4" y="172" class="t-12">1860</text><text x="164.4" y="172" class="t-12">1870</text><text x="260.4" y="172" class="t-12">1880</text><text x="356.4" y="172" class="t-12">1890</text><text x="452.4" y="172" class="t-12">1900</text><text x="548.4" y="172" class="t-12">1910</text></g>
+        </svg>
+      </div>
+      <figcaption><p><span class="sw" style="background:var(--red)"></span>Years of payments. Dashed: the 49 years as planned. Each village’s clock started when it signed its settlement, from 1861 on.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 5 · 1862 -->
+<section class="scene" id="s1862" data-scene>
+  <div class="scene-head"><span class="stamp">1862</span><h2>Sophia, his first reader</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>In the autumn of 1862 he married Sophia Behrs, a court doctor’s daughter. He was 34. She was 18. Before the wedding he made her read his diaries, the gambling and the women included. She never forgot it.</p>
+        <p>She gave birth to 13 children in 25 years. Five died young. She ran the estate, handled his publishing, and <mark>copied his drafts by hand at night,</mark> often the only person who could read his writing. Family legend says she copied <i>War and Peace</i> seven times.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>1862: Turgenev publishes <i>Fathers and Sons</i>. A year earlier Tolstoy had challenged him to a duel after a quarrel over lunch. It never happened, but they did not make peace for 17 years.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 6</b> · A marriage, in numbers</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body scroll-x">
+        <svg viewBox="0 0 600 320" style="--min:500px" role="img" aria-label="Ages at the wedding: Lev 34, Sophia 18. Thirteen births from 1863 to 1888; eight children grew up, five died in childhood. War and Peace was written 1863 to 1869, Anna Karenina 1873 to 1877.">
+          <text x="0" y="20" class="t-mut t-11">AGES AT THE WEDDING, 1862</text>
+          <text x="74" y="57" text-anchor="end" class="t-b">LEV</text>
+          <rect x="84" y="38" width="408" height="26" class="f-ink gx" style="--del:.2s"/>
+          <text x="500" y="58" class="t-b t-16">34</text>
+          <text x="74" y="93" text-anchor="end" class="t-b">SOPHIA</text>
+          <rect x="84" y="74" width="216" height="26" class="f-r gx" style="--del:.5s"/>
+          <text x="308" y="94" class="t-b t-16">18</text>
+
+          <text x="0" y="150" class="t-mut t-11">13 BIRTHS IN 25 YEARS</text>
+          <g class="fade" style="--del:1.2s">
+            <rect x="79" y="180" width="114" height="10" class="f-y"/><text x="79" y="174" class="t-it t-14">War and Peace</text>
+            <rect x="269" y="180" width="76" height="10" class="f-y"/><text x="269" y="174" class="t-it t-14">Anna Karenina</text>
+          </g>
+          <g class="s-ink" stroke-width="2">
+            <circle cx="79" cy="222" r="8.5" class="f-ink pop" style="--del:1.5s"/>
+            <circle cx="98" cy="222" r="8.5" class="f-ink pop" style="--del:1.6s"/>
+            <circle cx="136" cy="222" r="8.5" class="f-ink pop" style="--del:1.7s"/>
+            <circle cx="193" cy="222" r="8.5" class="f-ink pop" style="--del:1.8s"/>
+            <circle cx="231" cy="222" r="8.5" class="f-ink pop" style="--del:1.9s"/>
+            <circle cx="250" cy="222" r="8.5" class="f-sheet pop" style="--del:2s"/>
+            <circle cx="288" cy="222" r="8.5" class="f-sheet pop" style="--del:2.1s"/>
+            <circle cx="307" cy="222" r="8.5" class="f-sheet pop" style="--del:2.2s"/>
+            <circle cx="345" cy="222" r="8.5" class="f-ink pop" style="--del:2.3s"/>
+            <circle cx="383" cy="222" r="8.5" class="f-ink pop" style="--del:2.4s"/>
+            <circle cx="421" cy="222" r="8.5" class="f-sheet pop" style="--del:2.5s"/>
+            <circle cx="478" cy="222" r="8.5" class="f-ink pop" style="--del:2.6s"/>
+            <circle cx="554" cy="222" r="8.5" class="f-sheet pop" style="--del:2.7s"/>
+          </g>
+          <path d="M60 246H592M117 246v6M212 246v6M307 246v6M402 246v6M497 246v6M592 246v6" class="f-none s-ink" stroke-width="1.5"/>
+          <g text-anchor="middle"><text x="117" y="268" class="t-12">1865</text><text x="212" y="268" class="t-12">1870</text><text x="307" y="268" class="t-12">1875</text><text x="402" y="268" class="t-12">1880</text><text x="497" y="268" class="t-12">1885</text><text x="580" y="268" class="t-12">1890</text></g>
+          <circle cx="66" cy="301" r="7" class="f-ink"/><text x="80" y="305" class="t-serif t-14">grew up · 8</text>
+          <circle cx="206" cy="301" r="7" class="f-sheet s-ink" stroke-width="2"/><text x="220" y="305" class="t-serif t-14">died in childhood · 5</text>
+        </svg>
+      </div>
+      <figcaption><p>Each dot is a birth, placed by year. Their last child, Vanechka, born 1888, died at seven.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 6 · 1863 -->
+<section class="scene wide" id="s1863" data-scene>
+  <div class="scene-head"><span class="stamp">1863–69</span><h2><i>War and Peace</i>: 1812, told fifty years later</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>With a wife, a home and money coming in, he began a novel about the Decembrists. To explain them he kept going back in time, until he reached Napoleon. It became <i>War and Peace</i>: four volumes and an epilogue, from Petersburg ballrooms to the field at Borodino.</p>
+        <p>Its hero is not Napoleon. It is history itself, and the millions of small choices no general controls. <mark>Great men, Tolstoy argued, only think they steer events.</mark></p>
+        <dl class="stats">
+          <div><dt>Years it covers</dt><dd class="num">1805–20</dd></div>
+          <div><dt>Characters</dt><dd class="num">500+</dd></div>
+          <div><dt>Years to write</dt><dd class="num">6</dd></div>
+        </dl>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile, in 1869</span><p>The year the novel is finished, Mendeleev publishes the periodic table, the Suez Canal opens, and in Paris a retired engineer, Charles Minard, draws the chart below of the very same war.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 7</b> · Napoleon’s march on Moscow, 1812</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body scroll-x">
+        <svg viewBox="0 0 700 330" style="--min:620px" role="img" aria-label="Flow chart after Minard: 422,000 men cross the Niemen, 100,000 reach Moscow, 10,000 get back, while temperatures fall to minus 30 degrees Réaumur">
+          <path d="M100 48V68M200 48V70M315 48V78M415 48V82M525 48V85M592 48V92" class="f-none s-mut" stroke-width="1" stroke-dasharray="2 3"/>
+          <g text-anchor="middle" class="t-12"><text x="100" y="40" class="t-12 t-b">KOWNO</text><text x="200" y="40" class="t-12 t-b">VILNA</text><text x="315" y="40" class="t-12 t-b">VITEBSK</text><text x="415" y="40" class="t-12 t-b">SMOLENSK</text><text x="525" y="40" class="t-12 t-b">BORODINO</text><text x="592" y="40" class="t-12 t-b">MOSCOW</text></g>
+          <g id="minard-bands" class="s-ink" stroke-width="1" stroke-linejoin="round"></g>
+          <path d="M236 180C242 195 238 214 248 232" class="f-none s-river" stroke-width="3" stroke-linecap="round"/>
+          <text x="244" y="250" text-anchor="middle" class="t-mut t-11">BEREZINA</text>
+          <text x="90" y="110" text-anchor="end" class="t-b t-15 fade" style="--del:.2s">422,000</text>
+          <text x="90" y="127" text-anchor="end" class="t-serif t-14 t-mut fade" style="--del:.2s">set out</text>
+          <text x="606" y="100" class="t-b t-15 fade" style="--del:2.8s">100,000</text>
+          <text x="606" y="117" class="t-serif t-14 t-mut fade" style="--del:2.8s">reach Moscow</text>
+          <text x="90" y="218" text-anchor="end" class="t-b t-15 fade" style="--del:5.4s">10,000</text>
+          <text x="90" y="235" text-anchor="end" class="t-serif t-14 t-mut fade" style="--del:5.4s">get back</text>
+          <path d="M592 262L505 273.7L415 289.3L350 276.3L250 288L200 293.2L150 301L100 295.8" pathLength="1" class="d f-none s-ink" stroke-width="1.5" style="--del:3.1s;--dur:2.4s;--ease:linear"/>
+          <g class="t-mut t-11 fade" style="--del:4.6s" text-anchor="middle">
+            <text x="592" y="255" class="t-mut t-11">0°</text><text x="505" y="290" class="t-mut t-11">−9°</text><text x="415" y="306" class="t-mut t-11">−21°</text><text x="350" y="293" class="t-mut t-11">−11°</text><text x="250" y="305" class="t-mut t-11">−20°</text><text x="200" y="310" class="t-mut t-11">−24°</text><text x="150" y="318" class="t-red t-11 t-b">−30°</text><text x="100" y="313" class="t-mut t-11">−26°</text>
+          </g>
+          <text x="690" y="322" text-anchor="end" class="t-mut t-11">TEMPERATURE ON THE RETREAT, °RÉAUMUR</text>
+        </svg>
+      </div>
+      <figcaption>
+        <p><span class="sw" style="background:var(--yellow);outline:1px solid var(--ink)"></span>The march east, June to September. <span class="sw" style="background:var(--ink)"></span>The retreat, October to December. Band width is the size of the army.</p>
+        <p>Simplified after Minard’s 1869 chart. −30 °Réaumur is about −37 °C.</p>
+        <span class="hint">Swipe sideways to see the whole chart →</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 7 · 1873 -->
+<section class="scene wide" id="s1873" data-scene>
+  <div class="scene-head"><span class="stamp">1873–77</span><h2><i>Anna Karenina</i> and the railway</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <blockquote class="opening"><p><mark>Happy families are all alike; every unhappy family is unhappy in its own way.</mark></p><cite>Opening line · tr. Constance Garnett, 1901</cite></blockquote>
+        <p><i>Anna Karenina</i> ran in a Moscow magazine from 1875 to 1877. A society woman leaves her husband for an officer, and pays for it with everything. The railway runs through the whole book, new, fast and dangerous. Anna meets her lover at a station, and dies under a train.</p>
+        <p>The editor refused to print the final part, because it mocked Russia’s volunteers for the war in Serbia. Tolstoy published it as a separate book.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>April 1877: Russia goes to war with the Ottoman Empire again, its third war with the Turks in Tolstoy’s lifetime.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 8</b> · The railway age, spaced by year</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body scroll-x">
+        <svg viewBox="0 0 700 190" style="--min:600px" role="img" aria-label="A train crosses a track with four stations: 1837 Russia's first railway, 1851 Moscow to St Petersburg line, 1877 Anna Karenina ends under a train, 1910 Tolstoy dies at Astapovo station">
+          <defs><pattern id="sl" width="14" height="13" patternUnits="userSpaceOnUse"><rect width="5" height="13" style="fill:var(--ink-2)"/></pattern></defs>
+          <path d="M83 64V121M188 64V121M384 64V121M632 64V121" class="s-ink" stroke-width="2"/>
+          <rect x="0" y="119" width="700" height="13" fill="url(#sl)"/>
+          <path d="M0 121H700M0 130H700" class="s-ink" stroke-width="2.5"/>
+          <g text-anchor="middle" class="t-serif">
+            <text x="83" y="156" class="t-serif t-14">Russia’s first</text><text x="83" y="173" class="t-serif t-14">railway</text>
+            <text x="188" y="156" class="t-serif t-14">Moscow to</text><text x="188" y="173" class="t-serif t-14">St Petersburg</text>
+            <text x="384" y="156" class="t-it t-14">Anna Karenina</text><text x="384" y="173" class="t-serif t-14">ends under a train</text>
+            <text x="632" y="156" class="t-serif t-14 t-bb">Tolstoy dies at</text><text x="632" y="173" class="t-serif t-14 t-bb">Astapovo station</text>
+          </g>
+          <g class="train">
+            <circle class="puff" cx="-21" cy="72" r="7" style="fill:var(--ink-2);--del:.4s"/>
+            <circle class="puff" cx="-21" cy="72" r="6" style="fill:var(--ink-2);--del:.95s"/>
+            <path d="M-220 110H-80" class="s-ink" stroke-width="2.5"/>
+            <g class="s-ink" stroke-width="2">
+              <rect x="-223" y="84" width="66" height="5" class="f-ink"/><rect x="-220" y="89" width="60" height="25" rx="2" class="f-sheet"/>
+              <rect x="-153" y="84" width="66" height="5" class="f-ink"/><rect x="-150" y="89" width="60" height="25" rx="2" class="f-sheet"/>
+            </g>
+            <g class="f-ink"><rect x="-212" y="95" width="10" height="9"/><rect x="-196" y="95" width="10" height="9"/><rect x="-180" y="95" width="10" height="9"/><rect x="-142" y="95" width="10" height="9"/><rect x="-126" y="95" width="10" height="9"/><rect x="-110" y="95" width="10" height="9"/></g>
+            <rect x="-60" y="95" width="52" height="20" rx="4" class="f-ink"/>
+            <path d="M-27 95L-25 82L-29 78H-13L-17 82L-15 95Z" class="f-ink"/>
+            <circle cx="-42" cy="95" r="5" class="f-ink"/>
+            <rect x="-80" y="84" width="24" height="31" class="f-r"/><rect x="-83" y="80" width="30" height="5" class="f-ink"/><rect x="-75" y="89" width="14" height="10" class="f-sheet"/>
+            <path d="M-8 106L4 121H-8Z" class="f-ink"/>
+            <rect x="-6" y="90" width="5" height="6" class="f-y"/>
+            <g class="f-ink s-sheet" stroke-width="1.5"><circle cx="-210" cy="116" r="5"/><circle cx="-170" cy="116" r="5"/><circle cx="-140" cy="116" r="5"/><circle cx="-100" cy="116" r="5"/><circle cx="-70" cy="114" r="7"/><circle cx="-52" cy="114" r="7"/><circle cx="-32" cy="116" r="5"/><circle cx="-16" cy="116" r="5"/></g>
+          </g>
+          <g><rect x="57" y="40" width="52" height="24" class="f-y"/><text x="83" y="57" text-anchor="middle" class="t-on-y t-b">1837</text></g>
+          <g><rect x="162" y="40" width="52" height="24" class="f-y"/><text x="188" y="57" text-anchor="middle" class="t-on-y t-b">1851</text></g>
+          <g><rect x="358" y="40" width="52" height="24" class="f-r"/><text x="384" y="57" text-anchor="middle" class="t-on-r t-b">1877</text></g>
+          <g><rect x="606" y="40" width="52" height="24" class="f-ink"/><text x="632" y="57" text-anchor="middle" class="t-paper t-b">1910</text></g>
+        </svg>
+      </div>
+      <figcaption><p>The railway arrived in Tolstoy’s lifetime. It carried his most famous heroine to her death, and it would carry him to his.</p><span class="hint">Swipe sideways to see the whole chart →</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 8 · 1879 -->
+<section class="scene flip" id="s1879" data-scene>
+  <div class="scene-head"><span class="stamp">1879–82</span><h2>Everything, and no reason to live</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>At fifty Tolstoy had what anyone could want. Then a question stopped him cold, and would not leave: what is the point?</p>
+        <p>In <i>A Confession</i> he describes hiding a cord so he would not hang himself from the crossbeam in his room, and giving up hunting so he would not be tempted to turn the gun on himself.</p>
+        <p>He looked for an answer in science, philosophy and the Orthodox Church. He found it, he decided, in the Sermon on the Mount, <mark>read literally:</mark> love your enemies, do not resist evil with force, own nothing.</p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>March 1881: revolutionaries kill Alexander II with a bomb. Tolstoy writes to the new tsar, Alexander III, begging him to forgive the killers. Five are hanged in April.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 9</b> · The balance sheet, around 1879</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body">
+        <ul class="ledger">
+          <li style="--del:.2s"><span class="k">Fame</span><span class="v"><i>War and Peace</i> and <i>Anna Karenina</i></span><b class="tick" aria-label="yes">✓</b></li>
+          <li style="--del:.6s"><span class="k">Money</span><span class="v">Estates, new land in Samara, book income</span><b class="tick" aria-label="yes">✓</b></li>
+          <li style="--del:1s"><span class="k">Family</span><span class="v">A devoted wife, a houseful of children</span><b class="tick" aria-label="yes">✓</b></li>
+          <li style="--del:1.4s"><span class="k">Health</span><span class="v">Could mow a meadow alongside his peasants</span><b class="tick" aria-label="yes">✓</b></li>
+          <li class="no" style="--del:2s"><span class="k">Meaning</span><span class="v">A reason for any of it</span><b class="cross" aria-label="no">✕</b></li>
+        </ul>
+        <p class="ledger-q">“What will come of my whole life?”</p>
+      </div>
+      <figcaption><p>Condensed from <i>A Confession</i> (1882), tr. Aylmer Maude. The censors banned it; it was printed in Geneva.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 9 · 1882 -->
+<section class="scene wide" id="s1882" data-scene>
+  <div class="scene-head"><span class="stamp">1882–1908</span><h2>The count in peasant boots</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>He dressed like a peasant, ploughed, and made his own boots. He walked from Moscow to Yasnaya Polyana, about 200 km, more than once. He signed his estates over to his family and gave up the copyright on everything he wrote after 1881. Sophia, left to keep a large household afloat, fought him over it for the rest of their marriage.</p>
+        <p>His new books attacked the state, the army and the Church. The censors banned them; they spread anyway, copied by hand and printed abroad. In 1901 the Holy Synod excommunicated him. That year the publisher Aleksey Suvorin wrote in his diary that <mark>Russia had two tsars: Nicholas II and Leo Tolstoy.</mark></p>
+      </div>
+      <aside class="meanwhile"><span class="label">Meanwhile</span><p>1891–92: famine on the Volga; Tolstoy and his daughters run hundreds of free kitchens. 1905: revolution. 1908: he records his voice on an Edison phonograph, and Prokudin-Gorsky takes his portrait, one of the earliest color photographs made in Russia.</p></aside>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 10</b> · What he gave up, and what he set moving</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body">
+        <h3 class="sub">Given up</h3>
+        <ul class="gaveup">
+          <li style="--del:.3s"><s>Meat</s><small>1885</small></li>
+          <li style="--del:.5s"><s>Hunting</s><small>1880s</small></li>
+          <li style="--del:.7s"><s>Alcohol</s><small>1880s</small></li>
+          <li style="--del:.9s"><s>Tobacco</s><small>1888</small></li>
+          <li style="--del:1.1s"><s>Copyright</s><small>work after 1881 · 1891</small></li>
+          <li style="--del:1.3s"><s>His estates</s><small>to his family · 1892</small></li>
+          <li style="--del:1.5s"><s>The Church</s><small>it expelled him · 1901</small></li>
+        </ul>
+        <h3 class="sub next">Set moving</h3>
+        <ol class="chain">
+          <li style="--del:1.9s"><span class="yr">1894</span><b>Tolstoy</b>publishes <i>The Kingdom of God Is Within You</i>: never answer violence with violence.</li>
+          <li style="--del:2.3s"><span class="yr">1894</span><b>Gandhi</b>a 24-year-old lawyer in South Africa, reads it and is overwhelmed. They exchange letters; in 1910 he names his commune Tolstoy Farm.</li>
+          <li style="--del:2.7s"><span class="yr">1955</span><b>Martin Luther King Jr.</b>brings Gandhi’s nonviolent resistance to the Montgomery bus boycott.</li>
+        </ol>
+        <p class="branch"><span class="yr">1899</span> Meanwhile, 7,500 Doukhobors, pacifist peasants punished for refusing to bear arms, sail to Canada. Tolstoy pays for the voyage with the fees from his last novel, <i>Resurrection</i>.</p>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- 10 · 1910 -->
+<section class="scene flip" id="s1910" data-scene data-fx="journey">
+  <div class="scene-head"><span class="stamp">1910</span><h2>Ten days in November</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>Home had become a war. Sophia and his disciple Vladimir Chertkov fought over his diaries, his copyrights and his will. In the summer of 1910 he signed a secret will in the woods, leaving his work to the public.</p>
+        <p>Before dawn on 10 November, aged 82, he slipped out with his doctor. His note to Sophia said he was doing what old men often do: leaving worldly life to spend his last days in quiet.</p>
+        <p>He caught pneumonia on the train. At the small junction of Astapovo he was carried into the stationmaster’s house. Reporters, film crews and police filled the platform. <mark>Sophia was kept outside until he was unconscious.</mark></p>
+      </div>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 11</b> · The last journey</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body"><svg id="map2" viewBox="0 0 440 245" role="img" aria-label="Map of Tolstoy's final journey: from Yasnaya Polyana west to Optina Pustyn and Shamordino, then by train southeast to Astapovo"></svg></div>
+      <ol class="journey">
+        <li><time>10 Nov · before dawn</time><span>Leaves Yasnaya Polyana in secret with his doctor, Dušan Makovický.</span></li>
+        <li><time>10 Nov · evening</time><span>Optina Pustyn monastery, near Kozelsk.</span></li>
+        <li><time>11–12 Nov</time><span>Shamordino convent, to see his sister Maria, a nun. Word arrives: Sophia has tried to drown herself in the pond.</span></li>
+        <li><time>13 Nov</time><span>Boards a third-class train heading south. Fever by afternoon.</span></li>
+        <li><time>13 Nov · evening</time><span>Carried off at Astapovo, into the stationmaster’s house.</span></li>
+        <li><time>20 Nov · 6:05 a.m.</time><span>Dies. He was 82.</span></li>
+      </ol>
+    </figure>
+  </div>
+</section>
+
+<!-- epilogue -->
+<section class="scene" id="s-end" data-scene>
+  <div class="scene-head"><span class="stamp">After</span><h2>A grave with no name</h2></div>
+  <div class="scene-body">
+    <div class="copy">
+      <div class="text">
+        <p>When they were boys, his brother Nikolai told him the secret of how to make all people happy was written on a green stick, buried at the edge of a ravine in the woods at Yasnaya Polyana. Tolstoy asked to be buried on that spot.</p>
+        <p>He was. There is no cross, no stone, no name, just a low mound of grass under the trees. The station at Astapovo now carries his name. His collected works fill 90 volumes.</p>
+      </div>
+    </div>
+    <figure class="frame">
+      <div class="frame-bar"><span><b>Fig 12</b> · Stary Zakaz forest, Yasnaya Polyana</span><button class="replay" type="button">↻ Replay</button></div>
+      <div class="frame-body">
+        <svg viewBox="0 0 600 240" role="img" aria-label="A grassy mound between trees with no cross or stone; underground, the legendary green stick">
+          <g class="f-mut"><rect x="36" y="0" width="16" height="192"/><rect x="118" y="0" width="12" height="192"/><rect x="468" y="0" width="14" height="194"/><rect x="540" y="0" width="18" height="206"/></g>
+          <g class="f-leaf"><circle cx="44" cy="0" r="70"/><circle cx="124" cy="20" r="46"/><circle cx="474" cy="10" r="58"/><circle cx="548" cy="-6" r="72"/></g>
+          <path d="M0 190H420C470 192 520 222 600 226V240H0Z" class="f-land"/>
+          <path d="M0 190H420C470 192 520 222 600 226" class="f-none s-ink" stroke-width="2"/>
+          <path d="M214 191C236 158 364 158 386 191Z" class="f-leaf s-ink gy" stroke-width="2.5" stroke-linejoin="round" style="--del:.3s;--dur:1s"/>
+          <path d="M252 172l-3-7M270 166l0-7M300 163l2-7M330 166l3-7M350 172l4-6" class="f-none s-ink fade" stroke-width="1.5" stroke-linecap="round" style="--del:1.2s"/>
+          <path d="M276 216L332 209" class="f-none s-green d" pathLength="1" stroke-width="6" stroke-linecap="round" style="--del:3.2s;--dur:.7s"/>
+          <text x="345" y="219" class="t-it t-14 fade" style="--del:3.6s">the green stick, as legend has it</text>
+          <text x="190" y="120" text-anchor="middle" class="t-it t-22 fade" style="--del:1.4s">No cross.</text>
+          <text x="300" y="120" text-anchor="middle" class="t-it t-22 fade" style="--del:2s">No stone.</text>
+          <text x="410" y="120" text-anchor="middle" class="t-it t-22 fade" style="--del:2.6s">No name.</text>
+        </svg>
+      </div>
+      <figcaption><p>Buried on 22 November 1910 at the ravine’s edge, as he asked.</p></figcaption>
+    </figure>
+  </div>
+</section>
+
+<footer class="notes">
+  <p class="label">Notes on dates and numbers</p>
+  <p>Dates are New Style. Russia kept the Julian calendar until 1918, 12 days behind the West in the 1800s and 13 after 1900. By the Russian calendar Tolstoy was born on 28 August and died on 7 November.</p>
+  <p>Serf figures come from the tenth tax census, 1857–58, for the 50 provinces of European Russia. Army sizes and temperatures follow Minard’s 1869 chart, simplified. The estate plan is schematic; the maps are drawn to scale.</p>
+</footer>
+</main>
+
+<script>
+(() => {
+  const d = document;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (tag, attrs, parent, text) => {
+    const e = d.createElementNS(NS, tag);
+    for (const k in attrs || {}) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+  // equirectangular projection, scaled for the map's middle latitude
+  const proj = (lon0, lat1, K, latRef) => {
+    const kx = K * Math.cos(latRef * Math.PI / 180);
+    return ([lon, lat]) => [+((lon - lon0) * kx).toFixed(1), +((lat1 - lat) * K).toFixed(1)];
+  };
+  const pathOf = (pts, P, close) => 'M' + pts.map(p => P(p).join(' ')).join('L') + (close ? 'Z' : '');
+  const f1 = n => n.toFixed(1);
+
+  /* Fig 2 · 60 people, 22 serfs */
+  const units = d.getElementById('units');
+  if (units) for (let i = 0; i < 60; i++) {
+    const g = mk('g', { transform: `translate(${57 + (i % 10) * 54} ${45 + Math.floor(i / 10) * 50})` }, units);
+    const p = mk('g', { class: 'person pop' + (i < 22 ? ' serf' : ''), style: `--del:${i * 22}ms;--del2:${1500 + i * 45}ms` }, g);
+    mk('circle', { cy: -12, r: 7 }, p);
+    mk('path', { d: 'M-10 14C-10 1-6-3 0-3S10 1 10 14Z' }, p);
+  }
+
+  /* Fig 4 · map of western Russia */
+  const m1 = d.getElementById('map1');
+  if (m1) {
+    const P = proj(24, 60.5, 34, 51.5);
+    const water = [
+      [[30.7,46.5],[31.5,46.6],[32,46.45],[32.6,46.1],[33.6,46.15],[33,45.85],[32.5,45.4],[33.2,45.2],[33.55,44.85],[33.5,44.6],[33.7,44.45],[34.1,44.42],[34.5,44.55],[35.1,44.8],[35.5,45.05],[36,45],[36.45,45.1],[36.6,45.35],[36.8,45.2],[37.3,44.95],[37.8,44.7],[38.5,44.35],[39.2,43.95],[39.8,43.55],[40.5,43.05],[41.1,42.6],[41.6,41.95],[41.6,41.6],[41.4,41.3],[40.5,40.95],[39.6,41],[38.3,40.95],[37.2,41.15],[36.3,41.5],[35.2,42],[34.2,41.95],[33.2,42],[32.2,41.7],[31.3,41.2],[30.2,41.15],[29.1,41.2],[28.1,41.6],[28,42],[27.5,42.45],[27.9,42.8],[27.95,43.2],[28.6,43.8],[28.65,44.2],[29.1,44.8],[29.7,45.2],[29.8,45.6],[30.25,45.9]],
+      [[34.9,46.1],[35.8,46.4],[36.8,46.75],[37.6,47.05],[38.4,47.15],[39.2,47.25],[38.9,47],[38.3,46.65],[37.9,46.05],[37.6,45.55],[36.8,45.35],[36.6,45.42],[36,45.38],[35.4,45.3],[35.1,45.6]],
+      [[46.8,44.8],[47.1,45.7],[47.6,45.85],[48.1,46.25],[49,46.55],[50,46.8],[51.3,47.1],[52.6,46.95],[53.1,46.5],[52.8,45.6],[51.9,45.3],[51.3,44.6],[50.4,44.4],[51.2,43.6],[52.3,42.9],[52.8,42],[52.8,41],[53.9,40.3],[53.6,38.5],[49,38.5],[49.3,40.2],[50.3,40.4],[49.6,40.65],[49.1,41.3],[48.5,41.95],[47.8,42.8],[47.45,43.4],[47.5,44],[47,44.4]],
+      [[24,59.45],[25.8,59.55],[27,59.45],[28.2,59.55],[29.2,59.88],[30.25,59.93],[29.5,60.1],[28.6,60.45],[27,60.45],[25.5,60.25],[24,60.1]]
+    ];
+    const volga = [[32.5,57.25],[34,56.9],[35.9,56.86],[37.2,56.75],[38.3,57.4],[38.85,58.05],[39.9,57.6],[40.9,57.75],[42.2,57.4],[44,56.33],[45.6,56.1],[47.2,56.15],[48.5,55.85],[49.2,55.75],[49,55.1],[48.4,54.3],[49.6,53.4],[50.1,53.2],[48.9,52.1],[47.4,51.9],[46,51.5],[45.4,50.3],[44.5,48.7],[45.8,47.8],[47.2,46.9],[48,46.35],[47.9,45.9]];
+    mk('rect', { width: 593, height: 629, class: 'f-land' }, m1);
+    water.forEach(w => mk('path', { d: pathOf(w, P, 1), class: 'f-water' }, m1));
+    mk('path', { d: pathOf(volga, P), class: 'f-none s-river', 'stroke-width': 2.4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, m1);
+    const at = (ll, txt, cls, anchor = 'middle') => { const [x, y] = P(ll); return mk('text', { x, y, class: cls, 'text-anchor': anchor }, m1, txt); };
+    at([37.6, 42.75], 'Black Sea', 't-sea');
+    at([50, 45.7], 'Caspian', 't-sea');
+    at([50.6, 53.0], 'Volga', 't-sea', 'start');
+    mk('text', { x: 270, y: 360, class: 't-wm', 'text-anchor': 'middle' }, m1, 'RUSSIAN EMPIRE');
+    mk('path', { d: 'M420 24H573M420 19v10M573 19v10', class: 'f-none s-ink', 'stroke-width': 1.5 }, m1);
+    mk('text', { x: 496.5, y: 44, class: 't-11', 'text-anchor': 'middle' }, m1, '500 KM');
+
+    const C = { Y: [37.52,54.07], M: [37.62,55.75], P: [30.3,59.94], K: [49.12,55.79], C: [45.7,43.5], B: [26.1,44.43], S: [33.52,44.6] };
+    const routes = [['Y','K',-.18,'1844'],['Y','C',-.2,'1851'],['C','B',.28,'1854'],['B','S',-.3,'NOV 1854'],['S','P',-.12,'1855'],['P',null,.15,'1857 · PARIS']];
+    const gR = mk('g', {}, m1), gC = mk('g', {}, m1);
+    routes.forEach(([a, b, bend, chip], i) => {
+      const A = P(C[a]), B = b ? P(C[b]) : [2, 112];
+      const dx = B[0] - A[0], dy = B[1] - A[1];
+      const cx = (A[0] + B[0]) / 2 - dy * bend, cy = (A[1] + B[1]) / 2 + dx * bend;
+      const tl = Math.hypot(B[0] - cx, B[1] - cy), ux = (B[0] - cx) / tl, uy = (B[1] - cy) / tl;
+      const E = b ? [B[0] - ux * 10, B[1] - uy * 10] : B;
+      const del = .3 + i * .9;
+      mk('path', { d: `M${A[0]} ${A[1]}Q${f1(cx)} ${f1(cy)} ${f1(E[0])} ${f1(E[1])}`, pathLength: 1, class: 'd f-none s-r', 'stroke-width': 3, 'stroke-linecap': 'round', style: `--del:${del}s;--dur:.8s` }, gR);
+      const bx = E[0] - ux * 9, by = E[1] - uy * 9, px = -uy * 5, py = ux * 5;
+      mk('path', { d: `M${f1(E[0] + ux * 2)} ${f1(E[1] + uy * 2)}L${f1(bx + px)} ${f1(by + py)}L${f1(bx - px)} ${f1(by - py)}Z`, class: 'f-r fade', style: `--del:${del + .7}s` }, gR);
+      const qx = (A[0] + 2 * cx + E[0]) / 4, qy = (A[1] + 2 * cy + E[1]) / 4, w = chip.length * 7.8 + 12;
+      const g = mk('g', { class: 'pop', style: `--del:${del + .45}s` }, gC);
+      mk('rect', { x: f1(qx - w / 2), y: f1(qy - 11), width: f1(w), height: 22, rx: 2, class: 'f-y' }, g);
+      mk('text', { x: f1(qx), y: f1(qy + 4.5), 'text-anchor': 'middle', class: 't-on-y t-b' }, g, chip);
+    });
+    const [sx, sy] = P(C.S);
+    mk('circle', { cx: sx, cy: sy, r: 12, class: 'ring f-none s-r', 'stroke-width': 2.5, style: '--del:4s' }, m1);
+    const city = (k, name, anchor, dx, dy, home) => {
+      const [x, y] = P(C[k]);
+      mk('circle', home ? { cx: x, cy: y, r: 8, class: 'f-y s-ink', 'stroke-width': 2.5 } : { cx: x, cy: y, r: 5, class: 'f-ink s-land', 'stroke-width': 2 }, m1);
+      mk('text', { x: x + dx, y: y + dy, 'text-anchor': anchor, class: 't-serif t-15 halo' + (home ? ' t-bb' : '') }, m1, name);
+    };
+    city('Y', 'Yasnaya Polyana', 'start', 12, 5, true);
+    city('M', 'Moscow', 'end', -10, -2);
+    city('P', 'St Petersburg', 'start', 10, 6);
+    city('K', 'Kazan', 'middle', 0, -14);
+    city('C', 'Caucasus front', 'middle', 0, 24);
+    city('B', 'Bucharest', 'start', -10, 24);
+    city('S', 'Sevastopol', 'middle', 0, 25);
+    mk('text', { x: sx, y: sy + 43, 'text-anchor': 'middle', class: 't-red t-b t-12 halo' }, m1, '349-DAY SIEGE');
+  }
+
+  /* Fig 7 · Minard bands, built from centre lines [x, y, width] */
+  const mn = d.getElementById('minard-bands');
+  if (mn) {
+    const band = pts => {
+      const L = [], R = [];
+      pts.forEach((p, i) => {
+        const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+        const l = Math.hypot(b[0] - a[0], b[1] - a[1]), nx = -(b[1] - a[1]) / l * p[2] / 2, ny = (b[0] - a[0]) / l * p[2] / 2;
+        L.push([p[0] + nx, p[1] + ny]); R.push([p[0] - nx, p[1] - ny]);
+      });
+      return 'M' + L.concat(R.reverse()).map(q => f1(q[0]) + ' ' + f1(q[1])).join('L') + 'Z';
+    };
+    // 0.2 px per 1,000 men
+    mk('path', { d: band([[100,112,84.4],[200,106,68],[315,101,42],[415,99,29],[525,100,25.4],[592,104,20]]), class: 'f-y rev-l', style: '--del:.3s;--dur:2.6s' }, mn);
+    mk('path', { d: band([[599,122,20],[578,160,19],[525,176,17.4],[415,194,11],[315,203,7.4],[240,208,4.6],[200,211,2.8],[100,214,2.2]]), class: 'f-ink rev-r', style: '--del:3.1s;--dur:2.4s' }, mn);
+  }
+
+  /* Fig 11 · the last journey */
+  const m2 = d.getElementById('map2');
+  if (m2) {
+    const P = proj(34.9, 54.6, 140, 53.7);
+    mk('rect', { width: 440, height: 245, class: 'f-land' }, m2);
+    const river = pts => mk('path', { d: pathOf(pts, P), class: 'f-none s-river', 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, m2);
+    river([[36,52.85],[36.1,53.3],[36.13,53.81],[36.3,54.1],[36.27,54.5],[36.6,54.45],[37.07,54.5],[37.2,54.62]]);
+    river([[38.28,54],[38.5,53.75],[38.8,53.5],[39.15,53.26],[39.3,53],[39.2,52.84]]);
+    const txt = (ll, dx, dy, s, cls, anchor = 'start') => { const [x, y] = P(ll); return mk('text', { x: x + dx, y: y + dy, class: cls, 'text-anchor': anchor }, m2, s); };
+    txt([36.45, 54.25], 0, 0, 'Oka', 't-sea');
+    txt([38.8, 53.7], 0, 0, 'Don', 't-sea');
+    txt([37.62, 54.58], -20, 14, '↑ TO MOSCOW', 't-mut t-11');
+    mk('path', { d: 'M16 230H79M16 225v10M79 225v10', class: 'f-none s-ink', 'stroke-width': 1.5 }, m2);
+    mk('text', { x: 47.5, y: 220, 'text-anchor': 'middle', class: 't-11' }, m2, '50 KM');
+    const legs = [
+      [[37.52,54.07],[37.5,54],[37,53.94],[36.4,53.99],[35.85,54.03],[35.83,54.05]],
+      [[35.83,54.05],[35.9,54.01],[35.97,53.97]],
+      [[35.97,53.97],[35.8,54],[36.13,53.81],[36.8,53.9],[37.5,53.75],[38.02,53.56],[38.7,53.4],[39.15,53.26],[39.45,53.21]]
+    ];
+    const timing = ['--del:.3s;--dur:1.6s', '--del:2.1s;--dur:.6s', '--del:3s;--dur:2.4s'];
+    legs.forEach((pts, i) => {
+      const dd = pathOf(pts, P);
+      mk('path', { d: dd, pathLength: 1, class: 'd f-none s-r', 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', style: timing[i] + ';--ease:linear' }, m2);
+      mk('path', { d: dd, class: 'leg-m f-none', visibility: 'hidden' }, m2);
+    });
+    const spot = (ll, r, cls, name, dx, dy, lcls, anchor = 'start') => {
+      const [x, y] = P(ll);
+      mk('circle', { cx: x, cy: y, r, class: cls, 'stroke-width': 2 }, m2);
+      if (name) mk('text', { x: x + dx, y: y + dy, class: lcls + ' halo', 'text-anchor': anchor }, m2, name);
+    };
+    spot([37.62,54.19], 3.5, 'f-mut', 'Tula', 7, -5, 't-serif t-14 t-mut');
+    spot([36.13,53.81], 3.5, 'f-mut', 'Belyov', 7, 14, 't-serif t-14 t-mut');
+    spot([38.02,53.56], 3.5, 'f-mut', 'Volovo', -7, 15, 't-serif t-14 t-mut', 'end');
+    spot([39.15,53.26], 3.5, 'f-mut');
+    spot([37.52,54.07], 7, 'f-y s-ink', 'Yasnaya Polyana', 11, 16, 't-serif t-14 t-bb');
+    spot([35.83,54.05], 4.5, 'f-ink s-land', 'Optina Pustyn', 8, -9, 't-serif t-14');
+    spot([35.97,53.97], 4.5, 'f-ink s-land', 'Shamordino', -8, 15, 't-serif t-14', 'end');
+    const [ax, ay] = P([39.45, 53.21]);
+    mk('circle', { cx: ax, cy: ay, r: 9, class: 'f-sheet s-r', 'stroke-width': 3 }, m2);
+    mk('circle', { cx: ax, cy: ay, r: 12, class: 'ring f-none s-r', 'stroke-width': 2.5, style: '--del:5.6s' }, m2);
+    mk('text', { x: ax - 12, y: ay + 22, class: 't-serif t-15 t-bb halo', 'text-anchor': 'end' }, m2, 'Astapovo');
+    mk('circle', { id: 'j-dot', cx: ax, cy: ay, r: 6, class: 'f-r s-sheet', 'stroke-width': 2 }, m2);
+    mk('rect', { x: 330, y: 10, width: 100, height: 26, rx: 2, class: 'f-y' }, m2);
+    mk('text', { id: 'j-day', x: 380, y: 27.5, 'text-anchor': 'middle', class: 't-on-y t-b t-12' }, m2, '20 NOV 1910');
+  }
+
+  /* playback: CSS does the drawing, JS only moves playheads */
+  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  const tween = (s, run, ms, fn, delay = 0) => new Promise(res => setTimeout(() => {
+    const t0 = performance.now();
+    const step = now => {
+      if (s._run !== run) return res(false);
+      const t = Math.min(1, (now - t0) / ms);
+      fn(t);
+      t < 1 ? requestAnimationFrame(step) : res(true);
+    };
+    requestAnimationFrame(step);
+  }, delay));
+  const fx = {
+    lifeline(s, run) {
+      const ph = s.querySelector('#playhead'), tx = s.querySelector('#ph-txt');
+      tween(s, run, 5600, t => {
+        const e = ease(t), yr = 1828 + 82 * e;
+        ph.setAttribute('transform', `translate(${f1(60 + (yr - 1828) * 880 / 82)} 0)`);
+        tx.textContent = `${Math.floor(yr)} · AGE ${Math.floor(82 * e)}`;
+      }, 400);
+    },
+    async journey(s, run) {
+      const legs = [...s.querySelectorAll('.leg-m')], dot = s.querySelector('#j-dot'), day = s.querySelector('#j-day');
+      const plan = [[300, 1600, '10 NOV 1910'], [2100, 600, '11 NOV 1910'], [3000, 2400, '13 NOV 1910']];
+      const t0 = performance.now();
+      for (let i = 0; i < plan.length; i++) {
+        const [start, ms, label] = plan[i], L = legs[i].getTotalLength();
+        const ok = await tween(s, run, ms, t => {
+          day.textContent = label;
+          const p = legs[i].getPointAtLength(L * t);
+          dot.setAttribute('cx', f1(p.x)); dot.setAttribute('cy', f1(p.y));
+        }, Math.max(0, start - (performance.now() - t0)));
+        if (!ok) return;
+      }
+      if (await tween(s, run, 1, () => {}, 700)) day.textContent = '20 NOV 1910';
+    }
+  };
+  const play = s => {
+    s._run = (s._run || 0) + 1;
+    s.classList.remove('play');
+    void s.offsetWidth;
+    s.classList.add('play');
+    if (!reduce && fx[s.dataset.fx]) fx[s.dataset.fx](s, s._run);
+  };
+  d.addEventListener('click', e => { const b = e.target.closest('.replay'); if (b) play(b.closest('[data-scene]')); });
+  if (reduce || !('IntersectionObserver' in window)) return;
+  const seen = new WeakSet();
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    io.unobserve(e.target);
+    const s = e.target.closest('[data-scene]');
+    if (!seen.has(s)) { seen.add(s); play(s); }
+  }), { threshold: .3 });
+  d.querySelectorAll('[data-scene] .frame').forEach(f => io.observe(f));
+})();
+</script>
