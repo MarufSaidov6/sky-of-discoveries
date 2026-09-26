@@ -26,19 +26,22 @@ body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 var(--ser
 
 #labels{position:fixed;inset:0;pointer-events:none;overflow:hidden}
 .lbl{position:absolute;left:0;top:0;pointer-events:auto;background:none;border:0;margin:0;padding:3px 6px;color:var(--text);font:400 14px/1.15 var(--serif);white-space:nowrap;cursor:pointer;text-align:left;text-shadow:0 1px 8px #000,0 0 3px #000;transition:opacity .3s,filter .25s,color .2s}
-.ck{display:inline-block;width:14px;height:14px;margin-right:6px;border-radius:50%;background:var(--yellow);color:#161616;font:700 9px/14px var(--mono);font-style:normal;text-align:center;vertical-align:1px;text-shadow:none}
-.ck.q{background:none;border:1px dashed var(--hint);color:var(--hint);line-height:12px;width:12px;height:12px}
+.ck{display:inline-block;width:14px;height:14px;margin-right:6px;border-radius:50%;background:var(--c,var(--yellow));color:#161616;font:700 9px/14px var(--mono);font-style:normal;text-align:center;vertical-align:1px;text-shadow:none}
+.ck.q{background:none;border:1px dashed var(--c,var(--hint));color:var(--c,var(--hint));line-height:12px;width:12px;height:12px}
 .lbl.k-root{font:900 28px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;color:#FFF1B0}
 .lbl.k-root .ck{display:none}
 .lbl.k-page{font:800 21px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
 .lbl.k-note{font:700 18px/1 var(--display);text-transform:uppercase;color:var(--note)}
 .lbl.k-note .ck{background:var(--note)}
 .lbl small{display:block;margin:4px 0 0 20px;font:500 10px/1.2 var(--mono);letter-spacing:.08em;color:var(--mut)}
-.bud{display:inline-block;margin-left:8px;padding:3px 6px;border:1px dashed var(--hint);border-radius:999px;font:600 10px/1 var(--mono);font-style:normal;color:var(--hint);vertical-align:2px;text-shadow:none}
+.bud{display:inline-block;margin-left:8px;padding:3px 6px;border:1px solid var(--c,var(--hint));border-radius:999px;font:600 10px/1 var(--mono);font-style:normal;color:var(--c,var(--hint));vertical-align:2px;text-shadow:none;animation:ping 2.2s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 var(--c,var(--hint))}100%{box-shadow:0 0 0 10px rgba(0,0,0,0)}}
 .bud[hidden]{display:none}
-.lbl.hint{color:var(--hint);font-style:italic;filter:blur(1.8px)}
-.lbl.hint.hov,.lbl.hint.sel,.lbl.hint:hover,.lbl.hint:focus-visible{filter:none;color:var(--text)}
-.lbl.sel{color:var(--yellow)}
+.lbl.hint{white-space:normal;width:max-content;max-width:210px;line-height:1.25;color:var(--text);font-style:italic;text-shadow:0 0 14px var(--c),0 1px 8px #000}
+.lbl.hint small{color:var(--c);font-style:normal}
+.lbl.hint .ck.q{animation:ping 2.2s ease-out infinite}
+.lbl.dim{opacity:.22!important}
+.lbl.sel{color:var(--c,var(--yellow))}
 .lbl.k-root.sel{color:#FFF1B0}
 .lbl.hov{text-decoration:underline;text-underline-offset:4px}
 .lbl.off{opacity:0!important;pointer-events:none}
@@ -58,12 +61,12 @@ h1{margin:0;font:900 clamp(30px,4vw,46px)/.9 var(--display);text-transform:upper
 .count b{font:900 20px/1 var(--display);color:var(--yellow);margin-right:6px;vertical-align:-2px;font-variant-numeric:tabular-nums}
 .count.h b{color:var(--hint)}
 .ctrls{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.variants{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--panel);backdrop-filter:blur(8px);align-self:flex-start}
-.variants button{font:600 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);background:none;border:0;border-radius:999px;padding:9px 14px;cursor:pointer}
-.variants button:hover{color:var(--text)}
-.variants button[aria-checked="true"]{background:var(--yellow);color:#161616}
-.variants button:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
-@media (max-width:720px){.variants{order:3;width:100%;justify-content:space-between}.variants button{padding:8px 10px}}
+.cats{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.cat{display:inline-flex;align-items:center;gap:6px;font:500 11px/1 var(--mono);letter-spacing:.04em;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 10px;cursor:pointer;backdrop-filter:blur(8px)}
+.cat i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.cat:hover,.cat[aria-pressed="true"]{border-color:var(--c)}
+.cat[aria-pressed="true"]{box-shadow:inset 0 0 0 1px var(--c)}
+.cat:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .btn{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 12px;cursor:pointer;backdrop-filter:blur(8px);text-decoration:none;display:inline-block}
 .btn:hover{border-color:var(--yellow);color:var(--yellow)}
 .btn[aria-pressed="true"],.btn[aria-expanded="true"]{border-color:var(--yellow)}
@@ -71,7 +74,21 @@ h1{margin:0;font:900 clamp(30px,4vw,46px)/.9 var(--display);text-transform:upper
 .btn.primary:hover{background:#FFFFFF;color:#161616}
 .btn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 
-#card{position:fixed;left:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(360px,calc(100% - 40px));max-height:min(54vh,540px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px 18px;backdrop-filter:blur(12px)}
+#card{position:fixed;padding-right:40px!important;left:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(360px,calc(100% - 40px));max-height:min(54vh,540px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px 18px;backdrop-filter:blur(12px)}
+.x{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mut);font:400 18px/1 var(--mono);cursor:pointer}
+.x:hover,.x:focus-visible{color:var(--text);border-color:var(--text);outline:none}
+body.mm .lbl{font-size:12px}
+body.mm .lbl.hint{font-size:11.5px;max-width:160px}
+body.mm .lbl.k-page{font-size:17px}
+body.mm .lbl.k-note{font-size:15px}
+body.mm .lbl.k-root{font-size:22px}
+body.mm .bud{display:none}
+body.mm .lbl.hint .qq{display:none}
+body.mm .lbl.hint small{display:inline;margin:0;font:italic 400 12px/1.2 var(--serif);letter-spacing:0;text-transform:none;color:var(--text)}
+body.mm .lbl.hint:hover,body.mm .lbl.hint.sel{z-index:2}
+body.mm .lbl.hint:hover .qq,body.mm .lbl.hint.sel .qq{display:block;margin-bottom:2px;color:var(--c)}
+.lbl.left{text-align:right}
+.lbl.left small{margin:4px 0 0}
 .chip{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px 4px;border:1px solid var(--line);color:var(--text)}
 .chip.hint{border-style:dashed;border-color:var(--hint);color:var(--hint)}
 .chip.page,.chip.root{background:var(--yellow);border-color:var(--yellow);color:#161616}
@@ -83,9 +100,17 @@ h1{margin:0;font:900 clamp(30px,4vw,46px)/.9 var(--display);text-transform:upper
 .actions{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:14px}
 .actions:empty{display:none}
 pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--text);background:rgba(255,255,255,.04);border:1px dashed var(--hint);padding:10px;user-select:all;width:100%;box-sizing:border-box}
+.hookline{margin:8px 0 0;font:italic 400 17px/1.35 var(--serif);color:var(--c,var(--text))}
+.hooks{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.hooks .label{margin:0 0 2px;font:600 10px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.hook{display:flex;align-items:flex-start;gap:10px;text-align:left;color:var(--text);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:8px 10px;cursor:pointer}
+.hook:hover,.hook:focus-visible{border-color:var(--c);outline:none}
+.hook .q{flex:none;width:18px;height:18px;border-radius:50%;border:1px dashed var(--c);color:var(--c);font:700 11px/16px var(--mono);text-align:center;animation:ping 2.2s ease-out infinite}
+.hook b{display:block;font:italic 400 14px/1.3 var(--serif)}
+.hook small{display:block;margin-top:2px;font:500 10px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
 .toast{color:var(--yellow);font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase}
 
-#drawer{position:fixed;right:20px;top:calc(env(safe-area-inset-top,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(320px,calc(100% - 40px));overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px 16px;backdrop-filter:blur(12px)}
+#drawer{position:fixed;right:20px;top:calc(env(safe-area-inset-top,0px) + 170px);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(320px,calc(100% - 40px));overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px 16px;backdrop-filter:blur(12px)}
 #drawer h2{margin:0 0 10px;font:800 22px/1 var(--display);text-transform:uppercase}
 #drawer ul{list-style:none;margin:0;padding:0 0 0 16px}
 #list>ul{padding-left:0}
@@ -94,7 +119,49 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
 #drawer li button.hint{color:var(--hint);font-style:italic}
 #drawer .btn{margin-top:12px}
 
-#tip{position:fixed;right:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);margin:0;max-width:300px;text-align:right;font:500 11px/1.6 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--mut);transition:opacity .8s;pointer-events:none}
+.btn.film{background:var(--yellow);color:#161616;border-color:var(--yellow);font-weight:600}
+.btn.film:hover{background:#FFFFFF;color:#161616;border-color:#FFFFFF}
+#cine{position:fixed;inset:0;pointer-events:none;z-index:30}
+#cine .bar{position:absolute;left:0;right:0;height:11vh;background:#000;transition:transform .9s cubic-bezier(.6,0,.2,1)}
+#cine .bar.top{top:0;transform:translateY(-100%)}
+#cine .bar.bottom{bottom:0;transform:translateY(100%)}
+#cine.on .bar{transform:none}
+.cine-year{position:absolute;left:clamp(16px,4vw,48px);top:calc(11vh + 14px);font:900 clamp(56px,11vw,150px)/.85 var(--display);color:var(--yellow);font-variant-numeric:tabular-nums;opacity:0;transition:opacity 1s .4s;text-shadow:0 0 40px rgba(255,216,18,.35)}
+#cine.on .cine-year{opacity:.92}
+.cine-cap{position:absolute;left:50%;bottom:calc(11vh + 26px);width:min(820px,calc(100% - 32px));margin:0;transform:translate(-50%,12px);text-align:center;font:italic 400 clamp(19px,2.3vw,28px)/1.35 var(--serif);color:#FFFDF6;text-shadow:0 2px 18px #000,0 0 3px #000;opacity:0;transition:opacity .7s,transform .7s}
+.cine-cap.on{opacity:1;transform:translate(-50%,0)}
+.cine-prog{position:absolute;left:0;right:0;bottom:11vh;height:2px;background:rgba(255,255,255,.08)}
+.cine-prog i{display:block;height:100%;width:0;background:var(--yellow)}
+.cine-ctrls{position:absolute;right:clamp(16px,4vw,48px);top:calc(11vh + 14px);display:flex;gap:6px;pointer-events:auto;opacity:0;transition:opacity .8s .6s}
+#cine.on .cine-ctrls{opacity:1}
+.top,#card,#drawer{transition:opacity .6s}
+body.cine .top,body.cine #card,body.cine #drawer,body.cine #tip{opacity:0;pointer-events:none}
+body.cine .lbl{pointer-events:none}
+body.cine #labels{opacity:.8}
+#ask{position:fixed;left:calc(50% + 190px);transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(560px,calc(100% - 440px));display:flex;flex-direction:column;gap:8px;z-index:20;margin:0;transition:opacity .6s}
+.ask-row{display:flex;gap:6px;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:999px;backdrop-filter:blur(12px)}
+.ask-row:focus-within{border-color:var(--yellow)}
+.ask-row input{flex:1;min-width:0;background:none;border:0;color:var(--text);font:400 15px/1.2 var(--serif);padding:8px 12px;outline:none}
+.ask-row input::placeholder{color:var(--mut)}
+.ask-mark{align-self:center;margin-left:8px;font:700 14px/1 var(--mono);background:linear-gradient(90deg,#F2B84B,#F08A7E,#7FA7E0,#5CC8A8);-webkit-background-clip:text;background-clip:text;color:transparent}
+#ask-out{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;backdrop-filter:blur(12px);max-height:32vh;overflow:auto}
+#ask-text{margin:0;font:400 15px/1.5 var(--serif)}
+#ask-nodes{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#ask-nodes:empty{display:none}
+.nchip{font:500 11px/1 var(--mono);letter-spacing:.04em;color:var(--text);background:none;border:1px solid var(--c,var(--line));border-radius:999px;padding:6px 9px;cursor:pointer}
+.nchip:hover{background:rgba(255,255,255,.06)}
+.nchip.new{border-style:dashed}
+body.cine #ask{opacity:0;pointer-events:none}
+.facts{margin:10px 0 0;padding-left:18px;font-size:14px;line-height:1.45}
+.facts li{margin:4px 0}
+.btn.grow,.chip.grown{background:linear-gradient(90deg,#F2B84B,#F08A7E,#7FA7E0,#5CC8A8);color:#161616;border-color:transparent}
+.btn.grow:hover{filter:brightness(1.12);color:#161616}
+.growing{display:flex;align-items:center;gap:8px;margin:0;font:italic 400 14px/1.4 var(--serif);color:var(--text)}
+.spin{flex:none;width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--yellow);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{color:#FF8A7A}
+@media (max-width:720px){#ask{left:12px;right:12px;width:auto;transform:none;bottom:calc(40vh + 24px)}}
+#tip{position:fixed;right:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 90px);margin:0;max-width:300px;text-align:right;font:500 11px/1.6 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--mut);transition:opacity .8s;pointer-events:none}
 #tip.gone{opacity:0}
 @media (max-width:720px){
   .top{padding-inline:12px}
@@ -105,7 +172,7 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
   #drawer{left:12px;right:12px;width:auto;top:calc(env(safe-area-inset-top,0px) + 170px)}
   .lbl{font-size:12px}.lbl.k-page{font-size:17px}.lbl.k-root{font-size:22px}.lbl.k-note{font-size:15px}
 }
-@media (prefers-reduced-motion:reduce){.lbl,#tip{transition:none}}
+@media (prefers-reduced-motion:reduce){.lbl,#tip{transition:none}.bud,.ck.q,.hook .q{animation:none}}
 </style>
 
 <div id="stage" aria-hidden="true"></div>
@@ -115,26 +182,39 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     <h1>Небо открытий</h1>
     <nav class="crumbs" id="crumbs" aria-label="Где вы сейчас"></nav>
   </div>
-  <div class="variants" role="radiogroup" aria-label="Образ Толстого в центре">
-    <button type="button" role="radio" data-variant="stars" aria-checked="true">Созвездие</button>
-    <button type="button" role="radio" data-variant="medal" aria-checked="false">Медальон</button>
-    <button type="button" role="radio" data-variant="lines" aria-checked="false">Линии</button>
-  </div>
   <div class="right">
     <div class="counts">
       <span class="count"><b id="c-done">0</b>изучено</span>
       <span class="count h"><b id="c-found">0</b>намёков найдено</span>
     </div>
     <div class="ctrls">
+      <button class="btn film" type="button" id="b-film">▶ Фильм</button>
+      <button class="btn" type="button" id="b-mind" aria-pressed="false">Майнд-мап</button>
       <button class="btn" type="button" id="b-home">Обзор</button>
       <button class="btn" type="button" id="b-back">Назад</button>
       <button class="btn" type="button" id="b-spin" aria-pressed="true">Вращение</button>
       <button class="btn" type="button" id="b-style" aria-pressed="false">Вид: значки</button>
       <button class="btn" type="button" id="b-list" aria-expanded="false" aria-controls="drawer">Список</button>
     </div>
+    <div class="cats" id="cats" role="group" aria-label="Цвета веток: нажмите, чтобы выделить"></div>
   </div>
 </header>
 <aside id="card" aria-live="polite"></aside>
+<form id="ask" hidden autocomplete="off">
+  <div id="ask-out" hidden aria-live="polite"><p id="ask-text"></p><div id="ask-nodes"></div></div>
+  <div class="ask-row"><span class="ask-mark" aria-hidden="true">✦</span><input id="ask-q" type="text" maxlength="200" placeholder="Спросите небо: кто повлиял на Ганди?" aria-label="Вопрос небу"><button class="btn primary" type="submit" id="ask-go">Спросить</button></div>
+</form>
+<div id="cine" hidden aria-live="polite">
+  <div class="bar top"></div><div class="bar bottom"></div>
+  <div class="cine-year" id="cine-year" aria-hidden="true">1828</div>
+  <div class="cine-ctrls">
+    <button class="btn" type="button" id="cine-sound" aria-pressed="true">Музыка</button>
+    <button class="btn" type="button" id="cine-voice" aria-pressed="true">Голос</button>
+    <button class="btn" type="button" id="cine-exit">✕ Выйти</button>
+  </div>
+  <p class="cine-cap" id="cine-cap"></p>
+  <div class="cine-prog"><i id="cine-prog"></i></div>
+</div>
 <aside id="drawer" hidden aria-label="Все звёзды списком">
   <h2>Все звёзды</h2>
   <div id="list"></div>
@@ -195,7 +275,37 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
   const byId = {};
   DATA.forEach(n => { n.kids = []; byId[n.id] = n; });
   DATA.forEach(n => { if (n.p) byId[n.p].kids.push(n); });
-  const HINTS = DATA.filter(n => n.s === 'hint');
+  const HINTS = DATA.filter(n => n.s === 'hint'); // grows while you explore
+  // colour groups: what each branch is about
+  const CAT = {
+    life: { name: 'Жизнь и семья', hex: '#F2B84B' },
+    books: { name: 'Книги', hex: '#F08A7E' },
+    power: { name: 'Власть и общество', hex: '#7FA7E0' },
+    peace: { name: 'Ненасилие', hex: '#5CC8A8' }
+  };
+  const CAT_OF = { n1: 'power', f1828: 'power', f1847: 'life', f1851: 'life', f1861: 'power', f1862: 'life', f1863: 'books', f1873: 'books', f1879: 'life', f1882: 'peace', f1910: 'life', fend: 'life', g1: 'books', g2: 'power', g3: 'books', g4: 'peace', g5: 'peace', g6: 'peace' };
+  // one question per hint, so each one is worth a click
+  const HOOK = {
+    'h-diary': 'Что он 63 года записывал в дневник?',
+    'h-sofia': 'Как та же семья выглядела глазами Софьи?',
+    'h-minard': 'Почему эту схему называют лучшей в истории?',
+    'h-dost': 'Почему два гения так и не встретились?',
+    'h-douk': 'Что стало с 7500 пацифистами в Канаде?',
+    'h-prok': 'Как в 1908 году сделали цветной портрет Толстого?',
+    'h-chert': 'Зачем Толстой подписал завещание тайно, в лесу?',
+    'h-garr': 'Кто сказал «не противься злу» раньше Толстого?',
+    'h-thoreau': 'Почему американец отказался платить налог?',
+    'h-raich': 'С кем Ганди советовался о вере из Африки?',
+    'h-ruskin': 'Какая книга за одну ночь изменила жизнь Ганди?',
+    'h-das': 'Кому на самом деле было адресовано «Письмо к индусу»?',
+    'h-kall': 'Кто отдал свою ферму под «Ферму Толстого»?',
+    'h-rustin': 'Кто научил Кинга методам Ганди?',
+    'h-lenin': 'Почему Ленин назвал Толстого «зеркалом революции»?',
+    'h-tolst': 'Что стало с последователями Толстого в СССР?'
+  };
+  const FEATURED = ['h-raich', 'h-dost', 'h-minard', 'h-lenin', 'h-ruskin', 'h-garr', 'h-chert', 'h-douk'];
+  DATA.forEach(n => { n.c = CAT_OF[n.id] || (n.p && byId[n.p].c) || null; n.q = HOOK[n.id]; });
+  const hexOf = n => n.c ? CAT[n.c].hex : n.k === 'root' ? '#FFF1B0' : '#F4EBD8';
 
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
@@ -205,36 +315,49 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
   const groupOf = n => { let p = n; while (p && p.k !== 'page' && p.k !== 'note') p = p.p && byId[p.p]; return p ? p.id : null; };
   const hintKids = n => n.kids.filter(k => k.s === 'hint');
 
-  let sel = 'root', hover = null, spinOn = !reduce, focusFn = () => {};
+  let sel = 'root', hover = null, spinOn = !reduce, focusFn = () => {}, catFocus = null;
+  let aiSample = null; const aiHooks = {}; // Claude on the page: grows branches and answers questions
+  const dimmed = n => !!(catFocus && n.c && n.c !== catFocus);
 
   /* labels: one button per star, placed over the canvas every frame */
-  DATA.forEach(n => {
-    const b = document.createElement('button');
+  const makeLabel = n => {
+    const b = n.el || document.createElement('button');
     const hk = hintKids(n).length;
     b.type = 'button'; b.tabIndex = -1; b.dataset.id = n.id;
     b.className = `lbl k-${n.k} ${n.s} off`;
-    b.innerHTML = `<span class="ck${n.s === 'hint' ? ' q' : ''}">${n.s === 'hint' ? '?' : '✓'}</span>${esc(n.t)}`
+    if (n.c) b.style.setProperty('--c', hexOf(n));
+    b.innerHTML = n.s === 'hint' ? `<span class="ck q">?</span><span class="qq">${esc(n.q)}</span><small>${esc(n.t)}</small>` : `<span class="ck">✓</span>${esc(n.t)}`
       + (hk ? `<span class="bud">+${hk} ?</span>` : '')
       + (n.k === 'page' ? `<small>${n.kids.length} ${plural(n.kids.length, 'кадр', 'кадра', 'кадров')}</small>` : '');
-    $('labels').appendChild(b);
+    if (!n.el) $('labels').appendChild(b);
     n.el = b;
-  });
+  };
+  DATA.forEach(makeLabel);
 
   /* card, breadcrumbs, counters, list */
   function renderCard() {
     const n = byId[sel], page = pageOf(n), hk = hintKids(n);
     const url = n.url || (n.a && page ? `${page.url}#${n.a}` : '');
-    const kind = n.s === 'hint' ? 'Намёк' : { root: 'Центр неба', page: 'Презентация', frame: 'Кадр', note: 'Заметка из чата' }[n.k];
+    const kind = n.s === 'hint' ? 'Намёк' : n.grown ? 'Ветка от Claude' : { root: 'Центр неба', page: 'Презентация', frame: 'Кадр', note: 'Заметка из чата' }[n.k];
+    const near = n.s === 'hint' ? hintKids(byId[n.p]).filter(h => h !== n)
+      : n.k === 'page' ? n.kids.flatMap(hintKids)
+      : n.k === 'root' ? FEATURED.map(id => byId[id]).filter(h => !h.revT0).slice(0, 4)
+      : hintKids(n);
     const prompt = n.s === 'hint' ? `Сделай новую страницу в таких же схемах про «${n.t}». ${n.d} Добавь её на небо открытий рядом с «${byId[n.p].t}».` : '';
     $('card').innerHTML = `
-      <span class="chip ${n.s === 'hint' ? 'hint' : n.k}">${kind}</span>
+      <button type="button" class="x" id="card-x" aria-label="Скрыть карточку">×</button>
+      <span class="chip ${n.s === 'hint' ? 'hint' : n.grown ? 'grown' : n.k}">${kind}</span>
       <h2>${esc(n.t)}</h2>
       <div class="yr">${esc(n.y || '')}</div>
-      <p class="d">${esc(n.d)}</p>
-      ${n.k === 'root' ? '<p class="small">Большие значки — презентации, голубой — заметка из чата, малые вокруг них — кадры. Серые «?» — намёки: влетите в кадр, и они раскроются. Сверху можно сменить образ Толстого в центре.</p>' : ''}
-      ${n.k === 'page' ? '<p class="small">Нажмите на любую звезду вокруг, чтобы влететь в кадр.</p>' : ''}
-      ${hk.length ? `<p class="small">${hk.every(h => h.revT0) ? 'Отсюда раскрылись намёки' : 'Здесь прячутся намёки'}: ${hk.map(h => esc(h.t)).join(', ')}.</p>` : ''}
-      <div class="actions">${url ? `<a class="btn primary" href="${url}" target="_blank" rel="noopener">Открыть ${n.k === 'page' ? 'презентацию' : 'кадр'} ↗</a>` : ''}${n.k === 'note' ? '<p class="small">Эта заметка пока живёт только в нашем чате.</p>' : ''}${prompt ? `<button class="btn primary" type="button" id="copy">Скопировать запрос</button><pre id="prompt">${esc(prompt)}</pre><p class="small">Вставьте запрос в чат, и эта звезда станет новой страницей. <span class="toast" id="toast" hidden>Скопировано</span></p>` : ''}</div>`;
+      ${n.q ? `<p class="hookline" style="--c:${hexOf(n)}">${esc(n.q)}</p>` : ''}
+      <p class="d">${esc(n.story || n.d)}</p>
+      ${n.facts && n.facts.length ? `<ul class="facts">${n.facts.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+      ${n.k === 'root' ? '<p class="small">Большие значки — презентации, малые вокруг них — кадры. Цвет показывает, о чём ветка: список цветов справа сверху. Пульсирующие «?» — намёки: влетите в кадр, и они раскроются.</p>' : ''}
+      ${n.k === 'page' ? '<p class="small">Нажмите на любой значок вокруг, чтобы влететь в кадр.</p>' : ''}
+      ${near.length ? `<div class="hooks"><p class="label">${n.s === 'hint' ? 'Ещё рядом' : 'Интересно рядом'}</p>${near.map(h => `<button type="button" class="hook" data-go="${h.id}" style="--c:${hexOf(h)}"><span class="q">?</span><span><b>${esc(h.q)}</b><small>${esc(h.t)}</small></span></button>`).join('')}</div>` : ''}
+      <div class="actions">${url ? `<a class="btn primary" href="${url}" target="_blank" rel="noopener">Открыть ${n.k === 'page' ? 'презентацию' : 'кадр'} ↗</a>` : ''}${n.k === 'note' ? '<p class="small">Эта заметка пока живёт только в нашем чате.</p>' : ''}${n.s === 'hint' && aiSample ? (n.growing
+          ? `<p class="growing"><span class="spin"></span>Claude пишет эту ветку… <span id="grow-t">0</span> с</p><button class="btn" type="button" id="grow-stop">Остановить</button>`
+          : `<button class="btn grow" type="button" id="grow">✦ Вырастить ветку</button><p class="small">Claude расскажет, что здесь интересного, и откроет три новых намёка. Ветка останется на небе для всех.</p>${n.growErr ? `<p class="small err">${esc(n.growErr)}</p>` : ''}`) : ''}${prompt && !aiSample ? `<button class="btn primary" type="button" id="copy">Скопировать запрос</button><pre id="prompt">${esc(prompt)}</pre><p class="small">Вставьте запрос в чат, и эта звезда станет новой страницей. <span class="toast" id="toast" hidden>Скопировано</span></p>` : ''}</div>`;
     const path = trail(n).concat(n);
     $('crumbs').innerHTML = path.map((p, i) => i === path.length - 1 ? `<span class="here">${esc(p.t)}</span>` : `<button type="button" data-go="${p.id}">${esc(p.t)}</button><i>›</i>`).join('');
     $('b-back').disabled = !n.p;
@@ -244,18 +367,30 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
       if (bud) bud.hidden = hintKids(x).every(h => h.revT0);
     });
     $('c-found').textContent = `${HINTS.filter(h => h.revT0).length}/${HINTS.length}`;
+    $('c-done').textContent = DATA.filter(x => x.s === 'done').length;
     [...$('list').querySelectorAll('[data-go]')].forEach(b => b.setAttribute('aria-current', String(b.dataset.go === sel)));
   }
   const item = n => `<li><button type="button" data-go="${n.id}" class="${n.s}"><span class="ck${n.s === 'hint' ? ' q' : ''}">${n.s === 'hint' ? '?' : '✓'}</span>${esc(n.t)}</button>${n.kids.length ? `<ul>${n.kids.map(item).join('')}</ul>` : ''}</li>`;
-  $('list').innerHTML = `<ul>${item(byId.root)}</ul>`;
-  $('c-done').textContent = DATA.filter(n => n.s === 'done').length;
+  const renderList = () => { $('list').innerHTML = `<ul>${item(byId.root)}</ul>`; };
+  renderList();
+  $('cats').innerHTML = Object.entries(CAT).map(([k, v]) => `<button type="button" class="cat" data-cat="${k}" aria-pressed="false" style="--c:${v.hex}"><i></i>${v.name}</button>`).join('');
+  $('cats').addEventListener('click', e => {
+    const b = e.target.closest('[data-cat]');
+    if (!b) return;
+    catFocus = catFocus === b.dataset.cat ? null : b.dataset.cat;
+    document.querySelectorAll('[data-cat]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.cat === catFocus)));
+    DATA.forEach(n => n.el.classList.toggle('dim', dimmed(n)));
+  });
 
-  const go = id => focusFn(id);
+  const go = id => { aiHooks.stopTour?.(); focusFn(id); };
   document.addEventListener('click', e => {
     const g = e.target.closest('[data-go]');
     if (g) { go(g.dataset.go); if (innerWidth < 720) toggleList(false); return; }
     const l = e.target.closest('.lbl');
     if (l) return go(l.dataset.id);
+    if (e.target.id === 'card-x') { $('card').hidden = true; return; }
+    if (e.target.id === 'grow') return aiHooks.grow?.(byId[sel]);
+    if (e.target.id === 'grow-stop') return byId[sel].growing?.ctl.abort();
     if (e.target.id === 'copy') {
       const pre = $('prompt'), toast = $('toast');
       const ok = () => { toast.hidden = false; setTimeout(() => toast.hidden = true, 1600); };
@@ -279,7 +414,7 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
   try { if (window.THREE && THREE.OrbitControls) renderer = new THREE.WebGLRenderer({ antialias: true }); } catch (_) { renderer = null; }
   if (!renderer) {
     focusFn = id => { sel = id; renderCard(); };
-    $('labels').hidden = true; $('tip').hidden = true; $('b-spin').hidden = true; $('b-style').hidden = true; document.querySelector('.variants').hidden = true;
+    $('labels').hidden = true; $('tip').hidden = true; $('b-spin').hidden = true; $('b-style').hidden = true; $('b-mind').hidden = true; $('b-film').hidden = true;
     toggleList(true);
     renderCard();
     $('card').insertAdjacentHTML('afterbegin', '<p class="small">Этот браузер не показывает 3D. Все звёзды доступны списком справа.</p>');
@@ -465,38 +600,11 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     ['M192 132C184 116 162 114 152 125C160 127 174 129 188 140Z', '#ECE9E3', 2.1, '#FFFFFF'],
     [E(130, 141, 5.5, 3), '#161616', 1.9, '#FFD812'], [E(170, 141, 5.5, 3), '#161616', 1.9, '#FFD812']
   ];
-  const PX = 18 / 340;
-  const toW = (x, y, z) => [(x - 150) * PX, -(y - 180) * PX, z];
-  const relief = (x, y) => 3.2 * Math.sqrt(Math.max(0, 1 - ((x - 150) / 125) ** 2 - ((y - 190) / 170) ** 2));
   const rootGroup = new THREE.Group();
   scene.add(rootGroup);
-  const facing = [];
 
-  // 1 · Созвездие: the drawing sampled into a few thousand stars that fly together
   const VAR = {};
-  {
-    const g0 = new THREE.Group(), [c, g] = canvas(300, 340);
-    g.lineCap = g.lineJoin = 'round';
-    FACE.forEach(([d, fill]) => { const p = new Path2D(d); if (fill === '#161616') { g.fillStyle = '#fff'; g.fill(p); } else { g.strokeStyle = '#fff'; g.lineWidth = fill ? 2.2 : 1.3; g.stroke(p); } });
-    const outline = g.getImageData(0, 0, 300, 340).data;
-    g.clearRect(0, 0, 300, 340);
-    FACE.forEach(([d, fill]) => { if (fill && fill !== '#161616') { g.fillStyle = fill; g.fill(new Path2D(d)); } });
-    const fills = g.getImageData(0, 0, 300, 340).data;
-    const list = [], warm = [col3(0xFFF4D6), col3(0xFFE08A), col3(0xFFFFFF)];
-    for (let y = 0; y < 340; y++) for (let x = 0; x < 300; x++) {
-      const i = (y * 300 + x) * 4;
-      if (outline[i + 3] > 120 && Math.random() < .42) list.push({ p: toW(x + Math.random() - .5, y + Math.random() - .5, relief(x, y) + .35), s: 1.6 + Math.random() * 1.8, c: warm[Math.floor(Math.random() * 3)] });
-      else if (fills[i + 3] > 120 && x % 3 === 0 && y % 3 === 0 && Math.random() < .55) list.push({ p: toW(x + (Math.random() - .5) * 3, y + (Math.random() - .5) * 3, relief(x, y) + (Math.random() - .5) * .7), s: 1 + Math.random() * 1.5, c: new THREE.Color(`rgb(${fills[i]},${fills[i + 1]},${fills[i + 2]})`).multiplyScalar(.5) });
-    }
-    const from = () => { const u = Math.random() * 2 - 1, th = Math.random() * 6.283, r = 30 + Math.random() * 50, s = Math.sqrt(1 - u * u); return [r * s * Math.cos(th), r * u, r * s * Math.sin(th)]; };
-    const pts = new THREE.Points(cloudGeo(list, from), pointsMat(true, true));
-    g0.add(pts, board(glowMat(0xFFC85A, 0, .28), 46));
-    g0.scale.setScalar(1.5);
-    rootGroup.add(g0); facing.push(g0);
-    VAR.stars = { group: g0, start() { pts.material.uniforms.uK.value = 0; this.t0 = performance.now(); }, step(now) { pts.material.uniforms.uK.value = reduce ? 1 : Math.min(1, (now - this.t0) / 2400); } };
-  }
-
-  // 2 · Медальон: the illustrated portrait on a yellow disc, with a turning inscription
+  // the illustrated portrait on a yellow disc, with a turning inscription
   {
     const g0 = new THREE.Group();
     const [c, g] = canvas(1024);
@@ -528,63 +636,7 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     } };
   }
 
-  // 3 · Линии: the drawing as glowing tubes that draw themselves, with a ring of his 82 years
-  {
-    const g0 = new THREE.Group(), face = new THREE.Group(), tubes = [];
-    const NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'), path = document.createElementNS(NS, 'path');
-    svg.setAttribute('style', 'position:absolute;width:0;height:0;visibility:hidden');
-    svg.appendChild(path); document.body.appendChild(svg);
-    FACE.forEach(([d, fill, z, line]) => d.split(/(?=M)/).forEach(sub => {
-      path.setAttribute('d', sub);
-      const L = path.getTotalLength(), n = Math.max(8, Math.ceil(L / 3)), pts = [];
-      for (let i = 0; i <= n; i++) { const q = path.getPointAtLength(L * i / n); pts.push(V(...toW(q.x, q.y, z * 1.1))); }
-      const geo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), n, fill ? .075 : .045, 6, false);
-      const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: line, transparent: true, opacity: fill ? 1 : .55 }));
-      face.add(m); tubes.push(m);
-    }));
-    svg.remove();
-    face.add(board(glowMat(0xFFD2A0, 0, .22), 40));
-    const ring = new THREE.Group();
-    ring.add(new THREE.Mesh(new THREE.TorusGeometry(13, .05, 8, 240), new THREE.MeshBasicMaterial({ color: 0xFFD812, transparent: true, opacity: .55 })));
-    const tick = new THREE.MeshBasicMaterial({ color: 0xFFD812 });
-    for (let y = 1828; y <= 1910; y++) {
-      const a = (y - 1828) / 83 * Math.PI * 2, big = y % 10 === 0 || y === 1828 || y === 1910;
-      const m = new THREE.Mesh(new THREE.BoxGeometry(.07, big ? 1.1 : .45, .07), tick);
-      m.position.set(Math.cos(a) * 13, Math.sin(a) * 13, 0); m.rotation.z = a - Math.PI / 2;
-      ring.add(m);
-      if (y % 20 === 10 || y === 1828 || y === 1910) {
-        const [c, g] = canvas(256, 96);
-        g.fillStyle = '#FFD812'; g.font = '800 64px "Fira Sans Extra Condensed", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(y), 128, 50);
-        const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: texOf(c), transparent: true, depthWrite: false }));
-        s.scale.set(2.4, .9, 1); s.position.set(Math.cos(a) * 14.9, Math.sin(a) * 14.9, 0);
-        ring.add(s);
-      }
-    }
-    const runner = new THREE.Group();
-    runner.add(new THREE.Mesh(new THREE.SphereGeometry(.28, 16, 12), new THREE.MeshBasicMaterial({ color: 0xFF5E42 })), board(glowMat(0xFF5E42, .4, .9), 3));
-    ring.add(runner);
-    ring.rotation.set(.35, 0, 0);
-    ring.position.z = -1.2;
-    face.add(ring);
-    g0.add(face);
-    g0.scale.setScalar(1.5);
-    rootGroup.add(g0); facing.push(face);
-    VAR.lines = { group: g0, start() { this.t0 = performance.now(); }, step(now, t) {
-      const k = reduce ? 1 : Math.min(1, (now - this.t0) / 2600);
-      tubes.forEach((m, i) => { const s = Math.min(1, Math.max(0, k * 1.8 - i / tubes.length * .8)); m.geometry.setDrawRange(0, Math.floor(m.geometry.index.count * s / 3) * 3); });
-      const a = (t * .12) % (Math.PI * 2);
-      runner.position.set(Math.cos(a) * 13, Math.sin(a) * 13, 0);
-      ring.rotation.z = t * .02;
-    } };
-  }
-  let variant = 'stars';
-  const setVariant = v => {
-    variant = v;
-    Object.entries(VAR).forEach(([k, x]) => x.group.visible = k === v);
-    VAR[v].start();
-    document.querySelectorAll('[data-variant]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.variant === v)));
-  };
-  document.querySelectorAll('[data-variant]').forEach(b => b.addEventListener('click', () => setVariant(b.dataset.variant)));
+  const variant = 'medal';
 
   /* ---------- badges: a pictogram for every node, drawn as vector paths on a canvas ---------- */
   const ICON = {
@@ -609,19 +661,23 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     g5: { d: 'M20 20H80V70H20ZM20 50H80M28 27H72V43H28M28 78V70M72 78V70' + E(31, 60, 3, 3) + E(69, 60, 3, 3) },
     g6: { d: 'M36 12L46 42M64 12L54 42' + E(50, 62, 20, 20) }
   };
-  const BR = { page: 2.6, note: 2.2, frame: 1.15, hint: .85 };
+  const BR = { page: 2.6, note: 2.2, frame: 1.15, hint: 1 };
   const SIZE = { root: 13, page: 1.7, note: 1.3, frame: .75, hint: .5 };
   const badgeFor = n => {
     const hint = n.s === 'hint', S = hint ? 256 : 512, [c, g] = canvas(S), k = S / 256;
     g.scale(k, k);
     g.beginPath(); g.arc(128, 128, 112, 0, Math.PI * 2);
-    g.fillStyle = hint ? 'rgba(18,22,32,.9)' : n.k === 'note' ? '#BFD4FF' : '#FFD812'; g.fill();
-    g.lineWidth = n.k === 'page' ? 10 : 7; g.strokeStyle = hint ? '#9AA3B5' : '#161616';
+    const col = hexOf(n);
+    g.fillStyle = hint ? 'rgba(14,17,26,.92)' : col; g.fill();
+    g.lineWidth = n.k === 'page' ? 10 : 7; g.strokeStyle = hint ? col : '#161616';
     if (hint) g.setLineDash([16, 11]);
     g.stroke(); g.setLineDash([]);
-    if (n.k === 'page') { g.beginPath(); g.arc(128, 128, 123, 0, Math.PI * 2); g.lineWidth = 5; g.strokeStyle = '#FFD812'; g.stroke(); }
-    const ic = hint ? { text: '?', size: 76, ty: 54 } : ICON[n.id];
-    const ink = hint ? '#9AA3B5' : '#161616';
+    if (n.k === 'page') { // the outer ring shows which colours this presentation is made of
+      let a0 = -Math.PI / 2;
+      n.kids.forEach(k => { const a1 = a0 + Math.PI * 2 / n.kids.length; g.beginPath(); g.arc(128, 128, 122, a0 + .05, a1 - .05); g.lineWidth = 8; g.strokeStyle = hexOf(k); g.stroke(); a0 = a1; });
+    }
+    const ic = hint ? { text: '?', size: 76, ty: 54 } : ICON[n.id] || { text: n.t.trim().charAt(0).toUpperCase(), size: 62, ty: 53 };
+    const ink = hint ? col : '#161616';
     g.save(); g.translate(48, 48); g.scale(1.6, 1.6);
     g.lineWidth = 7; g.lineCap = g.lineJoin = 'round'; g.strokeStyle = ink; g.fillStyle = ink;
     if (ic.fill) g.fill(new Path2D(ic.fill));
@@ -638,34 +694,39 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
   Object.entries({ p1: V(-44, 8, -4), p2: V(38, -6, 20), n1: V(2, 30, -42) }).forEach(([id, p]) => byId[id].pos = p);
   const fib = (k, n) => { const y = 1 - (k + .5) / n * 2, r = Math.sqrt(1 - y * y), ph = k * 2.39996; return V(Math.cos(ph) * r, y * .55, Math.sin(ph) * r); };
   [['p1', 13], ['p2', 10]].forEach(([id, R]) => byId[id].kids.forEach((f, i, all) => f.pos = fib(i, all.length).multiplyScalar(R).add(byId[id].pos)));
-  HINTS.forEach(h => {
+  const placeHint = h => {
     const par = byId[h.p], gp = byId[par.p], dir = par.pos.clone().sub(gp.pos).normalize();
     const u = new THREE.Vector3().crossVectors(dir, V(0, 1, 0));
     if (u.lengthSq() < .01) u.set(1, 0, 0);
     u.normalize();
     const sib = hintKids(par), j = sib.indexOf(h);
-    h.pos = par.pos.clone().addScaledVector(dir, 6.5).addScaledVector(u, (j - (sib.length - 1) / 2) * 3.8);
+    const o = j - (sib.length - 1) / 2; // siblings stack across the branch (vertically when they can), so their questions never overlap
+    const across = V(0, 1, 0).addScaledVector(dir, -dir.y);
+    if (across.lengthSq() < .1) across.copy(u); else across.normalize();
+    h.pos = par.pos.clone().addScaledVector(dir, 6.5).addScaledVector(across, o * 3.6).addScaledVector(u, o * 1.2);
     h.bud = par.pos.clone().addScaledVector(dir, 1.3);
     h.rev = -1;
-  });
+  };
+  HINTS.forEach(placeHint);
   DATA.forEach(n => { n.cur = (n.bud || n.pos).clone(); n.phase = Math.random() * 6.28; });
 
+  const starOf = {};
+  Object.entries(CAT).forEach(([k, v]) => { const c = col3(v.hex); starOf[k] = starMat(c.clone().multiplyScalar(.7).getHex(), c.getHex(), c.clone().lerp(col3(0xFFFFFF), .8).getHex(), 2.2); });
   const MAT = {
-    frame: starMat(0xFF9A1F, 0xFFD65A, 0xFFFBEA, 2.2),
     page: planetMat(0xF4B82E, 0xC6731E, 0xFFEE9E, 0xFFD86A),
     note: planetMat(0x9DBCF2, 0x5A75C6, 0xEAF2FF, 0x9CCBFF)
   };
   const pickables = [];
-  DATA.forEach(n => {
+  const makeNode = n => {
     const g = new THREE.Group(), star = new THREE.Group();
     if (n.k !== 'root') {
       const R = SIZE[n.k];
       if (n.s === 'hint') {
-        n.core = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(R, 1)), new THREE.LineBasicMaterial({ color: 0x9AA3B5, transparent: true, opacity: .3 }));
-        n.glow = board(glowMat(0x9AA3B5, .25, .9), R * 7);
+        n.core = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(R, 1)), new THREE.LineBasicMaterial({ color: col3(hexOf(n)), transparent: true, opacity: .3 }));
+        n.glow = board(glowMat(hexOf(n), .25, .9), R * 7);
       } else if (n.k === 'frame') {
-        n.core = new THREE.Mesh(new THREE.SphereGeometry(R, 48, 32), MAT.frame);
-        n.glow = board(glowMat(0xFFD27A, .7, 1), R * 11);
+        n.core = new THREE.Mesh(new THREE.SphereGeometry(R, 48, 32), starOf[n.c]);
+        n.glow = board(glowMat(hexOf(n), .7, 1), R * 11);
       } else {
         n.core = new THREE.Mesh(new THREE.SphereGeometry(R, 96, 64), n.k === 'note' ? MAT.note : MAT.page);
         n.glow = board(glowMat(n.k === 'note' ? 0x9CCBFF : 0xFFD86A, 0, .7), R * 7);
@@ -684,11 +745,19 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     n.star = star;
     const hit = new THREE.Mesh(new THREE.SphereGeometry(n.k === 'root' ? 13 : Math.max(BR[n.k] * 1.25, 1.6), 10, 8), new THREE.MeshBasicMaterial({ visible: false }));
     hit.userData.id = n.id;
+    n.hit = hit;
     g.add(hit); pickables.push(hit);
     g.position.copy(n.cur);
     (n.k === 'root' ? rootGroup : scene).add(g);
     n.obj = g;
-  });
+  };
+  DATA.forEach(makeNode);
+  const rebuildNode = n => { // a hint that has grown into a branch gets its new look
+    n.obj.parent.remove(n.obj);
+    [[pickables, n.hit], [billboards, n.glow]].forEach(([list, x]) => { const i = list.indexOf(x); if (i >= 0) list.splice(i, 1); });
+    makeNode(n);
+    if (n.ping) n.obj.add(n.ping);
+  };
 
   /* light flows: curved ribbons with pulses running outward from Tolstoy, continuous across junctions */
   const FLOW = { spacing: '20.0', speed: '4.2' };
@@ -739,27 +808,33 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     return L;
   };
   let flowI = 0;
-  (function grow(par, off) {
-    par.kids.forEach(n => {
-      const hint = n.s === 'hint';
-      const a = par.k === 'root' ? n.pos.clone().normalize().multiplyScalar(12) : par.pos.clone(); // leave the portrait from its edge
-      const c = bend(a, n.pos, flowI), len = arcLen(a, c, n.pos);
-      const color = hint ? 0x9AA3B5 : n.k === 'note' ? 0xA9C8F0 : n.k === 'page' ? 0xF2C46B : 0xEBD3A0;
-      const m = new THREE.Mesh(flowGeo, flowMat(color, par.k === 'root' ? .24 : hint ? .08 : .12, hint));
-      const u = m.material.uniforms;
-      u.uA.value.copy(a); u.uB.value.copy(n.cur); u.uC.value.copy(hint ? bend(a, n.cur, flowI) : c);
-      u.uOffset.value = off; u.uLen.value = len; u.uOpacity.value = hint ? 0 : 1;
-      m.frustumCulled = false;
-      scene.add(m);
-      Object.assign(n, { flow: m, flowA: a, flowI: flowI++ });
-      grow(n, off + len);
-    });
-  })(byId.root, 0);
+  const makeFlow = n => {
+    const par = byId[n.p], hint = n.s === 'hint', off = par.k === 'root' ? 0 : (par.flowOff || 0) + (par.flowLen || 0);
+    const a = par.k === 'root' ? n.pos.clone().normalize().multiplyScalar(12) : par.pos.clone(); // leave the portrait from its edge
+    const i = n.flowI ?? flowI++, c = bend(a, n.pos, i), len = arcLen(a, c, n.pos);
+    if (n.flow) scene.remove(n.flow);
+    const m = new THREE.Mesh(flowGeo, flowMat(hexOf(n), par.k === 'root' ? .34 : hint ? .13 : .17, hint));
+    const u = m.material.uniforms;
+    u.uA.value.copy(a); u.uB.value.copy(n.cur); u.uC.value.copy(c);
+    u.uOffset.value = off; u.uLen.value = len; u.uOpacity.value = hint ? 0 : 1;
+    m.frustumCulled = false;
+    scene.add(m);
+    Object.assign(n, { flow: m, flowA: a, flowI: i, flowOff: off, flowLen: len, w0: par.k === 'root' ? .34 : hint ? .13 : .17, w1: par.k === 'root' ? 1.1 : hint ? .28 : .5 });
+  };
+  (function grow(par) { par.kids.forEach(n => { makeFlow(n); grow(n); }); })(byId.root);
   // the way from Tolstoy to the chosen node shines brighter
   const setPath = () => {
     const on = new Set(trail(byId[sel]).map(p => p.id).concat(sel));
     DATA.forEach(n => { if (n.flow) n.flow.material.uniforms.uBoost.value = on.has(n.id) ? 1.6 : 1; });
   };
+
+  const pings = [];
+  const makePing = n => {
+    if (n.ping || (n.s !== 'hint' && !hintKids(n).length)) return;
+    const m = new THREE.Mesh(new THREE.RingGeometry(1, 1.06, 64), new THREE.MeshBasicMaterial({ color: col3(hexOf(n.s === 'hint' ? n : hintKids(n)[0])), transparent: true, depthWrite: false, side: THREE.DoubleSide }));
+    billboards.push(m); n.obj.add(m); pings.push({ m, n }); n.ping = m;
+  };
+  DATA.forEach(makePing);
 
   // Вид: значки (clear pictograms) or звёзды (the first sky)
   let style = 'badges';
@@ -787,15 +862,50 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
   };
   $('b-reveal').addEventListener('click', () => { DATA.forEach(n => hintKids(n).length && reveal(n)); renderCard(); });
 
+  /* Майнд-мап: the same nodes laid flat, Tolstoy in the middle, branches to both sides */
+  const MMX = [0, 26, 56, 96], ROW = 7.5, mmx = d => d < 4 ? MMX[d] : 96 + (d - 3) * 40;
+  byId.root.mm = V(0, 0, 0);
+  const mmSide = (ids, side) => {
+    let row = 0;
+    const walk = (n, d) => {
+      if (!n.kids.length) { n.mm = V(side * mmx(d), -(row++) * ROW, 0); return; }
+      n.kids.forEach(k => walk(k, d + 1));
+      const ys = n.kids.map(k => k.mm.y);
+      n.mm = V(side * mmx(d), (Math.max(...ys) + Math.min(...ys)) / 2, 0);
+    };
+    ids.forEach((id, i) => { if (i) row += .6; walk(byId[id], 1); });
+    const off = (row - 1) * ROW / 2, shift = n => { n.mm.y += off; n.kids.forEach(shift); };
+    ids.forEach(id => shift(byId[id]));
+  };
+  const layoutMM = () => { mmSide(['p1'], -1); mmSide(['p2', 'n1'], 1); };
+  layoutMM();
+  let mmOn = false, mmE = 0, mmFrom = 0, mmTo = 0, mmT0 = 0;
+  let showE = 0, showTo = 0, cine = null; // showE: the film's finale opens every hint for a moment
+  const vis = n => n.s === 'hint' ? Math.max(n.rev, mmE, showE) : 1; // in the flat map every hint is shown
+  const easeIO = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  const sp = V(0, 0, 0), fa = V(0, 0, 0), fc = V(0, 0, 0);
+  const stepLayout = e => DATA.forEach(n => {
+    if (n.k === 'root') return;
+    const r = n.s === 'hint' ? Math.max(n.rev, showE) : 0;
+    if (n.s === 'hint') sp.lerpVectors(n.bud, n.pos, r > 0 ? easeOutBack(r) : 0); else sp.copy(n.pos);
+    n.cur.lerpVectors(sp, n.mm, e);
+    n.obj.position.copy(n.cur);
+    const par = byId[n.p], u = n.flow.material.uniforms;
+    if (par.k === 'root') fa.copy(n.cur).normalize().multiplyScalar(12 * (1 - .45 * e)); else fa.copy(par.cur);
+    fc.copy(bend(fa, n.cur, n.flowI)).lerp(V(fa.x + (n.cur.x - fa.x) * .35, n.cur.y, 0), e); // sky arc → mind-map branch
+    u.uA.value.copy(fa); u.uB.value.copy(n.cur); u.uC.value.copy(fc);
+    u.uWidth.value = n.w0 + (n.w1 - n.w0) * e;
+  });
+
   // Prezi-like flight: arc outward on the way, then settle close to the target
   const DIST = { root: 125, page: 30, note: 26, frame: 12, hint: 8 };
   let fly = null;
-  const flyTo = (target, dist) => {
+  const flyTo = (target, dist, fixedDir, dur) => {
     const fromP = camera.position.clone(), fromT = controls.target.clone();
-    const dir = fromP.clone().sub(fromT);
+    const dir = fixedDir ? fixedDir.clone() : fromP.clone().sub(fromT);
     if (dir.lengthSq() < 1e-4) dir.set(0, .35, 1);
-    dir.normalize(); dir.y = Math.max(dir.y, .18); dir.normalize();
-    fly = { fromP, fromT, toT: target.clone(), toP: target.clone().addScaledVector(dir, dist), hop: Math.min(fromT.distanceTo(target) * .45, 60), t0: performance.now(), dur: reduce ? 1 : 1300 };
+    dir.normalize(); if (!fixedDir) { dir.y = Math.max(dir.y, .18); dir.normalize(); }
+    fly = { fromP, fromT, toT: target.clone(), toP: target.clone().addScaledVector(dir, dist), hop: Math.min(fromT.distanceTo(target) * .45, 60), t0: performance.now(), dur: reduce ? 1 : dur || 1300 };
     controls.enabled = false;
   };
   const tmpP = V(0, 0, 0), tmpT = V(0, 0, 0), out = V(0, 0, 0);
@@ -807,56 +917,82 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     out.copy(tmpP).sub(tmpT).normalize().multiplyScalar(fly.hop * Math.sin(Math.PI * e));
     camera.position.copy(tmpP).add(out);
     controls.target.copy(tmpT);
-    if (k === 1) { fly = null; controls.enabled = true; }
+    if (k === 1) { fly = null; controls.enabled = !cine; }
   };
 
   focusFn = id => {
+    if (cine) return;
+    showTo = 0;
     const n = byId[id];
     sel = id;
     setPath();
     if (hintKids(n).length) reveal(n);
     if (n.s === 'hint') reveal(byId[n.p]);
-    controls.minDistance = id === 'root' ? 30 : n.R * (style === 'badges' ? 3.4 : 2.8);
-    flyTo(n.pos, DIST[n.k]);
+    $('card').hidden = false;
+    if (!mmOn) { // in the flat map the camera stays put, so the whole map stays in view
+      controls.minDistance = id === 'root' ? 30 : n.R * (style === 'badges' ? 3.4 : 2.8);
+      flyTo(n.pos, DIST[n.k]);
+    }
     renderCard();
   };
 
+  // fit the flat map to the screen, leaving room for labels at the edges
+  const fitMind = () => {
+    const w = stage.clientWidth, h = stage.clientHeight, tanH = Math.tan(camera.fov * Math.PI / 360);
+    let mx = 1, my = 1;
+    DATA.forEach(n => { mx = Math.max(mx, Math.abs(n.mm.x)); my = Math.max(my, Math.abs(n.mm.y)); });
+    const ppu = Math.max(1, Math.min((w / 2 - 190) / mx, (h / 2 - 90) / (my + 4)));
+    controls.minDistance = 10;
+    flyTo(V(0, 40 / ppu, 0), (h / 2) / (ppu * tanH), V(0, 0, 1));
+  };
+  const setMind = on => {
+    mmOn = on; mmFrom = mmE; mmTo = on ? 1 : 0; mmT0 = performance.now();
+    document.body.classList.toggle('mm', on);
+    $('b-mind').setAttribute('aria-pressed', String(on));
+    $('b-spin').disabled = on;
+    controls.enableRotate = !on;
+    controls.mouseButtons.LEFT = on ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+    controls.touches.ONE = on ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+    $('card').hidden = on;
+    if (on) fitMind();
+    else { const n = byId[sel]; controls.minDistance = sel === 'root' ? 30 : n.R * 3; flyTo(n.pos, DIST[n.k]); }
+  };
+  $('b-mind').addEventListener('click', () => setMind(!mmOn));
+  $('b-home').addEventListener('click', () => { if (mmOn) fitMind(); });
+
   const easeOutBack = k => 1 + 2.4 * Math.pow(k - 1, 3) + 1.4 * Math.pow(k - 1, 2);
   const stepReveal = (now, t) => HINTS.forEach(h => {
-    const k = h.revT0 ? Math.min(1, Math.max(0, (now - h.revT0) / 900)) : 0;
-    if (k !== h.rev) {
-      h.rev = k;
-      h.cur.lerpVectors(h.bud, h.pos, k ? easeOutBack(k) : 0);
-      h.obj.position.copy(h.cur);
-      h.core.scale.setScalar(.4 + .6 * k);
-      h.core.material.opacity = .3 + .6 * k;
-      h.badge.material.opacity = .35 + .65 * k;
-      const u = h.flow.material.uniforms;
-      u.uB.value.copy(h.cur); u.uC.value.copy(bend(h.flowA, h.cur, h.flowI)); u.uOpacity.value = .8 * k;
-    }
+    if (h.s !== 'hint') return;
+    h.rev = h.revT0 ? Math.min(1, Math.max(0, (now - h.revT0) / 900)) : 0;
+    const v = vis(h);
+    h.core.scale.setScalar(.4 + .6 * v);
+    h.core.material.opacity = .3 + .6 * v;
     h.core.rotation.x = t * .3 + h.phase; h.core.rotation.y = t * .45;
-    h.glow.material.uniforms.uOpacity.value = (.25 + .6 * h.rev) * (reduce ? 1 : .7 + .3 * Math.sin(t * 2.3 + h.phase));
+    h.glow.material.uniforms.uOpacity.value = (.25 + .6 * v) * (reduce ? 1 : .7 + .3 * Math.sin(t * 2.3 + h.phase));
   });
 
   // labels sit just outside the body's edge on screen, and hide when the body fills the view
   const proj = V(0, 0, 0);
   const stepLabels = () => {
-    const w = stage.clientWidth, h = stage.clientHeight, grp = groupOf(byId[sel]);
+    const w = stage.clientWidth, h = stage.clientHeight, grp = groupOf(byId[sel]), mm = mmE > .5;
     const k = (h / 2) / Math.tan(camera.fov * Math.PI / 360);
     for (const n of DATA) {
       const el = n.el;
       proj.copy(n.cur).project(camera);
-      const d = camera.position.distanceTo(n.cur), rpx = n.R / d * k;
+      const d = camera.position.distanceTo(n.cur), rpx = (n.k === 'root' ? 13 * (1 - .45 * mmE) : n.R * (1 + mmE)) / d * k;
       let show = proj.z < 1 && proj.z > -1 && rpx < h * .3;
-      if (show && n.k === 'frame') show = grp === n.p || d < 42 || sel === n.id;
-      if (show && n.s === 'hint') show = n.rev > .55;
+      if (show && n.k === 'frame') show = mm || grp === groupOf(n) || d < 42 || sel === n.id;
+      if (show && n.s === 'hint') show = vis(n) > .55;
       if (!show) { el.classList.add('off'); continue; }
       el.classList.remove('off');
-      const x = (proj.x + 1) / 2 * w, y = (1 - proj.y) / 2 * h;
+      const x = (proj.x + 1) / 2 * w, y = (1 - proj.y) / 2 * h, left = mm && n.mm.x < 0;
+      el.classList.toggle('left', left);
       const far = n.k === 'frame' || n.s === 'hint' ? d / 85 : d / 300;
-      el.style.opacity = Math.max(.35, Math.min(1, 1.35 - far)).toFixed(2);
+      el.style.opacity = mm ? '1' : Math.max(.35, Math.min(1, 1.35 - far)).toFixed(2);
       el.style.transform = n.k === 'root'
         ? `translate(${x.toFixed(1)}px,${(y + rpx * 1.25 + 14).toFixed(1)}px) translateX(-50%)`
+        : mm && (n.k === 'page' || n.k === 'note') ? `translate(${x.toFixed(1)}px,${(y - rpx - 6).toFixed(1)}px) translate(-50%,-100%)`
+        : left ? `translate(${(x - rpx * 1.1 - 8).toFixed(1)}px,${y.toFixed(1)}px) translate(-100%,-50%)`
         : `translate(${(x + rpx * 1.1 + 8).toFixed(1)}px,${y.toFixed(1)}px) translateY(-50%)`;
     }
   };
@@ -867,12 +1003,12 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
     const r = renderer.domElement.getBoundingClientRect();
     ptr.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ptr, camera);
-    const hit = ray.intersectObjects(pickables, false).find(x => { const n = byId[x.object.userData.id]; return n.s !== 'hint' || n.rev > .5; });
+    const hit = ray.intersectObjects(pickables, false).find(x => { const n = byId[x.object.userData.id]; return vis(n) > .5; });
     return hit ? hit.object.userData.id : null;
   };
   let down = null;
   const acted = () => { $('tip').classList.add('gone'); };
-  renderer.domElement.addEventListener('pointerdown', e => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; acted(); });
+  renderer.domElement.addEventListener('pointerdown', e => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; acted(); aiHooks.stopTour?.(); });
   renderer.domElement.addEventListener('pointerup', e => {
     if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 6 && performance.now() - down.t < 600) { const id = pick(e); if (id) focusFn(id); }
     down = null;
@@ -891,39 +1027,313 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
   $('b-spin').setAttribute('aria-pressed', String(spinOn));
   $('b-spin').addEventListener('click', () => { spinOn = !spinOn; $('b-spin').setAttribute('aria-pressed', String(spinOn)); });
 
+  /* ---------- Фильм: a guided flight through the whole story, with captions, music and a voice ---------- */
+  const SHOTS = [
+    { id: 'root', year: 1828, dist: 170, text: '1828 год. Тульская губерния. В семье графа Толстого родился сын Лев.' },
+    { id: 'f1828', year: 1828, text: 'Больше трети России принадлежит помещикам. Он родился одним из них.' },
+    { id: 'f1847', year: 1847, text: 'В восемнадцать лет он начинает дневник и будет вести его шестьдесят три года. А дом, где родился, проигрывает в карты.' },
+    { id: 'f1851', year: 1854, text: 'Кавказ, потом Севастополь: 349 дней осады. Он пишет о войне так, как до него не писал никто.' },
+    { id: 'f1862', year: 1862, text: 'Ему тридцать четыре, ей восемнадцать. Софья родит тринадцать детей и будет ночами переписывать его черновики.' },
+    { id: 'f1863', year: 1869, text: '«Война и мир». Шесть лет работы, больше пятисот героев и 1812 год.' },
+    { id: 'f1873', year: 1877, text: '«Анна Каренина». Железная дорога, которая однажды увезёт и его самого.' },
+    { id: 'f1879', year: 1879, text: 'В пятьдесят у него есть всё. И нет ответа на один вопрос: зачем?' },
+    { id: 'g1', year: 1893, text: '«Царство Божие внутри вас»: не отвечай на насилие насилием. В России книгу запрещают.' },
+    { id: 'g3', year: 1894, text: 'В Южной Африке эту книгу открывает двадцатичетырёхлетний юрист. Его зовут Мохандас Ганди.' },
+    { id: 'f1882', year: 1901, text: 'Толстой отказывается от мяса, имений и прав на свои книги. Церковь отлучает его. Говорят, в России два царя.' },
+    { id: 'g4', year: 1910, text: 'Весь последний год он переписывается с Ганди и пишет ему, что его дело самое важное в мире.' },
+    { id: 'f1910', year: 1910, text: 'Ноябрь 1910 года. Он тайно уходит из дома и умирает на маленькой станции Астапово.' },
+    { id: 'g5', year: 1955, text: 'Через сорок пять лет в Алабаме люди 381 день ходят пешком. Их ведёт Мартин Лютер Кинг.' },
+    { id: 'g6', year: 1964, text: 'Кинг скажет: Христос дал дух, а Ганди дал метод.' },
+    { id: 'root', year: 1968, dist: 190, finale: true, text: 'Идея пришла к Толстому из Америки и вернулась в Америку. Круг замкнулся.' },
+    { id: 'root', year: 1968, dist: 150, finale: true, text: 'А вокруг ещё шестнадцать неизведанных ветвей. Выберите свою.' }
+  ];
+  const FLIGHT = 2600, holdOf = sh => Math.max(4500, sh.text.length / 13 * 1000);
+  const TOTAL = SHOTS.reduce((a, sh) => a + FLIGHT + holdOf(sh), 0);
+  const capEl = $('cine-cap'), yearEl = $('cine-year'), progEl = $('cine-prog');
+
+  // music written on the fly: a slow Am–F–Cmaj7–G pad in a big reverb, and a bell on every arrival
+  const music = (() => {
+    let C = null, master = null, bus = null, timer = null, muted = false, step = 0;
+    const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+    const CHORDS = [[45, 57, 60, 64], [41, 53, 57, 60], [36, 48, 52, 55, 59], [43, 55, 59, 62]];
+    const voice = (f, t, dur, type, gain) => {
+      const o = C.createOscillator(), g = C.createGain(), lp = C.createBiquadFilter();
+      o.type = type; o.frequency.value = f; o.detune.value = (Math.random() - .5) * 12;
+      lp.type = 'lowpass'; lp.frequency.value = 1100;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(gain, t + 2.5); g.gain.setValueAtTime(gain, t + dur - 3); g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(lp).connect(g).connect(bus); o.start(t); o.stop(t + dur + .1);
+    };
+    const chord = () => { const t = C.currentTime + .05; CHORDS[step++ % CHORDS.length].forEach((m, i) => { voice(hz(m), t, 9.5, i ? 'triangle' : 'sine', i ? .045 : .085); voice(hz(m) * 1.004, t, 9.5, 'sine', .025); }); };
+    return {
+      start() {
+        try { C = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) { C = null; return; }
+        master = C.createGain(); master.gain.value = 0; master.connect(C.destination);
+        const len = C.sampleRate * 3.5, buf = C.createBuffer(2, len, C.sampleRate);
+        for (let ch = 0; ch < 2; ch++) { const d = buf.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+        const rev = C.createConvolver(), wet = C.createGain(), dry = C.createGain();
+        rev.buffer = buf; wet.gain.value = .6; dry.gain.value = .55;
+        bus = C.createGain(); bus.connect(dry).connect(master); bus.connect(rev); rev.connect(wet).connect(master);
+        master.gain.linearRampToValueAtTime(muted ? 0 : .8, C.currentTime + 3);
+        step = 0; chord(); timer = setInterval(chord, 8000);
+      },
+      bell(i) {
+        if (!C) return;
+        const t = C.currentTime, top = [76, 79, 81, 84, 88][i % 5];
+        [[top, .06], [top + 12, .02]].forEach(([m, g0]) => { const o = C.createOscillator(), g = C.createGain(); o.type = 'sine'; o.frequency.value = hz(m); g.gain.setValueAtTime(g0, t); g.gain.exponentialRampToValueAtTime(.0001, t + 3); o.connect(g).connect(bus); o.start(t); o.stop(t + 3.1); });
+      },
+      stop() {
+        if (!C) return;
+        clearInterval(timer);
+        const c = C, m = master; C = null;
+        m.gain.cancelScheduledValues(c.currentTime); m.gain.setValueAtTime(m.gain.value, c.currentTime); m.gain.linearRampToValueAtTime(0, c.currentTime + 1.5);
+        setTimeout(() => c.close(), 1800);
+      },
+      mute(on) { muted = on; if (C) master.gain.setTargetAtTime(on ? 0 : .8, C.currentTime, .3); }
+    };
+  })();
+
+  // a Russian voice reads the captions, where the browser has one
+  let voiceOn = true, ruVoice = null;
+  const pickVoice = () => { ruVoice = (speechSynthesis.getVoices() || []).find(v => /^ru/i.test(v.lang)) || null; $('cine-voice').hidden = !ruVoice; };
+  if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; } else $('cine-voice').hidden = true;
+  const speak = text => {
+    if (!voiceOn || !ruVoice) return;
+    try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.voice = ruVoice; u.lang = ruVoice.lang; u.rate = .95; speechSynthesis.speak(u); } catch (_) {}
+  };
+
+  const shotDir = i => { const az = .6 + i * .55, el = .22 + .14 * Math.sin(i * 1.7); return V(Math.cos(el) * Math.sin(az), Math.sin(el), Math.cos(el) * Math.cos(az)); };
+  const startShot = i => {
+    const sh = SHOTS[i], n = byId[sh.id];
+    Object.assign(cine, { i, t0: performance.now(), hold: holdOf(sh), fromYear: cine.year, toYear: sh.year, rang: false });
+    sel = sh.id; setPath(); renderCard();
+    if (sh.finale) { showTo = 1; DATA.forEach(x => { if (x.flow) x.flow.material.uniforms.uBoost.value = 1.8; }); }
+    flyTo(n.pos, sh.dist || DIST[n.k] + 4, shotDir(i), FLIGHT);
+    capEl.classList.remove('on');
+    setTimeout(() => { if (!cine || cine.i !== i) return; capEl.textContent = sh.text; capEl.classList.add('on'); speak(sh.text); }, reduce ? 0 : 900);
+  };
+  const startFilm = () => {
+    if (cine) return;
+    if (mmOn) setMind(false);
+    cine = { i: 0, year: 1828, done: 0 };
+    document.body.classList.add('cine');
+    $('cine').hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => $('cine').classList.add('on')));
+    controls.enabled = false;
+    camera.position.set(0, 60, 420); controls.target.set(0, 0, 0);
+    music.start();
+    startShot(0);
+  };
+  const endFilm = () => {
+    if (!cine) return;
+    cine = null;
+    music.stop();
+    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    capEl.classList.remove('on');
+    $('cine').classList.remove('on');
+    setTimeout(() => { if (!cine) $('cine').hidden = true; }, 900);
+    document.body.classList.remove('cine');
+    controls.enabled = true; controls.minDistance = 30;
+    sel = 'root'; setPath(); renderCard(); $('card').hidden = false; // the hints stay open until you pick one
+  };
+  const cineStep = (now, dt) => {
+    const el = now - cine.t0, k = Math.min(1, el / (reduce ? 1 : FLIGHT));
+    cine.year = Math.round(cine.fromYear + (cine.toYear - cine.fromYear) * easeIO(k));
+    yearEl.textContent = cine.year;
+    if (k === 1 && !cine.rang) { cine.rang = true; music.bell(cine.i); }
+    if (!fly && !reduce) { // a slow orbit while the caption is read
+      const off = camera.position.clone().sub(controls.target).applyAxisAngle(UP, dt * .07).multiplyScalar(1 - dt * .01);
+      camera.position.copy(controls.target).add(off);
+    }
+    progEl.style.width = ((cine.done + Math.min(el, FLIGHT + cine.hold)) / TOTAL * 100).toFixed(1) + '%';
+    if (el > FLIGHT + cine.hold) {
+      cine.done += FLIGHT + cine.hold;
+      if (cine.i + 1 < SHOTS.length) startShot(cine.i + 1); else endFilm();
+    }
+  };
+  $('b-film').addEventListener('click', startFilm);
+  $('cine-exit').addEventListener('click', endFilm);
+  $('cine-sound').addEventListener('click', e => { const on = e.currentTarget.getAttribute('aria-pressed') !== 'true'; e.currentTarget.setAttribute('aria-pressed', String(on)); music.mute(!on); });
+  $('cine-voice').addEventListener('click', e => { voiceOn = !voiceOn; e.currentTarget.setAttribute('aria-pressed', String(voiceOn)); if (!voiceOn && 'speechSynthesis' in window) speechSynthesis.cancel(); });
+  window.addEventListener('keydown', e => { if (e.key === 'Escape' && cine) { e.stopImmediatePropagation(); endFilm(); } }, true);
+
   const t0 = performance.now();
+  let lastNow = t0;
   const tick = now => {
     requestAnimationFrame(tick);
-    const t = (now - t0) / 1000;
+    const t = (now - t0) / 1000, dt = Math.min(.05, (now - lastNow) / 1000);
+    lastNow = now;
+    showE += (showTo - showE) * Math.min(1, dt * 2.2);
+    if (cine) cineStep(now, dt);
     TIME.value = reduce ? 0 : t;
+    mmE = mmFrom + (mmTo - mmFrom) * (reduce ? 1 : easeIO(Math.min(1, (now - mmT0) / 1400)));
     stepFly(now);
     stepReveal(now, t);
+    stepLayout(mmE);
     VAR[variant].step(now, t);
-    controls.autoRotate = spinOn && !fly;
+    rootGroup.scale.setScalar(1 - .45 * mmE);
+    belt.visible = mmE < .3;
+    controls.autoRotate = spinOn && !fly && !mmOn && !cine;
     controls.update();
     billboards.forEach(b => b.quaternion.copy(camera.quaternion));
-    facing.forEach(f => f.quaternion.slerp(camera.quaternion, .04));
     DATA.forEach(n => {
       if (n.k === 'root') return;
       if (n.spin) n.spin.rotation.z = t * .08;
       if (n.core.isMesh && n.k !== 'frame') n.core.rotation.y = t * .05;
       if (n.s !== 'hint') n.glow.material.uniforms.uStrength.value = n.base * (hover === n.id ? 1.6 : 1);
-      const grow = hover === n.id ? 1.15 : 1, reveal = n.s === 'hint' ? .35 + .65 * Math.max(0, n.rev) : 1;
+      const grow = (hover === n.id ? 1.15 : 1) * (1 + mmE) * (n.growing ? 1 + .12 * Math.sin(t * 9) : 1), v = vis(n), reveal = n.s === 'hint' ? .35 + .65 * v : 1, dm = dimmed(n) ? .18 : 1;
       n.badge.scale.setScalar(BR[n.k] * 2 * grow * reveal);
+      n.badge.material.opacity = (n.s === 'hint' ? .35 + .65 * v : 1) * dm;
+      n.hit.scale.setScalar(1 + mmE);
+      if (n.flow) n.flow.material.uniforms.uOpacity.value = (n.s === 'hint' ? v : 1) * dm;
       n.badge.position.y = reduce ? 0 : Math.sin(t * 1.1 + n.phase) * .12;
     });
     belt.rotation.y = t * .01;
+    pings.forEach(({ m, n }) => {
+      m.visible = n.s === 'hint' ? vis(n) > .5 : mmE < .5 && hintKids(n).some(h => !h.revT0);
+      if (!m.visible) return;
+      const ph = reduce ? .3 : (t * (n.growing ? 1.6 : .45) + n.phase) % 1;
+      m.scale.setScalar(n.R * (1 + mmE) * (1.15 + 1.1 * ph));
+      m.material.opacity = .6 * (1 - ph) * (dimmed(n) ? .2 : 1);
+    });
     const s = byId[sel];
     selRing.visible = sel !== 'root';
     selRing.position.copy(s.cur);
     selRing.quaternion.copy(camera.quaternion);
     selRing.rotateZ(t * .4);
-    selRing.scale.setScalar(s.R * (style === 'badges' ? 1.35 : 2.4) * (1 + (reduce ? 0 : .04 * Math.sin(t * 3))));
+    selRing.scale.setScalar(s.R * (1 + mmE) * (style === 'badges' ? 1.35 : 2.4) * (1 + (reduce ? 0 : .04 * Math.sin(t * 3))));
     stepLabels();
     renderer.render(scene, camera);
   };
+  /* ---------- Живое небо: Claude grows branches and answers questions, right on the page ---------- */
+  const clip = (v, k) => String(v ?? '').replace(/\s+/g, ' ').trim().slice(0, k);
+  const newId = () => 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const okId = v => typeof v === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(v);
+  const ERR = { rate_limited: 'Слишком много запросов подряд. Попробуйте через минуту.', session_expired: 'Войдите в Claude заново и попробуйте ещё раз.', invalid_json: 'Ответ получился нечитаемым. Попробуйте ещё раз.', empty_completion: 'Claude ничего не ответил. Попробуйте ещё раз.', refused: 'Claude не стал отвечать на это. Попробуйте иначе.', prompt_too_large: 'Небо стало слишком большим для одного запроса.' };
+  const OFF = ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'];
+  const errText = code => ERR[code] || 'Связь прервалась. Попробуйте ещё раз.';
+  const aiOff = () => { aiSample = null; $('ask').hidden = true; renderCard(); };
+  let aiDb = null, pending = { branches: [], asked: [] };
+
+  const addHint = (par, h) => {
+    const id = okId(h.id) ? h.id : newId();
+    if (byId[id] || !clip(h.title, 40)) return null;
+    const x = { id, p: par.id, t: clip(h.title, 40), q: clip(h.q, 90) || clip(h.title, 40), d: clip(h.d, 240), y: clip(h.year, 30), k: 'hint', s: 'hint', kids: [], c: par.c };
+    DATA.push(x); byId[id] = x; par.kids.push(x); HINTS.push(x);
+    placeHint(x); x.cur = x.bud.clone(); x.phase = Math.random() * 6.28;
+    makeNode(x); makeFlow(x); makePing(x); makeLabel(x);
+    return x;
+  };
+  const applyBranch = (id, b) => {
+    const n = byId[id];
+    if (!n || n.grown || !b || !Array.isArray(b.hints)) return false;
+    Object.assign(n, { grown: true, s: 'done', k: 'frame', t: clip(b.title, 40) || n.t, y: clip(b.year, 30) || n.y, story: clip(b.story, 900), facts: (Array.isArray(b.facts) ? b.facts : []).slice(0, 5).map(x => clip(x, 200)).filter(Boolean) });
+    if (!n.revT0) n.revT0 = performance.now() - 2000;
+    rebuildNode(n); makeFlow(n);
+    b.hints.slice(0, 3).forEach(h => h && addHint(n, h));
+    makeLabel(n); makePing(n);
+    n.kids.forEach(k => k.flow && makeFlow(k));
+    reveal(n); layoutMM(); applyStyle(); renderList();
+    return true;
+  };
+  const applyPending = () => { // shared branches can arrive in any order: apply whatever already has its parent
+    let moved = true;
+    while (moved) {
+      moved = false;
+      pending.branches.forEach(p => { if (byId[p.id] && !byId[p.id].grown && applyBranch(p.id, p.body)) moved = true; });
+      pending.asked.forEach(p => { const b = p.body; if (!byId[p.id] && byId[b.parent] && addHint(byId[b.parent], { ...b, id: p.id })) { moved = true; layoutMM(); applyStyle(); renderList(); } });
+    }
+    renderCard();
+  };
+
+  aiHooks.grow = async n => {
+    if (!aiSample || !n || n.s !== 'hint' || n.growing) return;
+    const ctl = new AbortController();
+    n.growing = { ctl, t0: performance.now() }; n.growErr = '';
+    renderCard();
+    const known = DATA.map(x => x.t).join('; ').slice(0, 3500);
+    const prompt = `Ты помогаешь растить «Небо открытий» — трёхмерную карту знаний о Льве Толстом, его эпохе и его влиянии на мир. Зритель раскрывает ветку-намёк.
+Ветка: «${n.t}». Вопрос-крючок: «${n.q}». Что о ней известно: ${n.d}
+Путь на карте: ${trail(n).map(x => x.t).join(' → ')} → ${n.t}.
+Уже есть на карте, не повторяй: ${known}.
+
+Напиши содержимое этой ветки и три новые ветки-намёка, куда интересно копнуть дальше. Правила: только проверенные факты, без выдуманных цитат и чисел; если в чём-то не уверен, не пиши этого. По-русски, простыми короткими предложениями.
+Ответь только JSON такого вида:
+{"title": "имя ветки, 2–4 слова", "year": "год или период", "story": "4–6 предложений: ответ на вопрос-крючок и почему это важно", "facts": ["3–5 коротких фактов с датами или числами"], "hints": [{"title": "2–4 слова", "q": "вопрос-крючок до 70 знаков", "d": "одно предложение, почему это интересно"}]}
+В "hints" ровно три элемента.`;
+    try {
+      const r = await aiSample.json(prompt, { signal: ctl.signal });
+      const hints = (Array.isArray(r?.hints) ? r.hints : []).filter(h => h && h.title && h.q).slice(0, 3).map(h => ({ id: newId(), title: clip(h.title, 40), q: clip(h.q, 90), d: clip(h.d, 240) }));
+      if (!r || !clip(r.story, 900) || !hints.length) throw { code: 'invalid_json' };
+      const body = { title: clip(r.title, 40), year: clip(r.year, 30), story: clip(r.story, 900), facts: (Array.isArray(r.facts) ? r.facts : []).slice(0, 5).map(x => clip(x, 200)), hints, at: Date.now() };
+      n.growing = null;
+      applyBranch(n.id, body);
+      if (aiDb) aiDb.collection('branches').doc(n.id).set(body).catch(() => {});
+    } catch (e) {
+      if (OFF.includes(e.code)) { n.growing = null; return aiOff(); }
+      n.growErr = e.code === 'cancelled' ? '' : errText(e.code);
+    } finally { n.growing = null; renderCard(); }
+  };
+  setInterval(() => { const el = $('grow-t'), n = byId[sel]; if (el && n.growing) el.textContent = Math.round((performance.now() - n.growing.t0) / 1000); }, 500);
+
+  // Спросите небо: a short answer, a tour through the nodes that show it, and sometimes a new hint
+  let tourT = null, askCtl = null;
+  aiHooks.stopTour = () => clearTimeout(tourT);
+  const tour = ids => { clearTimeout(tourT); let i = 0; const next = () => { if (i < ids.length) { focusFn(ids[i++]); tourT = setTimeout(next, 3400); } }; next(); };
+  const askOut = (text, chips) => {
+    $('ask-out').hidden = false; $('ask-text').textContent = text;
+    $('ask-nodes').innerHTML = (chips || []).map(n => `<button type="button" class="nchip${n.fresh ? ' new' : ''}" data-go="${n.id}" style="--c:${hexOf(n)}">${n.fresh ? '✦ ' : ''}${esc(n.t)}</button>`).join('');
+  };
+  $('ask').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (askCtl) { askCtl.abort(); return; }
+    const q = clip($('ask-q').value, 200);
+    if (!q || !aiSample) return;
+    askCtl = new AbortController();
+    $('ask-go').textContent = 'Стоп';
+    askOut('Думаю…', []);
+    const map = DATA.map(x => `${x.id} | ${x.t} | ${clip(x.q || x.d, 110)}`).slice(0, 160).join('\n');
+    const prompt = `Ты гид по «Небу открытий» — карте знаний о Льве Толстом и его влиянии. Вот все ноды карты (id | название | вопрос или описание):
+${map}
+
+Вопрос зрителя: «${q}»
+Ответь по-русски, коротко: 2–4 простых предложения, только проверенные факты. Выбери до четырёх нод, которые лучше всего показывают ответ, в порядке показа (только id из списка). Если подходящей ветки на карте нет, предложи одну новую ветку-намёк и укажи id ноды, к которой её прикрепить.
+Ответь только JSON: {"answer": "...", "nodes": ["id"], "new_hint": null или {"parent": "id", "title": "2–4 слова", "q": "вопрос-крючок до 70 знаков", "d": "одно предложение"}}`;
+    try {
+      const r = await aiSample.json(prompt, { signal: askCtl.signal, modelTier: 'quick', cache: false });
+      const ids = (Array.isArray(r?.nodes) ? r.nodes : []).filter(id => byId[id]).slice(0, 4);
+      const chips = ids.map(id => byId[id]);
+      const h = r?.new_hint;
+      if (h && byId[h.parent] && clip(h.title, 40)) {
+        const x = addHint(byId[h.parent], { id: newId(), title: h.title, q: h.q, d: h.d });
+        if (x) {
+          x.fresh = true; reveal(byId[h.parent]); layoutMM(); applyStyle(); renderList(); chips.push(x); ids.push(x.id);
+          if (aiDb) aiDb.collection('asked').doc(x.id).set({ parent: h.parent, title: x.t, q: x.q, d: x.d, at: Date.now() }).catch(() => {});
+        }
+      }
+      askOut(clip(r?.answer, 700) || 'Не нашёл ответа на карте.', chips);
+      if (ids.length) tour(ids);
+    } catch (err) {
+      if (OFF.includes(err.code)) aiOff();
+      else askOut(err.code === 'cancelled' ? 'Остановлено.' : errText(err.code), []);
+    } finally { askCtl = null; $('ask-go').textContent = 'Спросить'; }
+  });
+
+  // light the features up once the viewer says Claude may run here; keep grown branches for everyone
+  (async () => {
+    const cl = window.claude;
+    if (!cl || !cl.use) return;
+    const [smp, db] = await Promise.all([cl.use('sample'), cl.use('db')]);
+    if (smp) { aiSample = smp; $('ask').hidden = false; renderCard(); }
+    if (db) {
+      aiDb = db;
+      const keep = key => snap => { pending[key] = snap.docs.filter(d => d.exists && okId(d.id)).map(d => ({ id: d.id, body: d.data() })); applyPending(); };
+      db.collection('branches').onSnapshot(keep('branches'), () => {});
+      db.collection('asked').onSnapshot(keep('asked'), () => {});
+    }
+  })();
+
   applyStyle();
-  setVariant('stars');
+  VAR.medal.start();
   focusFn('root');
   requestAnimationFrame(tick);
   setTimeout(acted, 12000);
