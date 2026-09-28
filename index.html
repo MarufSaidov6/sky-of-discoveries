@@ -47,25 +47,29 @@ body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 var(--ser
 .lbl.off{opacity:0!important;pointer-events:none}
 .lbl:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 
-.top{position:fixed;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 16px) 20px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px 16px;flex-wrap:wrap;pointer-events:none}
+.top{position:fixed;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 16px) 20px 36px;background:linear-gradient(to bottom,rgba(11,13,20,.92),rgba(11,13,20,.7) 55%,rgba(11,13,20,0));display:flex;justify-content:space-between;align-items:flex-start;gap:12px 16px;flex-wrap:wrap;pointer-events:none}
 .top>*{pointer-events:auto}
 h1{margin:0;font:900 clamp(30px,4vw,46px)/.9 var(--display);text-transform:uppercase;letter-spacing:.01em}
-.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:8px;max-width:60vw;font:500 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.top>div:first-child{flex:1 1 220px;min-width:0}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:8px;font:500 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 .crumbs button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--mut);background:none;border:0;padding:2px 0;cursor:pointer}
 .crumbs button:hover,.crumbs button:focus-visible{color:var(--yellow)}
 .crumbs .here{color:var(--text)}
 .crumbs i{font-style:normal;opacity:.5}
 .right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-.counts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.count{padding:6px 10px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px);font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
-.count b{font:900 20px/1 var(--display);color:var(--yellow);margin-right:6px;vertical-align:-2px;font-variant-numeric:tabular-nums}
-.count.h b{color:var(--hint)}
+.found{margin:0;font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.found b{font-weight:600;color:var(--hint);font-variant-numeric:tabular-nums}
+.more{position:relative}
+.more summary{list-style:none}
+.more summary::-webkit-details-marker{display:none}
+.more[open] summary{border-color:var(--yellow)}
+.menu{position:absolute;right:0;top:calc(100% + 6px);display:flex;flex-direction:column;align-items:stretch;gap:6px;z-index:5}
 .ctrls{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .cats{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.cat{display:inline-flex;align-items:center;gap:6px;font:500 11px/1 var(--mono);letter-spacing:.04em;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 10px;cursor:pointer;backdrop-filter:blur(8px)}
-.cat i{width:9px;height:9px;border-radius:50%;background:var(--c)}
-.cat:hover,.cat[aria-pressed="true"]{border-color:var(--c)}
-.cat[aria-pressed="true"]{box-shadow:inset 0 0 0 1px var(--c)}
+.cat{display:inline-flex;align-items:center;gap:6px;font:500 11px/1 var(--mono);letter-spacing:.04em;color:var(--mut);background:none;border:0;padding:4px 2px;cursor:pointer}
+.cat i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.cat:hover{color:var(--text)}
+.cat[aria-pressed="true"]{color:var(--c)}
 .cat:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .btn{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 12px;cursor:pointer;backdrop-filter:blur(8px);text-decoration:none;display:inline-block}
 .btn:hover{border-color:var(--yellow);color:var(--yellow)}
@@ -74,7 +78,10 @@ h1{margin:0;font:900 clamp(30px,4vw,46px)/.9 var(--display);text-transform:upper
 .btn.primary:hover{background:#FFFFFF;color:#161616}
 .btn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 
-#card{position:fixed;padding-right:40px!important;left:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(360px,calc(100% - 40px));max-height:min(54vh,540px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px 18px;backdrop-filter:blur(12px)}
+#card{position:fixed;padding-right:40px!important;left:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(360px,calc(100% - 40px));max-height:min(54vh,540px);overflow:auto;background:rgba(13,16,24,.95);border:1px solid var(--line);border-radius:6px;padding:16px 18px 18px;backdrop-filter:blur(12px)}
+#card.float{left:0;top:0;bottom:auto;width:clamp(260px,32vw,380px);max-height:none;will-change:transform}
+.fl{margin:16px 0 0;font:600 10px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.fl+.facts{margin-top:6px}
 .x{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mut);font:400 18px/1 var(--mono);cursor:pointer}
 .x:hover,.x:focus-visible{color:var(--text);border-color:var(--text);outline:none}
 body.mm .lbl{font-size:12px}
@@ -89,28 +96,24 @@ body.mm .lbl.hint:hover,body.mm .lbl.hint.sel{z-index:2}
 body.mm .lbl.hint:hover .qq,body.mm .lbl.hint.sel .qq{display:block;margin-bottom:2px;color:var(--c)}
 .lbl.left{text-align:right}
 .lbl.left small{margin:4px 0 0}
-.chip{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px 4px;border:1px solid var(--line);color:var(--text)}
-.chip.hint{border-style:dashed;border-color:var(--hint);color:var(--hint)}
-.chip.page,.chip.root{background:var(--yellow);border-color:var(--yellow);color:#161616}
-.chip.note{border-color:var(--note);color:var(--note)}
-#card h2{margin:10px 0 4px;font:800 32px/.95 var(--display);text-wrap:balance}
-.yr{font:500 11px/1.3 var(--mono);color:var(--mut);letter-spacing:.06em}
+#card h2{margin:0 0 6px;font:800 32px/.95 var(--display);text-wrap:balance}
+.yr{margin:0;font:500 11px/1.3 var(--mono);color:var(--mut);letter-spacing:.06em}
+.yr i{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--c);vertical-align:1px}
+.link{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--yellow);text-decoration:none}
+.link:hover,.link:focus-visible{text-decoration:underline;text-underline-offset:4px;outline:none}
 .d{margin:10px 0 0;font-size:15px;line-height:1.5}
 .small{margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--mut)}
 .actions{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:14px}
 .actions:empty{display:none}
 pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--text);background:rgba(255,255,255,.04);border:1px dashed var(--hint);padding:10px;user-select:all;width:100%;box-sizing:border-box}
 .hookline{margin:8px 0 0;font:italic 400 17px/1.35 var(--serif);color:var(--c,var(--text))}
-.hooks{display:flex;flex-direction:column;gap:6px;margin-top:14px}
-.hooks .label{margin:0 0 2px;font:600 10px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
-.hook{display:flex;align-items:flex-start;gap:10px;text-align:left;color:var(--text);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:8px 10px;cursor:pointer}
-.hook:hover,.hook:focus-visible{border-color:var(--c);outline:none}
-.hook .q{flex:none;width:18px;height:18px;border-radius:50%;border:1px dashed var(--c);color:var(--c);font:700 11px/16px var(--mono);text-align:center;animation:ping 2.2s ease-out infinite}
-.hook b{display:block;font:italic 400 14px/1.3 var(--serif)}
-.hook small{display:block;margin-top:2px;font:500 10px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.hooks{display:flex;flex-direction:column;margin-top:16px;padding-top:10px;border-top:1px solid var(--line)}
+.hook{display:flex;align-items:baseline;gap:10px;text-align:left;color:var(--text);background:none;border:0;padding:5px 0;font:italic 400 14px/1.35 var(--serif);cursor:pointer}
+.hook:hover,.hook:focus-visible{color:var(--c);outline:none}
+.hook .q{flex:none;width:15px;height:15px;border-radius:50%;border:1px dashed var(--c);color:var(--c);font:normal 700 9px/13px var(--mono);text-align:center}
 .toast{color:var(--yellow);font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase}
 
-#drawer{position:fixed;right:20px;top:calc(env(safe-area-inset-top,0px) + 170px);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(320px,calc(100% - 40px));overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px 16px;backdrop-filter:blur(12px)}
+#drawer{position:fixed;right:20px;top:calc(env(safe-area-inset-top,0px) + 130px);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(320px,calc(100% - 40px));overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px 16px;backdrop-filter:blur(12px)}
 #drawer h2{margin:0 0 10px;font:800 22px/1 var(--display);text-transform:uppercase}
 #drawer ul{list-style:none;margin:0;padding:0 0 0 16px}
 #list>ul{padding-left:0}
@@ -134,16 +137,17 @@ pre{white-space:pre-wrap;margin:0;font:400 12px/1.45 var(--mono);color:var(--tex
 .cine-prog i{display:block;height:100%;width:0;background:var(--yellow)}
 .cine-ctrls{position:absolute;right:clamp(16px,4vw,48px);top:calc(11vh + 14px);display:flex;gap:6px;pointer-events:auto;opacity:0;transition:opacity .8s .6s}
 #cine.on .cine-ctrls{opacity:1}
-.top,#card,#drawer{transition:opacity .6s}
+.top,#drawer{transition:opacity .6s}
 body.cine .top,body.cine #card,body.cine #drawer,body.cine #tip{opacity:0;pointer-events:none}
 body.cine .lbl{pointer-events:none}
 body.cine #labels{opacity:.8}
-#ask{position:fixed;left:calc(50% + 190px);transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(560px,calc(100% - 440px));display:flex;flex-direction:column;gap:8px;z-index:20;margin:0;transition:opacity .6s}
+#ask{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);width:min(520px,calc(100% - 40px));display:flex;flex-direction:column;gap:8px;z-index:20;margin:0;transition:opacity .6s}
+#ask[hidden]{display:none}
 .ask-row{display:flex;gap:6px;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:999px;backdrop-filter:blur(12px)}
 .ask-row:focus-within{border-color:var(--yellow)}
 .ask-row input{flex:1;min-width:0;background:none;border:0;color:var(--text);font:400 15px/1.2 var(--serif);padding:8px 12px;outline:none}
 .ask-row input::placeholder{color:var(--mut)}
-.ask-mark{align-self:center;margin-left:8px;font:700 14px/1 var(--mono);background:linear-gradient(90deg,#F2B84B,#F08A7E,#7FA7E0,#5CC8A8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ask-mark{align-self:center;margin-left:8px;font:700 14px/1 var(--mono);color:var(--yellow)}
 #ask-out{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;backdrop-filter:blur(12px);max-height:32vh;overflow:auto}
 #ask-text{margin:0;font:400 15px/1.5 var(--serif)}
 #ask-nodes{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
@@ -152,15 +156,22 @@ body.cine #labels{opacity:.8}
 .nchip:hover{background:rgba(255,255,255,.06)}
 .nchip.new{border-style:dashed}
 body.cine #ask{opacity:0;pointer-events:none}
+@media (min-width:721px){body.list #ask{left:calc((100% - 360px) / 2);width:min(520px,calc(100% - 400px))}}
+@media (max-width:720px){body.list #ask,body.reading #ask{display:none}.cats,.found{display:none}}
 .facts{margin:10px 0 0;padding-left:18px;font-size:14px;line-height:1.45}
 .facts li{margin:4px 0}
-.btn.grow,.chip.grown{background:linear-gradient(90deg,#F2B84B,#F08A7E,#7FA7E0,#5CC8A8);color:#161616;border-color:transparent}
+.ref{color:inherit;text-decoration:underline;text-decoration-color:var(--c);text-decoration-thickness:1.5px;text-underline-offset:3px;cursor:pointer}
+.ref.q{text-decoration-style:dashed}
+.ref:hover,.ref:focus-visible{color:var(--c);outline:none}
+.backs{margin:14px 0 0;font-size:13px;line-height:1.5;color:var(--mut)}
+.backs .ref{color:var(--text)}
+.btn.grow{background:linear-gradient(90deg,#F2B84B,#F08A7E,#7FA7E0,#5CC8A8);color:#161616;border-color:transparent}
 .btn.grow:hover{filter:brightness(1.12);color:#161616}
 .growing{display:flex;align-items:center;gap:8px;margin:0;font:italic 400 14px/1.4 var(--serif);color:var(--text)}
 .spin{flex:none;width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--yellow);animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .err{color:#FF8A7A}
-@media (max-width:720px){#ask{left:12px;right:12px;width:auto;transform:none;bottom:calc(40vh + 24px)}}
+@media (max-width:720px){#ask{left:12px;right:12px;width:auto;transform:none;bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}}
 #tip{position:fixed;right:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 90px);margin:0;max-width:300px;text-align:right;font:500 11px/1.6 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--mut);transition:opacity .8s;pointer-events:none}
 #tip.gone{opacity:0}
 @media (max-width:720px){
@@ -172,7 +183,7 @@ body.cine #ask{opacity:0;pointer-events:none}
   #drawer{left:12px;right:12px;width:auto;top:calc(env(safe-area-inset-top,0px) + 170px)}
   .lbl{font-size:12px}.lbl.k-page{font-size:17px}.lbl.k-root{font-size:22px}.lbl.k-note{font-size:15px}
 }
-@media (prefers-reduced-motion:reduce){.lbl,#tip{transition:none}.bud,.ck.q,.hook .q{animation:none}}
+@media (prefers-reduced-motion:reduce){.lbl,#tip{transition:none}.bud,.ck.q{animation:none}}
 </style>
 
 <div id="stage" aria-hidden="true"></div>
@@ -183,20 +194,17 @@ body.cine #ask{opacity:0;pointer-events:none}
     <nav class="crumbs" id="crumbs" aria-label="Где вы сейчас"></nav>
   </div>
   <div class="right">
-    <div class="counts">
-      <span class="count"><b id="c-done">0</b>изучено</span>
-      <span class="count h"><b id="c-found">0</b>намёков найдено</span>
-    </div>
     <div class="ctrls">
       <button class="btn film" type="button" id="b-film">▶ Фильм</button>
       <button class="btn" type="button" id="b-mind" aria-pressed="false">Майнд-мап</button>
       <button class="btn" type="button" id="b-home">Обзор</button>
-      <button class="btn" type="button" id="b-back">Назад</button>
-      <button class="btn" type="button" id="b-spin" aria-pressed="true">Вращение</button>
-      <button class="btn" type="button" id="b-style" aria-pressed="false">Вид: значки</button>
-      <button class="btn" type="button" id="b-list" aria-expanded="false" aria-controls="drawer">Список</button>
+      <details class="more"><summary class="btn">Ещё</summary><div class="menu">
+        <button class="btn" type="button" id="b-list" aria-expanded="false" aria-controls="drawer">Список</button>
+        <button class="btn" type="button" id="b-spin" aria-pressed="true">Вращение</button>
+      </div></details>
     </div>
     <div class="cats" id="cats" role="group" aria-label="Цвета веток: нажмите, чтобы выделить"></div>
+    <p class="found"><b id="c-found">0</b> намёков найдено</p>
   </div>
 </header>
 <aside id="card" aria-live="polite"></aside>
@@ -220,7 +228,7 @@ body.cine #ask{opacity:0;pointer-events:none}
   <div id="list"></div>
   <button class="btn" type="button" id="b-reveal">Раскрыть все намёки</button>
 </aside>
-<p id="tip">Тяните, чтобы вращать<br>Колесо или два пальца: приблизить<br>Нажмите на звезду, чтобы влететь</p>
+<p id="tip">Нажмите на значок, чтобы влететь<br>Тяните, чтобы вращать</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -305,10 +313,40 @@ body.cine #ask{opacity:0;pointer-events:none}
   };
   const FEATURED = ['h-raich', 'h-dost', 'h-minard', 'h-lenin', 'h-ruskin', 'h-garr', 'h-chert', 'h-douk'];
   DATA.forEach(n => { n.c = CAT_OF[n.id] || (n.p && byId[n.p].c) || null; n.q = HOOK[n.id]; });
+  // what each node says up close: the text of its frame in the presentations, shortened.
+  // [[id|words]] links to another card, like a wiki link in Obsidian; the target lists who links to it
+  const TEXT = {
+    root: ['Граф, [[f1851|солдат]], автор [[f1863|«Войны и мира»]] и [[f1873|«Анны Карениной»]]. В пятьдесят лет он [[f1879|пережил кризис]] и стал проповедовать ненасилие. Его книга [[g1|«Царство Божие внутри вас»]] через [[g3|Ганди]] дошла до [[g5|Мартина Лютера Кинга]]. Вокруг него две презентации, [[p1|о его жизни]] и [[p2|о его влиянии]], и [[n1|заметка из нашего чата]].', ['Прожил 82 года, 63 из них [[h-diary|вёл дневник]]', 'В 1901 году [[f1882|отлучён от церкви]]', 'Полное собрание сочинений: 90 томов']],
+    p1: ['Жизнь Толстого и Россия его времени в кадрах-схемах: от [[f1828|крепостного права]] до [[fend|могилы без имени]] в лесу. Каждый значок вокруг — один кадр. Цвет показывает, о чём он: семья, книги, власть или ненасилие.'],
+    p2: ['Как одна книга прошла через три континента. Толстой пишет [[g1|«Царство Божие внутри вас»]], в Южной Африке её [[g3|читает молодой юрист Ганди]], а через полвека метод Ганди [[g5|берёт Мартин Лютер Кинг]]. Вокруг шесть кадров: книга, власть, полка Ганди, письма, бойкот и Нобелевская премия.'],
+    n1: ['Вопрос из нашего чата: почему на уроках не рассказывают, что Толстой [[g3|повлиял на Ганди]]? В советской школе Толстого читали [[h-lenin|через статью Ленина]]: великий художник, но наивный проповедник. Идея ненасилия и [[g2|отказа служить государству]] была для СССР неудобной, а [[h-tolst|толстовские коммуны]] в 1930-е годы закрыли.'],
+    f1828: ['Толстой родился 28 августа (9 сентября) 1828 года в Ясной Поляне, в 200 км к югу от Москвы. Он был графом, и вместе с землёй семье принадлежали крестьяне: уйти они не могли, их можно было продать и высечь. Помещикам принадлежала больше трети населения европейской России. Мать умерла, когда ему не было двух лет, отец, когда ему было восемь.', ['Пушкину 29 лет, он первый поэт России', 'В стране нет ни одной железной дороги', 'Николай I третий год на троне', 'До [[f1861|отмены крепостного права]] ещё 33 года']],
+    f1847: ['В 16 лет он поступил в Казанский университет и в 1847 году ушёл без диплома. Той же весной [[h-diary|начал дневник]] и вёл его 63 года. Ему досталась Ясная Поляна с крепостными, но крестьяне не поверили его переменам. Потом Москва, Петербург, кутежи и карты. В 1854 году, чтобы заплатить карточные долги, он продал дом, где родился. Покупатель разобрал его и увёз.', ['1848: по Европе идут революции', '1849: Достоевского милуют уже на эшафоте']],
+    f1851: ['В 1851 году он уехал за братом на Кавказ и между набегами написал «Детство». Повесть напечатали за подписью «Л. Н.». В Крымскую войну он служил на Четвёртом бастионе Севастополя, который осаждали 349 дней, и писал рассказы прямо из осады. В 1857 году в Париже увидел казнь на гильотине и записал, что никогда не будет [[g2|служить никакому правительству]].', ['1856: Россия проигрывает Крымскую войну', 'Новый царь Александр II решает [[f1861|менять старый порядок]]']],
+    f1861: ['19 февраля (3 марта) 1861 года Александр II отменил [[f1828|крепостное право]]. Свободу получили около 23 миллионов человек. Но землю крестьяне должны были выкупать 49 лет, а платежи отменили только в 1907 году. Толстой стал мировым посредником и так часто защищал крестьян, что дворяне добивались его отставки. Ещё он открыл бесплатную школу без отметок и наказаний.', ['1861: в США начинается Гражданская война', '1862: жандармы обыскивают его школу и ничего не находят']],
+    f1862: ['В сентябре 1862 года он женился на Софье Берс. Ему было 34, ей 18. Перед свадьбой он дал ей прочитать [[h-diary|свои дневники]], и она этого не забыла. За 25 лет она родила 13 детей, пятеро умерли в детстве. Она вела дом, издавала его книги и по ночам переписывала черновики. По семейному преданию, [[f1863|«Войну и мир»]] она переписала семь раз.', ['1862: Тургенев публикует «Отцов и детей»', 'С Тургеневым Толстой чуть не стрелялся и помирился только через 17 лет']],
+    f1863: ['Он начал роман о декабристах, а ушёл в прошлое, до Наполеона. Так появилась «Война и мир»: четыре тома и эпилог, больше 500 персонажей, шесть лет работы. Её герой не Наполеон, а сама история, миллионы мелких решений. Великие люди, считал Толстой, лишь думают, что ведут события.', ['1869: Менделеев публикует периодическую таблицу', '1869: открывается Суэцкий канал', '1869: [[h-minard|Шарль Минар]] рисует схему похода Наполеона']],
+    f1873: ['«Все счастливые семьи похожи друг на друга, каждая несчастливая семья несчастлива по-своему». Роман печатался с 1875 по 1877 год. Светская дама уходит от мужа к офицеру и платит за это всем. Анна знакомится с Вронским на вокзале и гибнет под поездом. Последнюю часть журнал печатать отказался, и Толстой выпустил её отдельной книжкой.', ['1877: третья русско-турецкая война на его веку', 'Железная дорога увезёт и его самого, [[f1910|до Астапова]]']],
+    f1879: ['К пятидесяти годам у него было всё: слава, деньги, [[f1862|семья]], здоровье. И его остановил вопрос: зачем? В «Исповеди» он пишет, что прятал от себя шнурок и перестал брать ружьё на охоту, чтобы не покончить с собой. Ответ он нашёл в Нагорной проповеди, если читать её буквально: любите врагов, [[g1|не противьтесь злу силой]], ничем не владейте.', ['1881: народовольцы убивают Александра II', 'Толстой просит нового царя простить убийц, их всё равно вешают', '«Исповедь» запретила цензура, её напечатали в Женеве']],
+    f1882: ['Он одевался как мужик, пахал, сам шил сапоги и ходил пешком из Москвы в Ясную Поляну. Отказался от мяса, охоты, табака и прав на всё, что написал после 1881 года. Его книги против [[g2|государства, армии и церкви]] запрещали, а они всё равно расходились. В 1901 году синод отлучил его от церкви. Издатель Суворин записал: «Два царя у нас: Николай Второй и Лев Толстой».', ['1891–1892: голод, он с дочерьми открывает сотни столовых', '1894: выходит [[g1|«Царство Божие внутри вас»]]', '1899: [[h-douk|7500 духоборов]] уплывают в Канаду', '1908: [[h-prok|Прокудин-Горский]] делает его цветной портрет']],
+    f1910: ['[[f1862|Софья]] и ученик Толстого [[h-chert|Чертков]] воевали за его дневники и завещание. Летом 1910 года он тайно подписал в лесу завещание: всё написанное становилось общим. Под утро 28 октября (10 ноября), в 82 года, он тайком уехал из дома со своим врачом. В поезде началось воспаление лёгких. На станции Астапово его перенесли в дом начальника станции, где 7 (20) ноября он умер.', ['Перрон заполнили репортёры, кинооператоры и полиция', 'Софью пустили к нему, только когда он потерял сознание']],
+    fend: ['В детстве старший брат Николенька рассказал, что тайна, как сделать всех людей счастливыми, записана на зелёной палочке, зарытой на краю оврага. Толстой просил похоронить его на этом месте. Так и сделали. Там нет ни креста, ни камня, ни имени, только травяной холмик под деревьями.', ['Похоронен 9 (22) ноября 1910 года', 'Станция [[f1910|Астапово]] теперь носит его имя', 'Полное собрание сочинений: 90 томов']],
+    g1: ['Толстой писал «Царство Божие внутри вас» три года. Название из Евангелия от Луки: Царство Божие не придёт откуда-то, оно внутри вас. Главная мысль: слова «не противься злому» надо понимать буквально, ведь каждый ответный удар рождает новый. Толстой не звал терпеть зло молча. Он звал не участвовать в нём: не бить, не судить, [[g2|не служить тому, кто бьёт]].', ['1890–1893: 12 глав за три года', 'Идея пришла из Америки: [[h-garr|Гаррисон и Балу]], 1838']],
+    g2: ['Государство, пишет Толстой, это организованное насилие: налоги, суды, тюрьмы и армия держатся на силе. Хуже всего всеобщая воинская повинность, она делает соучастником каждого. Революция не выход, она меняет одно насилие на другое. Выход в другом: если люди перестанут участвовать, власти не на что будет опереться.', ['Книга кончается сценой 1892 года: поезд с солдатами едет сечь крестьян', 'Толстой спрашивает: как добрые люди соглашаются на такое?']],
+    g3: ['В 1893 году 24-летний юрист Мохандас Ганди приехал в Южную Африку. Почти сразу его выкинули из вагона первого класса, потому что он не белый. В 1894 году к нему попал английский перевод [[g1|книги Толстого]]. Ганди писал, что она его потрясла и оставила след на всю жизнь. Рядом с ней все другие книги поблёкли.', ['Трое, кто повлиял на Ганди сильнее всех: [[h-raich|Райчандбхаи]], Толстой и [[h-ruskin|Рёскин]]', '1894: Ганди основывает Натальский индийский конгресс']],
+    g4: ['В декабре 1908 года Толстой написал [[h-das|«Письмо к индусу»]]: торговая компания покорила 200 миллионов человек только потому, что люди сами ей служат. Перестаньте служить, и власть исчезнет без оружия. Копия дошла до [[g3|Ганди]], и в 1909 году он написал Толстому. Переписка шла до последних недель жизни Толстого. Встретиться они так и не успели.', ['Сентябрь 1910: самое длинное письмо Толстого к Ганди', '1910: под Йоханнесбургом появляется [[h-kall|«Ферма Толстого»]]']],
+    g5: ['1 декабря 1955 года в Монтгомери, штат Алабама, Роза Паркс отказалась уступить место в автобусе белому пассажиру. Её арестовали. Через четыре дня чёрные жители города перестали ездить на автобусах. Бойкот возглавил 26-летний пастор Мартин Лютер Кинг. Люди ходили пешком 381 день, и в ноябре 1956 года Верховный суд США запретил сегрегацию в автобусах.', ['Когда дом Кинга взорвали, он попросил толпу не мстить', 'Методу Ганди участников учили [[h-rustin|Байярд Растин]] и Гленн Смайли']],
+    g6: ['Кинг сформулировал так: Христос дал дух, а [[g3|Ганди]] дал метод. В 1959 году он поехал в Индию и сказал, что в другие страны едет туристом, а в Индию паломником. Потом были марш на Вашингтон и речь «У меня есть мечта» в 1963 году. В 1964 году Кинг получил Нобелевскую премию мира. Ни Толстой, ни Ганди её так и не получили.', ['Ганди убили в 1948 году, Кинга в 1968-м', 'Круг, начатый в Америке [[h-garr|в 1838 году]], замкнулся в Америке']]
+  };
+  Object.entries(TEXT).forEach(([id, [story, facts]]) => Object.assign(byId[id], { story, facts }));
+  const BACK = {}; // who links to whom: shown under a card as «Упоминается в»
+  for (const [id, [story, facts = []]] of Object.entries(TEXT)) for (const [, to] of [story, ...facts].join(' ').matchAll(/\[\[([\w-]+)\|/g)) (BACK[to] ||= new Set()).add(id);
   const hexOf = n => n.c ? CAT[n.c].hex : n.k === 'root' ? '#FFF1B0' : '#F4EBD8';
 
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+  const ref = (id, words) => `<a href="#" class="ref${byId[id].s === 'hint' ? ' q' : ''}" data-go="${id}" style="--c:${hexOf(byId[id])}">${words}</a>`;
+  const rich = s => esc(s).replace(/\[\[([\w-]+)\|([^\]]+)\]\]/g, (m, id, words) => byId[id] ? ref(id, words) : words); // [[id|words]] → a link to that card
   const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c; };
   const trail = n => { const t = []; for (let p = n.p && byId[n.p]; p; p = p.p && byId[p.p]) t.unshift(p); return t; };
   const pageOf = n => { let p = n; while (p && p.k !== 'page') p = p.p && byId[p.p]; return p; };
@@ -338,36 +376,33 @@ body.cine #ask{opacity:0;pointer-events:none}
   function renderCard() {
     const n = byId[sel], page = pageOf(n), hk = hintKids(n);
     const url = n.url || (n.a && page ? `${page.url}#${n.a}` : '');
-    const kind = n.s === 'hint' ? 'Намёк' : n.grown ? 'Ветка от Claude' : { root: 'Центр неба', page: 'Презентация', frame: 'Кадр', note: 'Заметка из чата' }[n.k];
+    const kind = n.s === 'hint' ? 'Намёк' : n.grown ? 'Ветка от Claude' : { page: 'Презентация', note: 'Из нашего чата' }[n.k];
+    const meta = [kind, n.y, n.c && CAT[n.c].name].filter(Boolean).filter((x, i, a) => a.indexOf(x) === i).join(' · ');
     const near = n.s === 'hint' ? hintKids(byId[n.p]).filter(h => h !== n)
       : n.k === 'page' ? n.kids.flatMap(hintKids)
-      : n.k === 'root' ? FEATURED.map(id => byId[id]).filter(h => !h.revT0).slice(0, 4)
+      : n.k === 'root' ? FEATURED.map(id => byId[id]).filter(h => !h.revT0)
       : hintKids(n);
     const prompt = n.s === 'hint' ? `Сделай новую страницу в таких же схемах про «${n.t}». ${n.d} Добавь её на небо открытий рядом с «${byId[n.p].t}».` : '';
     $('card').innerHTML = `
       <button type="button" class="x" id="card-x" aria-label="Скрыть карточку">×</button>
-      <span class="chip ${n.s === 'hint' ? 'hint' : n.grown ? 'grown' : n.k}">${kind}</span>
       <h2>${esc(n.t)}</h2>
-      <div class="yr">${esc(n.y || '')}</div>
+      <p class="yr">${n.c ? `<i style="--c:${hexOf(n)}"></i>` : ''}${esc(meta)}</p>
       ${n.q ? `<p class="hookline" style="--c:${hexOf(n)}">${esc(n.q)}</p>` : ''}
-      <p class="d">${esc(n.story || n.d)}</p>
-      ${n.facts && n.facts.length ? `<ul class="facts">${n.facts.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
-      ${n.k === 'root' ? '<p class="small">Большие значки — презентации, малые вокруг них — кадры. Цвет показывает, о чём ветка: список цветов справа сверху. Пульсирующие «?» — намёки: влетите в кадр, и они раскроются.</p>' : ''}
-      ${n.k === 'page' ? '<p class="small">Нажмите на любой значок вокруг, чтобы влететь в кадр.</p>' : ''}
-      ${near.length ? `<div class="hooks"><p class="label">${n.s === 'hint' ? 'Ещё рядом' : 'Интересно рядом'}</p>${near.map(h => `<button type="button" class="hook" data-go="${h.id}" style="--c:${hexOf(h)}"><span class="q">?</span><span><b>${esc(h.q)}</b><small>${esc(h.t)}</small></span></button>`).join('')}</div>` : ''}
-      <div class="actions">${url ? `<a class="btn primary" href="${url}" target="_blank" rel="noopener">Открыть ${n.k === 'page' ? 'презентацию' : 'кадр'} ↗</a>` : ''}${n.k === 'note' ? '<p class="small">Эта заметка пока живёт только в нашем чате.</p>' : ''}${n.s === 'hint' && aiSample ? (n.growing
+      <p class="d">${rich(n.story || n.d)}</p>
+      ${n.facts && n.facts.length ? `<p class="fl">${n.k === 'frame' && !n.grown ? 'В это время' : 'Коротко'}</p><ul class="facts">${n.facts.map(x => `<li>${rich(x)}</li>`).join('')}</ul>` : ''}
+      ${BACK[n.id] ? `<p class="backs">Упоминается в: ${[...BACK[n.id]].map(id => ref(id, esc(byId[id].t))).join(', ')}</p>` : ''}
+      ${near.length ? `<div class="hooks">${near.slice(0, 3).map(h => `<button type="button" class="hook" data-go="${h.id}" style="--c:${hexOf(h)}"><span class="q">?</span>${esc(h.q)}</button>`).join('')}</div>` : ''}
+      <div class="actions">${url ? `<a class="link" href="${url}" target="_blank" rel="noopener">${n.k === 'page' ? 'Открыть презентацию' : 'Схема в презентации'} ↗</a>` : ''}${n.s === 'hint' && aiSample ? (n.growing
           ? `<p class="growing"><span class="spin"></span>Claude пишет эту ветку… <span id="grow-t">0</span> с</p><button class="btn" type="button" id="grow-stop">Остановить</button>`
-          : `<button class="btn grow" type="button" id="grow">✦ Вырастить ветку</button><p class="small">Claude расскажет, что здесь интересного, и откроет три новых намёка. Ветка останется на небе для всех.</p>${n.growErr ? `<p class="small err">${esc(n.growErr)}</p>` : ''}`) : ''}${prompt && !aiSample ? `<button class="btn primary" type="button" id="copy">Скопировать запрос</button><pre id="prompt">${esc(prompt)}</pre><p class="small">Вставьте запрос в чат, и эта звезда станет новой страницей. <span class="toast" id="toast" hidden>Скопировано</span></p>` : ''}</div>`;
+          : `<button class="btn grow" type="button" id="grow">✦ Вырастить ветку</button><p class="small">Claude расскажет подробнее и откроет новые намёки.</p>${n.growErr ? `<p class="small err">${esc(n.growErr)}</p>` : ''}`) : ''}${prompt && !aiSample ? `<button class="btn" type="button" id="copy">Скопировать запрос</button><pre id="prompt" hidden>${esc(prompt)}</pre><p class="small">Вставьте его в чат, и намёк станет новой страницей. <span class="toast" id="toast" hidden>Скопировано</span></p>` : ''}</div>`;
     const path = trail(n).concat(n);
     $('crumbs').innerHTML = path.map((p, i) => i === path.length - 1 ? `<span class="here">${esc(p.t)}</span>` : `<button type="button" data-go="${p.id}">${esc(p.t)}</button><i>›</i>`).join('');
-    $('b-back').disabled = !n.p;
     DATA.forEach(x => {
       x.el.classList.toggle('sel', x.id === sel);
       const bud = x.el.querySelector('.bud');
       if (bud) bud.hidden = hintKids(x).every(h => h.revT0);
     });
-    $('c-found').textContent = `${HINTS.filter(h => h.revT0).length}/${HINTS.length}`;
-    $('c-done').textContent = DATA.filter(x => x.s === 'done').length;
+    $('c-found').textContent = `${HINTS.filter(h => h.revT0).length} из ${HINTS.length}`;
     [...$('list').querySelectorAll('[data-go]')].forEach(b => b.setAttribute('aria-current', String(b.dataset.go === sel)));
   }
   const item = n => `<li><button type="button" data-go="${n.id}" class="${n.s}"><span class="ck${n.s === 'hint' ? ' q' : ''}">${n.s === 'hint' ? '?' : '✓'}</span>${esc(n.t)}</button>${n.kids.length ? `<ul>${n.kids.map(item).join('')}</ul>` : ''}</li>`;
@@ -382,31 +417,33 @@ body.cine #ask{opacity:0;pointer-events:none}
     DATA.forEach(n => n.el.classList.toggle('dim', dimmed(n)));
   });
 
-  const go = id => { aiHooks.stopTour?.(); focusFn(id); };
+  const go = (id, over) => { aiHooks.stopTour?.(); focusFn(id, over); }; // over: the whole sky instead of a close-up
   document.addEventListener('click', e => {
     const g = e.target.closest('[data-go]');
-    if (g) { go(g.dataset.go); if (innerWidth < 720) toggleList(false); return; }
+    if (g) { e.preventDefault(); go(g.dataset.go); if (innerWidth < 1100) toggleList(false); return; } // on a smaller screen the list steps aside for the card
     const l = e.target.closest('.lbl');
     if (l) return go(l.dataset.id);
+    const more = document.querySelector('.more');
+    if (more.open && (!more.contains(e.target) || e.target.closest('.menu button'))) more.open = false;
     if (e.target.id === 'card-x') { $('card').hidden = true; return; }
     if (e.target.id === 'grow') return aiHooks.grow?.(byId[sel]);
     if (e.target.id === 'grow-stop') return byId[sel].growing?.ctl.abort();
     if (e.target.id === 'copy') {
       const pre = $('prompt'), toast = $('toast');
       const ok = () => { toast.hidden = false; setTimeout(() => toast.hidden = true, 1600); };
-      const fallback = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast.textContent = 'Выделено, нажмите ⌘C'; ok(); };
+      const fallback = () => { pre.hidden = false; const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast.textContent = 'Выделено, нажмите ⌘C'; ok(); };
       try { navigator.clipboard.writeText(pre.textContent).then(ok, fallback); } catch (_) { fallback(); }
     }
   });
   const toggleList = force => {
     const open = force ?? $('drawer').hidden;
     $('drawer').hidden = !open;
+    document.body.classList.toggle('list', open);
     $('b-list').setAttribute('aria-expanded', String(open));
     $('tip').classList.add('gone');
   };
   $('b-list').addEventListener('click', () => toggleList());
-  $('b-home').addEventListener('click', () => go('root'));
-  $('b-back').addEventListener('click', () => { const n = byId[sel]; if (n.p) go(n.p); });
+  $('b-home').addEventListener('click', () => go('root', true));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { const n = byId[sel]; if (n.p) go(n.p); } });
 
   /* 3D */
@@ -414,12 +451,13 @@ body.cine #ask{opacity:0;pointer-events:none}
   try { if (window.THREE && THREE.OrbitControls) renderer = new THREE.WebGLRenderer({ antialias: true }); } catch (_) { renderer = null; }
   if (!renderer) {
     focusFn = id => { sel = id; renderCard(); };
-    $('labels').hidden = true; $('tip').hidden = true; $('b-spin').hidden = true; $('b-style').hidden = true; $('b-mind').hidden = true; $('b-film').hidden = true;
+    $('labels').hidden = true; $('tip').hidden = true; $('b-spin').hidden = true; $('b-mind').hidden = true; $('b-film').hidden = true;
     toggleList(true);
     renderCard();
     $('card').insertAdjacentHTML('afterbegin', '<p class="small">Этот браузер не показывает 3D. Все звёзды доступны списком справа.</p>');
     return;
   }
+  $('card').style.opacity = 0; // in 3D the card only ever stands beside a chosen icon
 
   // canvas text needs the web fonts, so build the 3D scene once they are ready
   const init3D = () => {
@@ -626,10 +664,14 @@ body.cine #ask{opacity:0;pointer-events:none}
     [...text].forEach((ch, i, all) => { const a = i / all.length * Math.PI * 2; g2.save(); g2.translate(512 + Math.sin(a) * 478, 512 - Math.cos(a) * 478); g2.rotate(a); g2.fillText(ch, 0, 0); g2.restore(); });
     const inscription = new THREE.Sprite(new THREE.SpriteMaterial({ map: texOf(c2), transparent: true, depthWrite: false }));
     inscription.scale.setScalar(21.5);
-    g0.add(board(glowMat(0xFFD812, 0, .45), 40), disc, inscription);
+    const glow = board(glowMat(0xFFD812, 0, .45), 40);
+    g0.add(glow, disc, inscription);
     g0.scale.setScalar(1.5);
     rootGroup.add(g0);
-    VAR.medal = { group: g0, start() { this.t0 = performance.now(); }, step(now, t) {
+    VAR.medal = { group: g0, start() { this.t0 = performance.now(); }, calm(e, fade) { // e: Tolstoy is being read, so his glow softens; fade: another icon is, so he steps back into the dark
+      glow.material.uniforms.uOpacity.value = (1 - .7 * e) * fade;
+      disc.material.color.setScalar(1 - .15 * e); disc.material.opacity = inscription.material.opacity = fade;
+    }, step(now, t) {
       const k = reduce ? 1 : Math.min(1, (now - this.t0) / 900), e = k === 1 ? 1 : 1 + 2.4 * Math.pow(k - 1, 3) + 1.4 * Math.pow(k - 1, 2);
       disc.scale.setScalar(18 * (.6 + .4 * e)); inscription.scale.setScalar(21.5 * (.6 + .4 * e));
       inscription.material.rotation = -t * .12;
@@ -841,11 +883,8 @@ body.cine #ask{opacity:0;pointer-events:none}
   const radius = n => n.k === 'root' ? 13 : style === 'badges' ? BR[n.k] : SIZE[n.k];
   const applyStyle = () => {
     DATA.forEach(n => { if (n.badge) { n.badge.visible = style === 'badges'; n.star.visible = style === 'stars'; } n.R = radius(n); });
-    $('b-style').textContent = style === 'badges' ? 'Вид: значки' : 'Вид: звёзды';
-    $('b-style').setAttribute('aria-pressed', String(style === 'stars'));
     controls.minDistance = sel === 'root' ? 30 : byId[sel].R * (style === 'badges' ? 3.4 : 2.8);
   };
-  $('b-style').addEventListener('click', () => { style = style === 'badges' ? 'stars' : 'badges'; applyStyle(); });
 
   // selection: a dashed ring built from real geometry, so it stays crisp up close
   const selRing = new THREE.Group();
@@ -920,7 +959,15 @@ body.cine #ask{opacity:0;pointer-events:none}
     if (k === 1) { fly = null; controls.enabled = !cine; }
   };
 
-  focusFn = id => {
+  // look at a node from the side and a little from outside: its parent falls back and to the left, behind the card, its hints open to the right
+  const sideDir = n => {
+    if (!n.p) return null;
+    const out = n.pos.clone().sub(byId[n.p].pos); out.y = 0;
+    if (out.lengthSq() < 1e-4) return null;
+    out.normalize();
+    return out.clone().cross(UP).addScaledVector(out, .6).add(V(0, .35, 0)).normalize();
+  };
+  focusFn = (id, over) => {
     if (cine) return;
     showTo = 0;
     const n = byId[id];
@@ -929,11 +976,11 @@ body.cine #ask{opacity:0;pointer-events:none}
     if (hintKids(n).length) reveal(n);
     if (n.s === 'hint') reveal(byId[n.p]);
     $('card').hidden = false;
-    if (!mmOn) { // in the flat map the camera stays put, so the whole map stays in view
-      controls.minDistance = id === 'root' ? 30 : n.R * (style === 'badges' ? 3.4 : 2.8);
-      flyTo(n.pos, DIST[n.k]);
-    }
     renderCard();
+    if (mmOn) setMind(false); // a click in the flat map flies back into the sky, to that node
+    controls.minDistance = id === 'root' ? 30 : n.R * (style === 'badges' ? 3.4 : 2.8);
+    focusD = fitDist(n); overview = !!over;
+    flyTo(n.pos, over ? DIST.root : focusD, over ? null : sideDir(n));
   };
 
   // fit the flat map to the screen, leaving room for labels at the edges
@@ -955,7 +1002,7 @@ body.cine #ask{opacity:0;pointer-events:none}
     controls.touches.ONE = on ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
     $('card').hidden = on;
     if (on) fitMind();
-    else { const n = byId[sel]; controls.minDistance = sel === 'root' ? 30 : n.R * 3; flyTo(n.pos, DIST[n.k]); }
+    else { const n = byId[sel]; controls.minDistance = sel === 'root' ? 30 : n.R * 3; focusD = fitDist(n); overview = sel === 'root'; flyTo(n.pos, overview ? DIST.root : focusD, overview ? null : sideDir(n)); }
   };
   $('b-mind').addEventListener('click', () => setMind(!mmOn));
   $('b-home').addEventListener('click', () => { if (mmOn) fitMind(); });
@@ -971,11 +1018,53 @@ body.cine #ask{opacity:0;pointer-events:none}
     h.glow.material.uniforms.uOpacity.value = (.25 + .6 * v) * (reduce ? 1 : .7 + .3 * Math.sin(t * 2.3 + h.phase));
   });
 
+  /* Слайд: the card appears only beside the chosen icon, like the text next to a picture on a slide.
+     Too far to read, or so close that the icon needs the room, and the card steps away; it never covers the icon. */
+  const CLOSE_ROOT = 85, GAP = 40, card = $('card'), box = { cw: 0, ch: 0, top: 0, ask: 0 };
+  const measure = () => Object.assign(box, { cw: card.offsetWidth, ch: card.offsetHeight, top: document.querySelector('.top').offsetHeight, ask: $('ask').offsetHeight });
+  { const ro = new ResizeObserver(measure); [card, document.querySelector('.top'), $('ask')].forEach(x => ro.observe(x)); }
+  const kpx = () => (stage.clientHeight / 2) / Math.tan(camera.fov * Math.PI / 360); // screen px per unit at distance 1
+  const visR = n => n.k === 'root' ? 16 : n.R;
+  // the largest icon radius on screen that still leaves room for the card: beside it, or above it on a phone
+  const freeW = () => { // the open list takes the right edge, when there is still room for the card and the icon beside it
+    const w = stage.clientWidth, f = w - 360;
+    return w >= 720 && !$('drawer').hidden && f >= box.cw + GAP + 48 + 160 ? f : w;
+  };
+  const fitPx = () => { const w = freeW(), h = stage.clientHeight; return stage.clientWidth >= 720 ? Math.min(h * .2, (w - box.cw - GAP - 48) / 2) : Math.max(36, (h - 24 - box.ch - box.top) / 2 - 8); };
+  const fitDist = n => { measure(); return Math.max(n.k === 'root' ? CLOSE_ROOT : DIST[n.k], visR(n) * kpx() / (fitPx() * .92)); }; // a little margin, so the card is sure to fit
+  let slideE = 0, slideOn = false, focusD = DIST.root, overview = true; // overview: the whole sky, no card until you come closer
+  const stepSlide = dt => {
+    const w = stage.clientWidth, h = stage.clientHeight, wide = w >= 720, n = byId[sel];
+    const d = fly ? fly.toP.distanceTo(fly.toT) : camera.position.distanceTo(controls.target); // mid-flight, judge by where it lands
+    const rpx = visR(n) / d * kpx(), far = focusD * (sel === 'root' ? 1.1 : 1.4), k = slideOn ? 1.12 : 1;
+    slideOn = !overview && !mmOn && !cine && !card.hidden && d < far * k && rpx < fitPx() * k;
+    slideE += ((slideOn ? 1 : 0) - slideE) * (reduce ? 1 : Math.min(1, dt * 5));
+    card.classList.toggle('float', wide);
+    card.style.opacity = slideE.toFixed(3);
+    if (card.inert !== slideE < .5) { card.inert = slideE < .5; document.body.classList.toggle('reading', !card.inert); }
+    const top0 = box.top - 20; // the header's fading veil may pass behind the card's top
+    let ox = 0, oy = 0;
+    if (wide) { // [card] gap [icon], centred together
+      const shift = (box.cw + GAP) / 2, cx = freeW() / 2, bot0 = h - 20 - (box.ask ? box.ask + 12 : 0);
+      const bx = Math.max(16, cx - shift - rpx), by = Math.max(top0, Math.min(h / 2 - box.ch / 2, bot0 - box.ch));
+      card.style.transform = `translate(${(bx - 16 * (1 - slideE)).toFixed(1)}px,${by.toFixed(1)}px)`;
+      const mh = Math.round(Math.min(600, bot0 - top0)) + 'px';
+      if (card.style.maxHeight !== mh) card.style.maxHeight = mh;
+      ox = -(cx + shift - w / 2) * slideE;
+    } else { // phones: the card sits at the bottom, the icon rises into the space above it
+      if (card.style.transform) card.style.transform = card.style.maxHeight = '';
+      oy = (h / 2 - (top0 + h - 12 - box.ch) / 2) * slideE;
+    }
+    camera.setViewOffset(w, h, ox, oy, w, h);
+  };
+
   // labels sit just outside the body's edge on screen, and hide when the body fills the view
   const proj = V(0, 0, 0);
   const stepLabels = () => {
     const w = stage.clientWidth, h = stage.clientHeight, grp = groupOf(byId[sel]), mm = mmE > .5;
-    const k = (h / 2) / Math.tan(camera.fov * Math.PI / 360);
+    const k = (h / 2) / Math.tan(camera.fov * Math.PI / 360), s0 = byId[sel];
+    proj.copy(s0.cur).project(camera);
+    const sx = (proj.x + 1) / 2 * w, sy = (1 - proj.y) / 2 * h, sr = visR(s0) / camera.position.distanceTo(s0.cur) * k * 1.15;
     for (const n of DATA) {
       const el = n.el;
       proj.copy(n.cur).project(camera);
@@ -983,12 +1072,18 @@ body.cine #ask{opacity:0;pointer-events:none}
       let show = proj.z < 1 && proj.z > -1 && rpx < h * .3;
       if (show && n.k === 'frame') show = mm || grp === groupOf(n) || d < 42 || sel === n.id;
       if (show && n.s === 'hint') show = vis(n) > .55;
+      if (show && n.id === sel) show = slideE < .5; // the card already carries its name
+      if (show && n.spot < .15) show = false;
+      if (show && slideE > .5 && n.id !== sel) { // a label that would run across the chosen icon (it starts at its node and runs right)
+        const lx = (proj.x + 1) / 2 * w, ly = (1 - proj.y) / 2 * h;
+        if (Math.abs(ly - sy) < sr && lx > sx - sr - 230 && lx < sx + sr) show = false;
+      }
       if (!show) { el.classList.add('off'); continue; }
       el.classList.remove('off');
       const x = (proj.x + 1) / 2 * w, y = (1 - proj.y) / 2 * h, left = mm && n.mm.x < 0;
       el.classList.toggle('left', left);
       const far = n.k === 'frame' || n.s === 'hint' ? d / 85 : d / 300;
-      el.style.opacity = mm ? '1' : Math.max(.35, Math.min(1, 1.35 - far)).toFixed(2);
+      el.style.opacity = ((mm ? 1 : Math.max(.35, Math.min(1, 1.35 - far))) * n.spot).toFixed(2);
       el.style.transform = n.k === 'root'
         ? `translate(${x.toFixed(1)}px,${(y + rpx * 1.25 + 14).toFixed(1)}px) translateX(-50%)`
         : mm && (n.k === 'page' || n.k === 'note') ? `translate(${x.toFixed(1)}px,${(y - rpx - 6).toFixed(1)}px) translate(-50%,-100%)`
@@ -1003,7 +1098,7 @@ body.cine #ask{opacity:0;pointer-events:none}
     const r = renderer.domElement.getBoundingClientRect();
     ptr.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ptr, camera);
-    const hit = ray.intersectObjects(pickables, false).find(x => { const n = byId[x.object.userData.id]; return vis(n) > .5; });
+    const hit = ray.intersectObjects(pickables, false).find(x => { const n = byId[x.object.userData.id]; return vis(n) > .5 && n.spot > .15; });
     return hit ? hit.object.userData.id : null;
   };
   let down = null;
@@ -1022,7 +1117,7 @@ body.cine #ask{opacity:0;pointer-events:none}
     if (id) byId[id].el.classList.add('hov');
     renderer.domElement.style.cursor = id ? 'pointer' : 'grab';
   });
-  renderer.domElement.addEventListener('wheel', acted, { passive: true });
+  renderer.domElement.addEventListener('wheel', () => { acted(); overview = false; }, { passive: true });
 
   $('b-spin').setAttribute('aria-pressed', String(spinOn));
   $('b-spin').addEventListener('click', () => { spinOn = !spinOn; $('b-spin').setAttribute('aria-pressed', String(spinOn)); });
@@ -1133,7 +1228,7 @@ body.cine #ask{opacity:0;pointer-events:none}
     setTimeout(() => { if (!cine) $('cine').hidden = true; }, 900);
     document.body.classList.remove('cine');
     controls.enabled = true; controls.minDistance = 30;
-    sel = 'root'; setPath(); renderCard(); $('card').hidden = false; // the hints stay open until you pick one
+    sel = 'root'; overview = true; setPath(); renderCard(); $('card').hidden = false; // the hints stay open until you pick one
   };
   const cineStep = (now, dt) => {
     const el = now - cine.t0, k = Math.min(1, el / (reduce ? 1 : FLIGHT));
@@ -1172,19 +1267,30 @@ body.cine #ask{opacity:0;pointer-events:none}
     VAR[variant].step(now, t);
     rootGroup.scale.setScalar(1 - .45 * mmE);
     belt.visible = mmE < .3;
-    controls.autoRotate = spinOn && !fly && !mmOn && !cine;
+    controls.autoRotate = spinOn && !fly && !mmOn && !cine && !slideOn; // the sky holds still while you read
     controls.update();
     billboards.forEach(b => b.quaternion.copy(camera.quaternion));
+    // spotlight: while you read, only the chosen icon, where it came from and what grows from it stay bright,
+    // and anything standing between you and it fades away, so nothing big and bright crowds the text
+    const s0 = byId[sel], dSel = camera.position.distanceTo(s0.cur) || 1;
+    DATA.forEach(n => {
+      const keep = n.id === sel || n.p === sel, dc = camera.position.distanceTo(n.cur);
+      const fg = n.id === sel ? 1 : Math.pow(Math.min(1, Math.max(0, (dc / dSel - .45) / .4)), 2);
+      n.spot = 1 - slideE * (1 - (keep ? 1 : n.k === 'root' ? .06 : .22) * fg); // the big bright medallion steps back furthest
+      n.flowSpot = n.id === sel || n.p === sel ? n.spot : n.spot * (1 - .6 * slideE);
+    });
     DATA.forEach(n => {
       if (n.k === 'root') return;
       if (n.spin) n.spin.rotation.z = t * .08;
       if (n.core.isMesh && n.k !== 'frame') n.core.rotation.y = t * .05;
-      if (n.s !== 'hint') n.glow.material.uniforms.uStrength.value = n.base * (hover === n.id ? 1.6 : 1);
+      const calm = n.id === sel ? slideE : 0;
+      if (n.s !== 'hint') n.glow.material.uniforms.uStrength.value = n.base * (hover === n.id ? 1.6 : 1) * (1 - .55 * calm) * n.spot;
+      n.badge.material.color.setScalar(1 - .15 * calm);
       const grow = (hover === n.id ? 1.15 : 1) * (1 + mmE) * (n.growing ? 1 + .12 * Math.sin(t * 9) : 1), v = vis(n), reveal = n.s === 'hint' ? .35 + .65 * v : 1, dm = dimmed(n) ? .18 : 1;
       n.badge.scale.setScalar(BR[n.k] * 2 * grow * reveal);
-      n.badge.material.opacity = (n.s === 'hint' ? .35 + .65 * v : 1) * dm;
+      n.badge.material.opacity = (n.s === 'hint' ? .35 + .65 * v : 1) * dm * n.spot;
       n.hit.scale.setScalar(1 + mmE);
-      if (n.flow) n.flow.material.uniforms.uOpacity.value = (n.s === 'hint' ? v : 1) * dm;
+      if (n.flow) n.flow.material.uniforms.uOpacity.value = (n.s === 'hint' ? v : 1) * dm * n.flowSpot;
       n.badge.position.y = reduce ? 0 : Math.sin(t * 1.1 + n.phase) * .12;
     });
     belt.rotation.y = t * .01;
@@ -1193,7 +1299,7 @@ body.cine #ask{opacity:0;pointer-events:none}
       if (!m.visible) return;
       const ph = reduce ? .3 : (t * (n.growing ? 1.6 : .45) + n.phase) % 1;
       m.scale.setScalar(n.R * (1 + mmE) * (1.15 + 1.1 * ph));
-      m.material.opacity = .6 * (1 - ph) * (dimmed(n) ? .2 : 1);
+      m.material.opacity = .6 * (1 - ph) * (dimmed(n) ? .2 : 1) * n.spot * (n.id === sel ? 1 - slideE : 1); // the chosen one already has its ring
     });
     const s = byId[sel];
     selRing.visible = sel !== 'root';
@@ -1201,6 +1307,8 @@ body.cine #ask{opacity:0;pointer-events:none}
     selRing.quaternion.copy(camera.quaternion);
     selRing.rotateZ(t * .4);
     selRing.scale.setScalar(s.R * (1 + mmE) * (style === 'badges' ? 1.35 : 2.4) * (1 + (reduce ? 0 : .04 * Math.sin(t * 3))));
+    stepSlide(dt);
+    VAR.medal.calm(sel === 'root' ? slideE : 0, byId.root.spot);
     stepLabels();
     renderer.render(scene, camera);
   };
@@ -1334,7 +1442,7 @@ ${map}
 
   applyStyle();
   VAR.medal.start();
-  focusFn('root');
+  focusFn('root', true);
   requestAnimationFrame(tick);
   setTimeout(acted, 12000);
   };
